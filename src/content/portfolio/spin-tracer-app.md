@@ -5,6 +5,7 @@ featured: false
 technologies: SwiftUI, SwiftData, CoreLocation, iCloud
 date: 2024-12-01
 image: /assets/spin-tracer-app-icon.svg
+imageBg: "#ff00ff"
 type: iOS App
 ---
 

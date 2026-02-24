@@ -4,7 +4,9 @@ description: Schluss mit InDesign & Kommandozeile – digitale Unterschriften in
 featured: true
 technologies: HTML, CSS, TS, React
 date: 2026-02-24
+icon: /assets/hs-signature-assistant-icon.svg
 image: /assets/hs-signature-assistant-icon.svg
+imageBg: "#6d5cc6"
 linkWebsite: https://signature.tger.me
 type: Website, WebApp
 ---

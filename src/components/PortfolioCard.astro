@@ -6,10 +6,11 @@ interface Props {
   type: string;
   technologies: string;
   image: string;
+  imageBg?: string;
   featured?: boolean;
 }
 
-const { slug, title, description, type, technologies, image, featured = false } = Astro.props;
+const { slug, title, description, type, technologies, image, imageBg, featured = false } = Astro.props;
 const techList = technologies.split(',').map((t) => t.trim()).slice(0, 3);
 ---
 
@@ -22,7 +23,8 @@ const techList = technologies.split(',').map((t) => t.trim()).slice(0, 3);
     <img
       src={image}
       alt={title}
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      class={`w-full h-full group-hover:scale-105 transition-transform duration-300 ${imageBg ? 'object-contain p-6' : 'object-cover'}`}
+      style={imageBg ? `background-color: ${imageBg};` : undefined}
       loading="lazy"
     />
     {featured && (
