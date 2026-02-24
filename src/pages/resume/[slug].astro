@@ -5,6 +5,9 @@ import { site } from "../../data/site";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
 
+// Eagerly import all CV data files so custom ones can be resolved at build time
+const cvModules = import.meta.glob("../../data/cv_*.ts", { eager: true }) as Record<string, any>;
+
 export async function getStaticPaths() {
     const resumes = await getCollection("resume");
     return resumes.map((resume) => ({
@@ -14,10 +17,21 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { position, company, lang, date } = resume.data;
+const { position, company, lang, date, cvData } = resume.data;
 
 const isDE = lang === "de";
-const cv = isDE ? cvDe : cvEn;
+
+// Use custom CV data file if specified, otherwise fall back to default
+let cv: any;
+if (cvData) {
+    const key = `../../data/${cvData}.ts`;
+    cv = cvModules[key];
+    if (!cv) {
+        throw new Error(`Custom CV data file not found: src/data/${cvData}.ts`);
+    }
+} else {
+    cv = isDE ? cvDe : cvEn;
+}
 
 const l = isDE
     ? {
