@@ -8,7 +8,8 @@ export const site = {
     url: "https://tger.me",
     slogan: "When fate hands you lemons, make lemonade. – Dale Carnegie",
     sloganDe: '„Wenn das Schicksal uns eine Zitrone gibt – machen wir Zitronenlimonade daraus." — Dale Carnegie',
-    about: "Made in Germany, married to another German. Is flexible, open-minded and competitive. Likes IT, structuring, automation, hiking, skiing.",
+    about: "Ich begleite seit über zehn Jahren Digitalisierungs-, Organisations- und Automatisierungsvorhaben in Verwaltung und Bildung – mit Fokus auf Querschnitts- und Stabsfunktionen, in denen Gestaltung, Analyse und Umsetzung zusammenkommen.",
+    linkedin: "https://www.linkedin.com/in/tgermer/",
     imprintUrl: "/imprint",
     privacyUrl: "/privacy-statement",
 };
