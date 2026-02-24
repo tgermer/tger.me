@@ -24,7 +24,7 @@ function formatDate(dateStr: string): string {
                 experience.map((job) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
-                            <div class="text-sm text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
+                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
                                 <span class="md:hidden">{job.endDate ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}` : `Seit ${formatDate(job.startDate)}`}</span>
                                 <div class="hidden md:block">
                                     {job.endDate ? (
@@ -81,7 +81,7 @@ function formatDate(dateStr: string): string {
                                     </p>
                                 )}
                                 {job.description?.list && job.description.list.length > 0 && (
-                                    <ul class="mt-2 text-sm text-gray-900 dark:text-white space-y-1 list-disc pl-4">
+                                    <ul class="mt-2 text-gray-900 dark:text-white space-y-1 list-disc pl-4">
                                         {job.description.list.map((item) => (
                                             <li>{item}</li>
                                         ))}
@@ -103,7 +103,7 @@ function formatDate(dateStr: string): string {
                 education.map((edu) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
-                            <div class="text-sm text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
+                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
                                 <span class="md:hidden">
                                     {formatDate(edu.startDate)} – {formatDate(edu.endDate)}
                                 </span>
@@ -126,9 +126,9 @@ function formatDate(dateStr: string): string {
                                     )}
                                     {edu.location && `, ${edu.location}`}
                                 </p>
-                                {edu.majorFieldOfStudy && <p class="text-sm text-gray-900 dark:text-white">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
+                                {edu.majorFieldOfStudy && <p class="text-gray-900 dark:text-white">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
                                 {edu.thesis?.title && (
-                                    <p class="text-sm text-gray-900 dark:text-white mt-1">
+                                    <p class="text-gray-900 dark:text-white mt-1">
                                         Thesis:{" "}
                                         {edu.thesis.fullTextUrl ? (
                                             <a href={edu.thesis.fullTextUrl} target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">
@@ -155,7 +155,7 @@ function formatDate(dateStr: string): string {
                 furtherEducation.map((edu) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
-                            <div class="text-sm text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
+                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
                                 {formatDate(edu.startDate) === formatDate(edu.endDate) ? (
                                     <span>{formatDate(edu.startDate)}</span>
                                 ) : (
@@ -175,7 +175,7 @@ function formatDate(dateStr: string): string {
                                     {edu.fieldOfStudy}
                                     {edu.degree && `, ${edu.degree}`}
                                 </p>
-                                <p class="text-sm text-gray-900 dark:text-white">
+                                <p class="text-gray-900 dark:text-white">
                                     {edu.schoolUrl ? (
                                         <a href={`https://${edu.schoolUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                             {edu.school}
@@ -206,11 +206,11 @@ function formatDate(dateStr: string): string {
                 projects.map((project) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
-                            <div class="text-sm text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.date)}</div>
+                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.date)}</div>
                             <div class="flex-1 min-w-0">
                                 <p class="font-semibold text-gray-900 dark:text-white">{project.title}</p>
                                 {project.description?.list && project.description.list.length > 0 && (
-                                    <ul class="mt-2 text-sm text-gray-900 dark:text-white space-y-1 list-disc pl-4">
+                                    <ul class="mt-2 text-gray-900 dark:text-white space-y-1 list-disc pl-4">
                                         {project.description.list.map((item) => (
                                             <li>{item}</li>
                                         ))}
@@ -256,10 +256,10 @@ function formatDate(dateStr: string): string {
                 references.map((ref) => (
                     <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
                         <p class="font-semibold text-gray-900 dark:text-white">{ref.name}</p>
-                        <p class="text-sm text-gray-900 dark:text-white">{ref.position}</p>
-                        <p class="text-sm text-gray-900 dark:text-white">{ref.company}</p>
-                        {ref.department && <p class="text-sm text-gray-900 dark:text-white">{ref.department}</p>}
-                        <a href={`mailto:${ref.email}`} class="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-1 block">
+                        <p class="text-gray-900 dark:text-white">{ref.position}</p>
+                        <p class="text-gray-900 dark:text-white">{ref.company}</p>
+                        {ref.department && <p class="text-gray-900 dark:text-white">{ref.department}</p>}
+                        <a href={`mailto:${ref.email}`} class="text-blue-600 dark:text-blue-400 hover:underline mt-1 block">
                             {ref.email}
                         </a>
                     </div>

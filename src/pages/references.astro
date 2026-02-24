@@ -9,16 +9,16 @@ import { references } from '../data/cv_de';
       <div class="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
         <div class="mb-3">
           <h3 class="font-semibold text-gray-900 dark:text-white text-lg">{ref.name}</h3>
-          <p class="text-blue-600 dark:text-blue-400 text-sm font-medium">{ref.position}</p>
+          <p class="text-blue-600 dark:text-blue-400 font-medium">{ref.position}</p>
         </div>
-        <div class="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+        <div class="space-y-1 text-gray-600 dark:text-gray-400">
           <p>{ref.company}</p>
           {ref.department && <p>{ref.department}</p>}
         </div>
         <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
           <a
             href={`mailto:${ref.email}`}
-            class="text-sm text-blue-600 dark:text-blue-400 hover:underline break-all"
+            class="text-blue-600 dark:text-blue-400 hover:underline break-all"
           >
             {ref.email}
           </a>
