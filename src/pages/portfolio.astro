@@ -1,0 +1,28 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import PortfolioCard from '../components/PortfolioCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('portfolio');
+const sorted = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<PageLayout
+  title="Portfolio"
+  description="Eine Auswahl meiner Projekte – von iOS Apps bis hin zu Web-Anwendungen und Daten-Visualisierungen."
+  subtitle="Eine Auswahl meiner Projekte"
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {sorted.map((project) => (
+      <PortfolioCard
+        slug={project.slug}
+        title={project.data.title}
+        description={project.data.description}
+        type={project.data.type}
+        technologies={project.data.technologies}
+        image={project.data.image}
+        featured={project.data.featured}
+      />
+    ))}
+  </div>
+</PageLayout>

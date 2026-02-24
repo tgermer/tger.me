@@ -1,0 +1,31 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<PageLayout title="Blog" description="Artikel und Neuigkeiten von Tristan Germer." subtitle="Artikel und Neuigkeiten">
+  <div class="space-y-4">
+    {sorted.map((post) => {
+      const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      return (
+        <article class="group p-5 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <a href={`/blog/${post.slug}`} class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {post.data.title}
+            </a>
+            <time class="text-sm text-gray-500 dark:text-gray-500 flex-shrink-0">{dateStr}</time>
+          </div>
+          {post.data.excerpt && (
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">{post.data.excerpt}</p>
+          )}
+          <a href={`/blog/${post.slug}`} class="inline-block mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+            Weiterlesen →
+          </a>
+        </article>
+      );
+    })}
+  </div>
+</PageLayout>

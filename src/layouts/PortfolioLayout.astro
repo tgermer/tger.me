@@ -1,0 +1,336 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  title: string;
+  description: string;
+  type: string;
+  technologies: string;
+  image: string;
+  linkGithub?: string;
+  linkWebsite?: string;
+  screenshotsAvailable?: boolean;
+  screenshotsPath?: string;
+  screenshotsFiles?: string[];
+}
+
+const {
+  title,
+  description,
+  type,
+  technologies,
+  image,
+  linkGithub,
+  linkWebsite,
+  screenshotsAvailable = false,
+  screenshotsPath,
+  screenshotsFiles,
+} = Astro.props;
+
+const techList = technologies.split(',').map((t) => t.trim());
+
+// Build screenshot list – explicit files take priority, then auto-discovery from path
+const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
+const screenshots: string[] = [];
+if (screenshotsAvailable) {
+  if (screenshotsFiles && screenshotsFiles.length > 0) {
+    screenshots.push(...screenshotsFiles);
+  } else if (screenshotsPath) {
+    const publicDir = path.join(process.cwd(), 'public', screenshotsPath);
+    if (fs.existsSync(publicDir)) {
+      const files = fs.readdirSync(publicDir)
+        .filter((f) => imageExtensions.has(path.extname(f).toLowerCase()))
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      screenshots.push(...files.map((f) => `${screenshotsPath}${f}`));
+    }
+  }
+}
+---
+
+<BaseLayout title={title} description={description} ogImage={image}>
+  <div class="pt-24 pb-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Header -->
+      <div class="mb-8">
+        <a href="/portfolio" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Zurück zur Übersicht
+        </a>
+
+        <div class="flex flex-wrap items-start gap-4">
+          <div class="flex-1">
+            <span class="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2.5 py-1 rounded-full mb-3">{type}</span>
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
+            <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">{description}</p>
+          </div>
+          {!screenshotsAvailable && (
+            <div class="flex-shrink-0">
+              <img src={image} alt={title} class="h-24 w-24 object-contain rounded-2xl shadow-md" />
+            </div>
+          )}
+        </div>
+
+        <!-- Tech Badges -->
+        <div class="flex flex-wrap gap-2 mt-4">
+          {techList.map((tech) => (
+            <span class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium px-3 py-1 rounded-full">
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <!-- Action Links -->
+        <div class="flex flex-wrap gap-3 mt-5">
+          {linkGithub && (
+            <a
+              href={linkGithub}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-300 transition-colors"
+            >
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              GitHub
+            </a>
+          )}
+          {linkWebsite && (
+            <a
+              href={linkWebsite}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Website besuchen
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Screenshot Gallery -->
+      {screenshotsAvailable && screenshots.length > 0 && (
+        <div class="mb-10 relative group">
+          <!-- Fade edges (hidden at scroll boundaries) -->
+          <div id="gallery-fade-left" class="hidden md:block pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-5 transition-opacity opacity-0" style="background: linear-gradient(to right, var(--gallery-fade-color, white), transparent);"></div>
+          <div id="gallery-fade-right" class="hidden md:block pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-5 transition-opacity" style="background: linear-gradient(to left, var(--gallery-fade-color, white), transparent);"></div>
+
+          <!-- Scroll arrows -->
+          <button
+            id="gallery-prev"
+            class="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Vorherige Screenshots"
+          >
+            <svg class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            id="gallery-next"
+            class="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+            aria-label="Nächste Screenshots"
+          >
+            <svg class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          <div id="gallery-scroll" class="flex gap-3 overflow-x-auto pb-3 scrollbar-thin" style="cursor: ew-resize;">
+            {screenshots.map((src, i) => (
+              <button
+                class="gallery-thumb flex-shrink-0 rounded-xl overflow-hidden hover:opacity-90 transition-opacity shadow-md"
+                style="cursor: ew-resize;"
+                data-src={src}
+                data-index={i}
+                aria-label={`Screenshot ${i + 1}`}
+              >
+                <img
+                  src={src}
+                  alt={`${title} Screenshot ${i + 1}`}
+                  class="h-64 w-auto object-cover pointer-events-none"
+                  loading="lazy"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Single project image (no screenshots) -->
+      {!screenshotsAvailable && (
+        <div class="mb-10 rounded-2xl overflow-hidden shadow-lg">
+          <img src={image} alt={title} class="w-full object-contain max-h-96 bg-gray-50 dark:bg-gray-900" />
+        </div>
+      )}
+
+      <!-- Content -->
+      <div class="prose max-w-none dark:prose-invert">
+        <slot />
+      </div>
+
+      <!-- Back button -->
+      <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <a href="/portfolio" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Alle Projekte ansehen
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  {screenshotsAvailable && screenshots.length > 0 && (
+    <div id="lightbox" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+      <button id="lightbox-close" class="absolute top-4 right-4 text-white hover:text-gray-300 p-2" aria-label="Schließen">
+        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <button id="lightbox-prev" class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-2" aria-label="Vorheriges Bild">
+        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <img id="lightbox-img" src="" alt="" class="max-h-[85vh] max-w-[90vw] object-contain rounded-lg shadow-2xl" />
+      <button id="lightbox-next" class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-2" aria-label="Nächstes Bild">
+        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <span id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm"></span>
+    </div>
+
+    <script define:vars={{ screenshots }}>
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCounter = document.getElementById('lightbox-counter');
+      let currentIndex = 0;
+
+      function openLightbox(index) {
+        currentIndex = index;
+        lightboxImg.src = screenshots[index];
+        lightboxImg.alt = `Screenshot ${index + 1}`;
+        lightboxCounter.textContent = `${index + 1} / ${screenshots.length}`;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        document.body.style.overflow = '';
+      }
+
+      function navigate(dir) {
+        currentIndex = (currentIndex + dir + screenshots.length) % screenshots.length;
+        openLightbox(currentIndex);
+      }
+
+      // Lightbox thumbnail clicks
+      let isDragging = false;
+      document.querySelectorAll('.gallery-thumb').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (!isDragging) openLightbox(Number(btn.dataset.index));
+        });
+      });
+
+      document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+      document.getElementById('lightbox-prev').addEventListener('click', () => navigate(-1));
+      document.getElementById('lightbox-next').addEventListener('click', () => navigate(1));
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('hidden')) {
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowLeft') navigate(-1);
+          if (e.key === 'ArrowRight') navigate(1);
+        }
+      });
+
+      // Gallery: drag-to-scroll, arrow buttons, mouse wheel, fade edges
+      const scroll = document.getElementById('gallery-scroll');
+      const prevBtn = document.getElementById('gallery-prev');
+      const nextBtn = document.getElementById('gallery-next');
+      const fadeLeft = document.getElementById('gallery-fade-left');
+      const fadeRight = document.getElementById('gallery-fade-right');
+
+      if (scroll && prevBtn && nextBtn && fadeLeft && fadeRight) {
+        // Dark mode fade color
+        function updateFadeColor() {
+          const isDark = document.documentElement.classList.contains('dark');
+          const color = isDark ? 'rgb(3, 7, 18)' : 'white';
+          fadeLeft.style.setProperty('--gallery-fade-color', color);
+          fadeRight.style.setProperty('--gallery-fade-color', color);
+        }
+        updateFadeColor();
+        new MutationObserver(updateFadeColor).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        // Update fade edges and arrow visibility based on scroll position
+        function updateEdges() {
+          const atStart = scroll.scrollLeft <= 1;
+          const atEnd = scroll.scrollLeft + scroll.clientWidth >= scroll.scrollWidth - 1;
+
+          fadeLeft.style.opacity = atStart ? '0' : '1';
+          fadeRight.style.opacity = atEnd ? '0' : '1';
+          prevBtn.style.display = atStart ? 'none' : '';
+          nextBtn.style.display = atEnd ? 'none' : '';
+        }
+        scroll.addEventListener('scroll', updateEdges);
+        updateEdges();
+
+        // Arrow buttons
+        const scrollAmount = 300;
+        prevBtn.addEventListener('click', () => scroll.scrollBy({ left: -scrollAmount, behavior: 'smooth' }));
+        nextBtn.addEventListener('click', () => scroll.scrollBy({ left: scrollAmount, behavior: 'smooth' }));
+
+        // Mouse wheel → horizontal scroll
+        scroll.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            scroll.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+
+        // Drag-to-scroll
+        let isDown = false;
+        let startX = 0;
+        let scrollLeft = 0;
+
+        scroll.addEventListener('mousedown', (e) => {
+          isDown = true;
+          isDragging = false;
+          startX = e.pageX - scroll.offsetLeft;
+          scrollLeft = scroll.scrollLeft;
+        });
+
+        scroll.addEventListener('mouseleave', () => { isDown = false; });
+        scroll.addEventListener('mouseup', () => {
+          isDown = false;
+          setTimeout(() => { isDragging = false; }, 0);
+        });
+
+        scroll.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - scroll.offsetLeft;
+          const walk = x - startX;
+          if (Math.abs(walk) > 5) isDragging = true;
+          scroll.scrollLeft = scrollLeft - walk;
+        });
+      }
+    </script>
+  )}
+</BaseLayout>

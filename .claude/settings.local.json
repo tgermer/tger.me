@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:signature.tger.me)",
+      "WebFetch(domain:clearcontrol.de)",
+      "Bash(gh repo view tgermer/ha-remote-designer --json description,name)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm install --save-dev @types/node)",
+      "Bash(npm install @fontsource/ibm-plex-sans @fontsource/ibm-plex-sans-condensed)",
+      "Bash(npm uninstall @fontsource/ibm-plex-sans-condensed)"
+    ]
+  }
+}
