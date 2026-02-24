@@ -1,25 +1,81 @@
 ---
-import ResumeLayout from "../layouts/ResumeLayout.astro";
-import { site } from "../data/site";
-import { experience, education, furtherEducation, skills, projects, references } from "../data/cv_en";
+import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import { getCollection } from "astro:content";
+import { site } from "../../data/site";
+import * as cvDe from "../../data/cv_de";
+import * as cvEn from "../../data/cv_en";
+
+export async function getStaticPaths() {
+    const resumes = await getCollection("resume");
+    return resumes.map((resume) => ({
+        params: { slug: resume.slug },
+        props: { resume },
+    }));
+}
+
+const { resume } = Astro.props;
+const { position, company, lang, date } = resume.data;
+
+const isDE = lang === "de";
+const cv = isDE ? cvDe : cvEn;
+
+// Labels based on language
+const labels = isDE
+    ? {
+          backLabel: "Zurück zum Lebenslauf",
+          backHref: "/cv-de",
+          printLabel: "Drucken / PDF",
+          applicationFor: "Bewerbung als",
+          atCompany: `bei ${company}`,
+          experienceHeading: "Beruflicher Werdegang",
+          educationHeading: "Hochschulausbildung",
+          furtherEducationHeading: "Zusatzqualifikationen",
+          projectsHeading: "Projekte",
+          skillsHeading: "Kenntnisse",
+          referencesHeading: "Referenzen",
+          since: "Seit",
+          major: "Schwerpunkt",
+          thesis: "Thesis",
+          location: "München",
+          degree: "M.Sc. Technische Kommunikation",
+      }
+    : {
+          backLabel: "Back to CV",
+          backHref: "/cv-en",
+          printLabel: "Print / PDF",
+          applicationFor: "Application for",
+          atCompany: `at ${company}`,
+          experienceHeading: "Professional Experience",
+          educationHeading: "University Education",
+          furtherEducationHeading: "Additional Qualifications",
+          projectsHeading: "Projects",
+          skillsHeading: "Skills",
+          referencesHeading: "References",
+          since: "Since",
+          major: "Major",
+          thesis: "Thesis",
+          location: "Munich, Germany",
+          degree: "M.Sc. Technical Communication",
+      };
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
     const [year, month] = dateStr.split("-");
     return `${month}/${year}`;
 }
+
+const pageTitle = isDE
+    ? `Lebenslauf – Tristan Germer – ${position}`
+    : `Resume – Tristan Germer – ${position}`;
 ---
 
-<ResumeLayout title="Resume – Tristan Germer" description="Resume of Tristan Germer – Experience, Education, and Skills." lang="en">
+<ResumeLayout title={pageTitle} description={`${position} – ${company}`} lang={lang}>
 
     <!-- Print toolbar (hidden in print) -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
-            <a href="/cv-en" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Back to CV</a>
-            <div class="flex items-center gap-3">
-                <a href="/resume-de" id="lang-switch" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Deutsch</a>
-                <button onclick="window.print()" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">Print / PDF</button>
-            </div>
+            <a href={labels.backHref} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {labels.backLabel}</a>
+            <button onclick="window.print()" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{labels.printLabel}</button>
         </div>
     </div>
 
@@ -28,14 +84,14 @@ function formatDate(dateStr: string): string {
         <div class="cover-content">
             <img src="/assets/2025-09-02 Google Gemini 2.5 Flash.JPG" alt="Tristan Germer" class="cover-photo" />
             <h1 class="cover-name">Tristan Germer</h1>
-            <p class="cover-degree">M.Sc. Technical Communication</p>
+            <p class="cover-degree">{labels.degree}</p>
 
             <div class="cover-contact">
                 <span>{site.email}</span>
                 <span class="cover-sep">&middot;</span>
                 <span>{site.phone}</span>
                 <span class="cover-sep">&middot;</span>
-                <span>Munich, Germany</span>
+                <span>{labels.location}</span>
             </div>
             <div class="cover-contact">
                 <span>tger.me</span>
@@ -43,25 +99,25 @@ function formatDate(dateStr: string): string {
                 <span>linkedin.com/in/tgermer</span>
             </div>
 
-            <div class="cover-position" id="cover-position" style="display:none;">
-                <p class="cover-position-label">Application for</p>
-                <p class="cover-position-title" id="position-title"></p>
-                <p class="cover-position-company" id="position-company"></p>
+            <div class="cover-position">
+                <p class="cover-position-label">{labels.applicationFor}</p>
+                <p class="cover-position-title">{position}</p>
+                <p class="cover-position-company">{labels.atCompany}</p>
             </div>
         </div>
     </div>
 
     <!-- CV Content -->
     <div class="resume-page">
-        <!-- Work Experience -->
+        <!-- Berufserfahrung -->
         <section class="resume-section">
-            <h2 class="resume-heading">Professional Experience</h2>
-            {experience.map((job) => (
+            <h2 class="resume-heading">{labels.experienceHeading}</h2>
+            {cv.experience.map((job) => (
                 <div class="resume-entry">
                     <div class="resume-date">
                         {job.endDate
                             ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}`
-                            : `Since ${formatDate(job.startDate)}`}
+                            : `${labels.since} ${formatDate(job.startDate)}`}
                     </div>
                     <div class="resume-detail">
                         {job.position && job.position.length > 0 ? (
@@ -89,26 +145,26 @@ function formatDate(dateStr: string): string {
             ))}
         </section>
 
-        <!-- Education -->
+        <!-- Hochschulausbildung -->
         <section class="resume-section">
-            <h2 class="resume-heading">University Education</h2>
-            {education.map((edu) => (
+            <h2 class="resume-heading">{labels.educationHeading}</h2>
+            {cv.education.map((edu) => (
                 <div class="resume-entry">
                     <div class="resume-date">{formatDate(edu.startDate)} – {formatDate(edu.endDate)}</div>
                     <div class="resume-detail">
                         <p class="resume-entry-title">{edu.fieldOfStudy}, {edu.degree}</p>
                         <p class="resume-entry-sub">{edu.school}{edu.location && `, ${edu.location}`}</p>
-                        {edu.majorFieldOfStudy && <p class="resume-entry-meta">Major: {edu.majorFieldOfStudy}</p>}
-                        {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
+                        {edu.majorFieldOfStudy && <p class="resume-entry-meta">{labels.major}: {edu.majorFieldOfStudy}</p>}
+                        {edu.thesis?.title && <p class="resume-entry-meta">{labels.thesis}: {edu.thesis.title}</p>}
                     </div>
                 </div>
             ))}
         </section>
 
-        <!-- Further Education -->
+        <!-- Zusatzqualifikationen -->
         <section class="resume-section">
-            <h2 class="resume-heading">Additional Qualifications</h2>
-            {furtherEducation.map((edu) => (
+            <h2 class="resume-heading">{labels.furtherEducationHeading}</h2>
+            {cv.furtherEducation.map((edu) => (
                 <div class="resume-entry">
                     <div class="resume-date">
                         {formatDate(edu.startDate) === formatDate(edu.endDate)
@@ -123,10 +179,10 @@ function formatDate(dateStr: string): string {
             ))}
         </section>
 
-        <!-- Projects -->
+        <!-- Projekte -->
         <section class="resume-section">
-            <h2 class="resume-heading">Projects</h2>
-            {projects.map((project) => (
+            <h2 class="resume-heading">{labels.projectsHeading}</h2>
+            {cv.projects.map((project) => (
                 <div class="resume-entry">
                     <div class="resume-date">{formatDate(project.date)}</div>
                     <div class="resume-detail">
@@ -141,11 +197,11 @@ function formatDate(dateStr: string): string {
             ))}
         </section>
 
-        <!-- Skills -->
+        <!-- Kenntnisse -->
         <section class="resume-section">
-            <h2 class="resume-heading">Skills</h2>
+            <h2 class="resume-heading">{labels.skillsHeading}</h2>
             <div class="resume-skills-grid">
-                {skills.map((cat) => (
+                {cv.skills.map((cat) => (
                     <div class="resume-skill-group">
                         <h3 class="resume-skill-label">{cat.catagorie}</h3>
                         <p class="resume-skill-items">{cat.items.join(" · ")}</p>
@@ -154,11 +210,11 @@ function formatDate(dateStr: string): string {
             </div>
         </section>
 
-        <!-- References -->
+        <!-- Referenzen -->
         <section class="resume-section">
-            <h2 class="resume-heading">References</h2>
+            <h2 class="resume-heading">{labels.referencesHeading}</h2>
             <div class="resume-references">
-                {references.map((ref) => (
+                {cv.references.map((ref) => (
                     <div class="resume-reference">
                         <p class="resume-entry-title">{ref.name}</p>
                         <p class="resume-entry-sub">{ref.position}, {ref.company}</p>
@@ -169,25 +225,4 @@ function formatDate(dateStr: string): string {
             </div>
         </section>
     </div>
-
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const position = params.get("position");
-        const company = params.get("company");
-
-        if (position || company) {
-            const block = document.getElementById("cover-position");
-            const titleEl = document.getElementById("position-title");
-            const companyEl = document.getElementById("position-company");
-            if (block) block.style.display = "block";
-            if (titleEl && position) titleEl.textContent = position;
-            if (companyEl && company) companyEl.textContent = `at ${company}`;
-        }
-
-        // Forward query params to language switch link
-        const langLink = document.getElementById("lang-switch") as HTMLAnchorElement;
-        if (langLink && window.location.search) {
-            langLink.href = `/resume-de${window.location.search}`;
-        }
-    </script>
 </ResumeLayout>

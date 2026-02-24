@@ -1,0 +1,6 @@
+---
+position: "Senior Softwareberater DMS"
+company: "Beispiel Firma GmbH"
+lang: "de"
+date: 2026-02-24
+---

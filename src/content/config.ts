@@ -30,4 +30,14 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { portfolio, blog };
+const resume = defineCollection({
+  type: 'content',
+  schema: z.object({
+    position: z.string(),
+    company: z.string(),
+    lang: z.enum(['de', 'en']).default('de'),
+    date: z.date(),
+  }),
+});
+
+export const collections = { portfolio, blog, resume };
