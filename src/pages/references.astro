@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { references } from '../data/cv_de';
 ---
 
@@ -18,8 +19,9 @@ import { references } from '../data/cv_de';
         <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
           <a
             href={`mailto:${ref.email}`}
-            class="text-blue-600 dark:text-blue-400 hover:underline break-all"
+            class="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline break-all"
           >
+            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
             {ref.email}
           </a>
         </div>

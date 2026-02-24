@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { experience, education, furtherEducation, skills, projects, references } from '../data/cv_en';
 
 function formatDate(dateStr: string): string {
@@ -21,8 +22,8 @@ function formatDate(dateStr: string): string {
 
   <!-- Work Experience -->
   <section class="mb-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      Work Experience
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:briefcase" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Work Experience
     </h2>
     <div class="divide-y divide-gray-200 dark:divide-gray-800">
       {experience.map((job) => (
@@ -92,8 +93,8 @@ function formatDate(dateStr: string): string {
 
   <!-- Education -->
   <section class="mb-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      Education
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:school" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Education
     </h2>
     <div class="divide-y divide-gray-200 dark:divide-gray-800">
       {education.map((edu) => (
@@ -134,8 +135,8 @@ function formatDate(dateStr: string): string {
 
   <!-- Further Education -->
   <section class="mb-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      Further Education
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:certificate" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Further Education
     </h2>
     <div class="divide-y divide-gray-200 dark:divide-gray-800">
       {furtherEducation.map((edu) => (
@@ -165,8 +166,9 @@ function formatDate(dateStr: string): string {
                 }{edu.location && `, ${edu.location}`}
               </p>
               {edu.certificateUrl && (
-                <a href={edu.certificateUrl} target="_blank" rel="noopener noreferrer" class="inline-block mt-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
-                  View certificate →
+                <a href={edu.certificateUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+                  <Icon name="tabler:certificate" class="h-3.5 w-3.5" />
+                  View certificate
                 </a>
               )}
             </div>
@@ -178,8 +180,8 @@ function formatDate(dateStr: string): string {
 
   <!-- Projects -->
   <section class="mb-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      Projects
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:code" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Projects
     </h2>
     <div class="divide-y divide-gray-200 dark:divide-gray-800">
       {projects.map((project) => (
@@ -196,8 +198,9 @@ function formatDate(dateStr: string): string {
                 </ul>
               )}
               {project.githubUrl && (
-                <a href={`https://${project.githubUrl}`} target="_blank" rel="noopener noreferrer" class="inline-block mt-2 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
-                  GitHub →
+                <a href={`https://${project.githubUrl}`} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-2 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+                  <Icon name="tabler:brand-github" class="h-3.5 w-3.5" />
+                  GitHub
                 </a>
               )}
             </div>
@@ -209,8 +212,8 @@ function formatDate(dateStr: string): string {
 
   <!-- Skills -->
   <section class="mb-12">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      Skills
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:brain" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Skills
     </h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
       {skills.map((cat) => (
@@ -230,8 +233,8 @@ function formatDate(dateStr: string): string {
 
   <!-- References -->
   <section>
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
-      References
+    <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800">
+      <Icon name="tabler:users" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> References
     </h2>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {references.map((ref) => (
@@ -240,7 +243,10 @@ function formatDate(dateStr: string): string {
           <p class="text-gray-900 dark:text-white">{ref.position}</p>
           <p class="text-gray-900 dark:text-white">{ref.company}</p>
           {ref.department && <p class="text-gray-900 dark:text-white">{ref.department}</p>}
-          <a href={`mailto:${ref.email}`} class="text-blue-600 dark:text-blue-400 hover:underline mt-1 block">{ref.email}</a>
+          <a href={`mailto:${ref.email}`} class="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline mt-1">
+            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
+            {ref.email}
+          </a>
         </div>
       ))}
     </div>

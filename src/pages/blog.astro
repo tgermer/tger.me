@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
@@ -16,13 +17,17 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
             <a href={`/blog/${post.slug}`} class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {post.data.title}
             </a>
-            <time class="text-sm text-gray-500 dark:text-gray-500 flex-shrink-0">{dateStr}</time>
+            <time class="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-500 shrink-0">
+              <Icon name="tabler:calendar" class="h-4 w-4" />
+              {dateStr}
+            </time>
           </div>
           {post.data.excerpt && (
             <p class="mt-2 text-gray-600 dark:text-gray-400">{post.data.excerpt}</p>
           )}
-          <a href={`/blog/${post.slug}`} class="inline-block mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
-            Weiterlesen →
+          <a href={`/blog/${post.slug}`} class="inline-flex items-center gap-1 mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+            Weiterlesen
+            <Icon name="tabler:arrow-right" class="h-4 w-4" />
           </a>
         </article>
       );
