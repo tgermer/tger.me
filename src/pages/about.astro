@@ -9,7 +9,7 @@ import { site } from "../data/site";
         <!-- Sidebar with photo -->
         <div class="md:col-span-1">
             <div class="sticky top-24">
-                <div class="rounded-2xl overflow-hidden bg-linear-to-br from-blue-500 to-blue-700 p-6 text-center shadow-lg">
+                <div class="rounded-2xl overflow-hidden py-10 bg-linear-to-br from-blue-500 to-blue-700 p-6 text-center shadow-lg">
                     <img src="public/assets/2025-09-02 Google Gemini 2.5 Flash.JPG" alt="Tristan Germer" class="w-40 h-40 object-cover blob-shape mx-auto mb-4 bg-white/10" />
                     <h2 class="text-white font-bold text-xl">Tristan Germer</h2>
                     <p class="text-blue-100 mt-1">M.Sc. Technische Kommunikation</p>
@@ -51,17 +51,17 @@ import { site } from "../data/site";
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {
                         [
-                            { title: "Prozessgestaltung & Automatisierung", desc: "Analyse, Einführung und Weiterentwicklung von Workflows und Steuerungslogiken.", icon: "tabler:settings-automation" },
-                            { title: "Querschnitts- & Stabsarbeit", desc: "Projektleitung, Koordination, Berechtigungskonzepte, Stakeholder-Management.", icon: "tabler:sitemap" },
-                            { title: "Transparenz & Steuerung", desc: "KPI-Dashboards, Reporting, Datenaufbereitung für Entscheider.", icon: "tabler:chart-bar" },
-                            { title: "Compliance & Qualität", desc: "Revisionssichere Archivierung, Qualitätsmanagement.", icon: "tabler:shield-check" },
-                            { title: "Digitale Systeme etablieren", desc: "Release- & Update-Management, Schulungen, Tool-Einführungen.", icon: "tabler:device-desktop" },
-                        ].map(({ title, desc, icon }) => (
-                            <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <Icon name={icon} class="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
-                                    <h3 class="font-semibold text-gray-900 dark:text-white">{title}</h3>
+                            { title: "Prozessgestaltung & Automatisierung", desc: "Analyse, Einführung und Weiterentwicklung von Workflows und Steuerungslogiken.", icon: "tabler:settings-automation", cardClass: "bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-800", iconBoxClass: "bg-blue-100 dark:bg-blue-900/60", iconClass: "text-blue-600 dark:text-blue-400" },
+                            { title: "Querschnitts- & Stabsarbeit", desc: "Projektleitung, Koordination, Berechtigungskonzepte, Stakeholder-Management.", icon: "tabler:sitemap", cardClass: "bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800", iconBoxClass: "bg-indigo-100 dark:bg-indigo-900/60", iconClass: "text-indigo-600 dark:text-indigo-400" },
+                            { title: "Transparenz & Steuerung", desc: "KPI-Dashboards, Reporting, Datenaufbereitung für Entscheider.", icon: "tabler:chart-bar", cardClass: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800", iconBoxClass: "bg-emerald-100 dark:bg-emerald-900/60", iconClass: "text-emerald-600 dark:text-emerald-400" },
+                            { title: "Compliance & Qualität", desc: "Revisionssichere Archivierung, Qualitätsmanagement.", icon: "tabler:shield-check", cardClass: "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800", iconBoxClass: "bg-amber-100 dark:bg-amber-900/60", iconClass: "text-amber-600 dark:text-amber-400" },
+                            { title: "Digitale Systeme etablieren", desc: "Release- & Update-Management, Schulungen, Tool-Einführungen.", icon: "tabler:device-desktop", cardClass: "bg-violet-50 dark:bg-violet-950/40 border-violet-200 dark:border-violet-800", iconBoxClass: "bg-violet-100 dark:bg-violet-900/60", iconClass: "text-violet-600 dark:text-violet-400" },
+                        ].map(({ title, desc, icon, cardClass, iconBoxClass, iconClass }) => (
+                            <div class={"p-5 rounded-xl border hover:shadow-md transition-shadow " + cardClass}>
+                                <div class={"w-10 h-10 rounded-lg flex items-center justify-center mb-3 " + iconBoxClass}>
+                                    <Icon name={icon} class={"h-5 w-5 " + iconClass} />
                                 </div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-1">{title}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">{desc}</p>
                             </div>
                         ))
