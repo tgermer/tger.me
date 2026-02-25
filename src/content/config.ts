@@ -40,6 +40,8 @@ const resume = defineCollection({
     // Optional: name of a custom CV data file in src/data/ (without .ts extension).
     // Example: "cv_ey_de" → loads src/data/cv_ey_de.ts instead of cv_de.ts.
     cvData: z.string().optional(),
+    // Show handwritten signature below date footer (print/PDF only).
+    signature: z.boolean().default(false),
   }),
 });
 

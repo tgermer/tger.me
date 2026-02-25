@@ -109,7 +109,7 @@ export const experience: ExperienceItem[] = [
         typeOfEmployment: "Angestellter",
         position: ["Referent Qualitätsmanagement, Controlling und zentrale Steuerungsunterstützung"],
         description: {
-            list: ["Weiterentwicklung des zentralen Controllings.", "Überarbeitung des Evaluationssystems, inklusive Integration von Automatisierungen und Effizienzsteigerung des Feedbackprozesses.", "Entwicklung, didaktische Aufbereitung und Durchführung von Schulungsprogrammen (z. B. Confluence, MS Office, evasys)."],
+            list: ["Weiterentwicklung des zentralen Controllings.", "Überarbeitung des Evaluationssystems, inklusive Integration von Automatisierungen und Effizienzsteigerung des Feedbackprozesses.", "Entwicklung, didaktische Aufbereitung und Durchführung von Schulungsprogrammen (z. B. Confluence, MS Office, evasys)."],
         },
         startDate: "2022-10-01",
         endDate: "2024-12-31",
@@ -229,15 +229,15 @@ export const furtherEducation: FurtherEducationItem[] = [
     },
 ];
 
-export const skills: SkillCategory[] = [
-    { catagorie: "Office", items: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
-    { catagorie: "Programmierung", items: ["Swift", "JavaScript", "TypeScript"] },
-    { catagorie: "Datenanalyse", items: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
-    { catagorie: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { catagorie: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
-    { catagorie: "Sprachen", items: ["Deutsch (Muttersprache)", "Englisch (fließend)"] },
-    { catagorie: "Interessen", items: ["CODING Analytisch & Detailorientiert", "TECHNOLOGIE Innovativ & Lernbereit", "FITNESS Teamfähigkeit & Ehrgeiz", "REISEN Flexibilität & Neugier"] },
-];
+// export const skills: SkillCategory[] = [
+//     { catagorie: "Office", items: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
+//     { catagorie: "Programmierung", items: ["Swift", "JavaScript", "TypeScript"] },
+//     { catagorie: "Datenanalyse", items: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
+//     { catagorie: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
+//     { catagorie: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
+//     { catagorie: "Sprachen", items: ["Deutsch (Muttersprache)", "Englisch (fließend)"] },
+//     { catagorie: "Interessen", items: ["CODING Analytisch & Detailorientiert", "TECHNOLOGIE Innovativ & Lernbereit", "FITNESS Teamfähigkeit & Ehrgeiz", "REISEN Flexibilität & Neugier"] },
+// ];
 
 export const projects: ProjectItem[] = [
     {
@@ -251,8 +251,8 @@ export const projects: ProjectItem[] = [
     },
 ];
 
-export const references: Reference[] = [
-    { name: "Pia Hetzel", company: "Hochschule München", department: "Beratung und Immatrikulation", position: "Leitung", email: "pia.hetzel@hm.edu" },
-    { name: "Prof. Dr. Angela Poech", company: "Hochschule München", department: "Fakultät für Betriebswirtschaft", position: "Professor für Entrepreneurship", email: "poech@hm.edu" },
-    { name: "Aria Djamschidi", company: "Apple", position: "Senior Distribution Manager", email: "djamschidi.a@euro.apple.com" },
-];
+// export const references: Reference[] = [
+//     { name: "Pia Hetzel", company: "Hochschule München", department: "Beratung und Immatrikulation", position: "Leitung", email: "pia.hetzel@hm.edu" },
+//     { name: "Prof. Dr. Angela Poech", company: "Hochschule München", department: "Fakultät für Betriebswirtschaft", position: "Professor für Entrepreneurship", email: "poech@hm.edu" },
+//     { name: "Aria Djamschidi", company: "Apple", position: "Senior Distribution Manager", email: "djamschidi.a@euro.apple.com" },
+// ];

@@ -384,11 +384,14 @@ html {
 /* Date footer */
 .resume-date-footer {
   margin-top: 2rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid #e5e7eb;
   font-size: 0.8125rem;
-  color: #6b7280;
-  text-align: right;
+  color: #111827;
+  text-align: left;
+}
+
+/* Signature – hidden on screen, visible in print/PDF */
+.resume-signature {
+  display: none;
 }
 
 /* ---- Print styles ---- */
@@ -467,6 +470,18 @@ html {
 
   .resume-heading {
     break-after: avoid;
+  }
+
+  .resume-signature {
+    display: block;
+    margin-top: -1rem;
+    text-align: right;
+  }
+
+  .resume-signature svg {
+    width: 240px;
+    height: auto;
+    fill: #1a3f8b;
   }
 
   a {

@@ -3,6 +3,7 @@ import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { getCollection } from "astro:content";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
+import signatureSvg from "../../assets/signature.svg?raw";
 
 // Eagerly import all CV data files so custom ones can be resolved at build time
 const cvModules = import.meta.glob("../../data/cv_*.ts", { eager: true }) as Record<string, any>;
@@ -16,7 +17,7 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { position, company, lang, date, cvData } = resume.data;
+const { position, company, lang, date, cvData, signature } = resume.data;
 
 const isDE = lang === "de";
 
@@ -337,6 +338,11 @@ const headerTitle = `${p.name} | ${position}`;
         <!-- Date + Location footer -->
         <div class="resume-date-footer">
             {p.location}, {formattedResumeDate}
+            {signature && (
+                <div class="resume-signature">
+                    <Fragment set:html={signatureSvg} />
+                </div>
+            )}
         </div>
     </div>
 </ResumeLayout>
