@@ -13,7 +13,7 @@
  */
 
 import { chromium } from 'playwright';
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray } from 'pdf-lib';
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
@@ -62,10 +62,11 @@ function startPreviewServer() {
 
 const MM = 2.8346; // 1mm in PDF points
 
-async function addHeaderFooter(pdfDoc, headerTitle, lang) {
+async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl) {
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontSize = 7.5;
   const color = rgb(107 / 255, 114 / 255, 128 / 255); // #6b7280
+  const linkColor = rgb(107 / 255, 114 / 255, 128 / 255); // same gray for subtle look
 
   const pages = pdfDoc.getPages();
   const totalPages = pages.length;
@@ -88,7 +89,49 @@ async function addHeaderFooter(pdfDoc, headerTitle, lang) {
       });
     }
 
-    // Footer: "Seite X von Y" right-aligned, 12.5mm from bottom, 25mm from right
+    // Footer left: clickable PDF URL
+    if (pdfUrl) {
+      const urlText = pdfUrl.replace('https://', '');
+      const urlX = 25 * MM;
+      const urlY = 12.5 * MM;
+      const urlWidth = font.widthOfTextAtSize(urlText, fontSize);
+      const urlHeight = fontSize;
+
+      page.drawText(urlText, {
+        x: urlX,
+        y: urlY,
+        size: fontSize,
+        font,
+        color: linkColor,
+      });
+
+      // Add clickable link annotation
+      const linkAnnotationRef = pdfDoc.context.register(
+        pdfDoc.context.obj({
+          Type: 'Annot',
+          Subtype: 'Link',
+          Rect: [urlX, urlY - 2, urlX + urlWidth, urlY + urlHeight],
+          Border: [0, 0, 0],
+          A: {
+            Type: 'Action',
+            S: 'URI',
+            URI: pdfUrl,
+          },
+        }),
+      );
+
+      const existingAnnots = page.node.lookup(PDFName.of('Annots'));
+      if (existingAnnots instanceof PDFArray) {
+        existingAnnots.push(linkAnnotationRef);
+      } else {
+        page.node.set(
+          PDFName.of('Annots'),
+          pdfDoc.context.obj([linkAnnotationRef]),
+        );
+      }
+    }
+
+    // Footer right: "Seite X von Y" right-aligned, 12.5mm from bottom, 25mm from right
     const footerText = `${pageLabel} ${i + 1} ${ofLabel} ${totalPages}`;
     const footerWidth = font.widthOfTextAtSize(footerText, fontSize);
     page.drawText(footerText, {
@@ -132,7 +175,12 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     const pdfBytes = await readFile(outputPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
-    await addHeaderFooter(pdfDoc, headerTitle, lang);
+    // Construct the public resume URL (overview page, not direct PDF)
+    const pdfUrl = slug.startsWith('resume-')
+      ? `https://tger.me/${slug}`
+      : `https://tger.me/resume/${slug}`;
+
+    await addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl);
 
     pdfDoc.setTitle(position);
     pdfDoc.setAuthor(authorName);
