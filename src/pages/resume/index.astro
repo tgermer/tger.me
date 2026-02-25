@@ -1,6 +1,7 @@
 ---
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
 import { site } from "../../data/site";
 
 const resumes = await getCollection("resume");
@@ -41,6 +42,13 @@ function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
 
 function formatDate(date: Date) {
     return new Date(date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+function buildContactMailto(email: string, position: string, lang: string, contact?: string) {
+    const greeting = lang === "de"
+        ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
+        : (contact ? `Hello ${contact},` : "Dear Hiring Team,");
+    return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(greeting + "\n\n")}`;
 }
 
 function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string) {
@@ -114,27 +122,28 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                 )}
                             </div>
                             <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 mb-3">
-                                <span>{formatDate(r.data.date)}</span>
-                                {r.data.location && <span>{r.data.location}</span>}
-                                {r.data.source && <span>{r.data.source}</span>}
-                                {r.data.salary && <span>{r.data.salary}</span>}
+                                <span class="inline-flex items-center gap-1"><Icon name="tabler:calendar" class="h-3.5 w-3.5" />{formatDate(r.data.date)}</span>
+                                {r.data.location && <span class="inline-flex items-center gap-1"><Icon name="tabler:map-pin" class="h-3.5 w-3.5" />{r.data.location}</span>}
+                                {r.data.source && <span class="inline-flex items-center gap-1"><Icon name="tabler:world" class="h-3.5 w-3.5" />{r.data.source}</span>}
+                                {r.data.salary && <span class="inline-flex items-center gap-1"><Icon name="tabler:currency-euro" class="h-3.5 w-3.5" />{r.data.salary}</span>}
                             </div>
                             {r.data.contact && (
-                                <p class="text-xs text-gray-500 mb-2">
+                                <p class="text-xs text-gray-500 mb-2 inline-flex items-center gap-1">
+                                    <Icon name="tabler:user" class="h-3.5 w-3.5" />
                                     {r.data.contact}
-                                    {r.data.contactEmail && <span class="text-gray-400"> · {r.data.contactEmail}</span>}
+                                    {r.data.contactEmail && <span class="text-gray-400"> · <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></span>}
                                 </p>
                             )}
                             {r.data.notes && (
                                 <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>{r.data.notes}</p>
                             )}
-                            <div class="flex items-center gap-3 text-xs pt-2 border-t border-gray-100">
-                                <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800">CV</a>
-                                <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600">PDF</a>
+                            <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
+                                <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
+                                <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="PDF herunterladen"><Icon name="tabler:download" class="h-4 w-4" /></a>
                                 {r.data.jobUrl && (
-                                    <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600">Stellenanzeige</a>
+                                    <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                 )}
-                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600">Mail</a>
+                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                             </div>
                         </div>
                     );
@@ -191,7 +200,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                     <td class="px-4 py-3 text-gray-600">
                                         {r.data.contact || <span class="text-gray-300">–</span>}
                                         {r.data.contactEmail && (
-                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}>{r.data.contactEmail}</p>
+                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}><a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></p>
                                         )}
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -205,12 +214,12 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         <div class="flex items-center gap-2">
-                                            <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf">CV</a>
-                                            <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="PDF">PDF</a>
+                                            <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
+                                            <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="PDF herunterladen"><Icon name="tabler:download" class="h-4 w-4" /></a>
                                             {r.data.jobUrl && (
-                                                <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">Link</a>
+                                                <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                             )}
-                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>Mail</a>
+                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                                         </div>
                                     </td>
                                 </tr>
