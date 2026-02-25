@@ -5,12 +5,13 @@ lang: "de"
 date: 2026-02-26
 cvData: "cv_2qdfet"
 signature: true
+salutation: "Sehr geehrter Herr Eger,"
 jobUrl: "https://www.linkedin.com/jobs/view/4370997835"
 contact: "Julius Eger"
 companyAddress: "Königstraße 27\n70173 Stuttgart"
 contactEmail: "hello@tger.me"
 salary: "80k"
-source: "LinkedIn"
+# source: "LinkedIn"
 location: "München"
 notes: ""
 # Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
@@ -22,8 +23,6 @@ statusHistory:
     - status: "zusage"
       date: 2026-02-26
 ---
-
-Sehr geehrter Herr Eger,
 
 über LinkedIn bin ich auf die Position als Senior Consultant Integrierte Managementsysteme bei MHP aufmerksam geworden. Die Verbindung von Audit, Compliance und strategischer Weiterentwicklung von Managementsystemen in einem internationalen Umfeld entspricht genau meiner beruflichen Ausrichtung – deshalb bewerbe ich mich mit großem Interesse.
 

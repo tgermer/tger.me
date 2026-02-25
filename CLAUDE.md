@@ -54,7 +54,8 @@ The letter layout is auto-generated:
 - **Recipient**: contact name + company from frontmatter
 - **Date**: location + application date
 - **Subject**: "Bewerbung als {position}" / "Application for {position}"
-- **Body**: rendered markdown content
+- **Salutation**: from frontmatter `salutation` field (e.g. "Sehr geehrter Herr Eger,")
+- **Body**: rendered markdown content (no salutation — that's in frontmatter)
 - **Closing**: "Mit freundlichen Grüßen" / "Best regards," + optional signature + name
 
 ### Data flow

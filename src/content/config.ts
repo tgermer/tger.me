@@ -64,6 +64,8 @@ const apply = defineCollection({
     cvData: z.string().optional(),
     // Show handwritten signature below date footer (print/PDF only).
     signature: z.boolean().default(false),
+    // Cover letter salutation (e.g. "Sehr geehrter Herr Eger,")
+    salutation: optionalString,
     // Application tracking fields (empty strings are treated as unset)
     jobUrl: optionalUrl,
     contact: optionalString,

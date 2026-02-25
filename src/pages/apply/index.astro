@@ -51,7 +51,14 @@ function buildContactMailto(email: string, position: string, lang: string, conta
     return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(greeting + "\n\n")}`;
 }
 
-function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string) {
+function stripMarkdown(text: string): string {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .replace(/\*(.*?)\*/g, "$1")
+        .replace(/\[(.*?)\]\(.*?\)/g, "$1");
+}
+
+function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string, letterBody?: string, source?: string) {
     const subject = lang === "de"
         ? `Bewerbung als ${position} – ${site.author}`
         : `Application for ${position} – ${site.author}`;
@@ -59,9 +66,31 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     const greeting = lang === "de"
         ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
         : (contact ? `Hello ${contact},` : "Dear hiring team,");
-    const body = lang === "de"
-        ? `${greeting}\n\nanbei erhalten Sie meine Bewerbung als ${position} bei ${company}.\n\nMeinen Lebenslauf finden Sie auch unter:\n${pdfUrl}\n\nMit freundlichen Grüßen\n${site.author}`
-        : `${greeting}\n\nPlease find attached my application for the ${position} role at ${company}.\n\nMy resume is also available at:\n${pdfUrl}\n\nBest regards,\n${site.author}`;
+    const pdfNote = lang === "de"
+        ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}`
+        : `My resume is also available at:\n${pdfUrl}`;
+    const closing = lang === "de"
+        ? `Mit freundlichen Grüßen\n${site.author}`
+        : `Best regards,\n${site.author}`;
+
+    let intro: string;
+    if (lang === "de") {
+        intro = source
+            ? `über ${source} bin ich auf die Stelle als ${position} bei ${company} aufmerksam geworden und möchte mich hiermit bewerben.`
+            : `hiermit möchte ich mich als ${position} bei ${company} bewerben.`;
+    } else {
+        intro = source
+            ? `I came across the ${position} role at ${company} on ${source} and would like to apply.`
+            : `I would like to apply for the ${position} role at ${company}.`;
+    }
+
+    let body: string;
+    if (letterBody && letterBody.trim().length > 0) {
+        const content = stripMarkdown(letterBody.trim());
+        body = `${greeting}\n\n${intro}\n\n${content}\n\n${pdfNote}\n\n${closing}`;
+    } else {
+        body = `${greeting}\n\n${intro}\n\n${pdfNote}\n\n${closing}`;
+    }
     return `mailto:${email || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 ---
@@ -148,7 +177,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                 {r.data.jobUrl && (
                                     <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                 )}
-                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
+                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                             </div>
                         </div>
                     );
@@ -227,7 +256,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                             )}
-                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
+                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                                         </div>
                                     </td>
                                 </tr>

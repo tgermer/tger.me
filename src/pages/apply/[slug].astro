@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { position, company, lang, date, cvData, signature, companyAddress } = resume.data;
+const { position, company, lang, date, cvData, signature, salutation, companyAddress } = resume.data;
 
 // Render markdown body (cover letter)
 const { Content } = await resume.render();
@@ -213,6 +213,7 @@ const headerTitle = `${p.name} | ${position}`;
                 </div>
 
                 <div class="letter-body">
+                    {salutation && <p>{salutation}</p>}
                     <Content />
                 </div>
 
