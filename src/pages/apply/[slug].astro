@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { position, company, lang, date, cvData, signature } = resume.data;
+const { position, company, lang, date, cvData, signature, companyAddress } = resume.data;
 
 // Render markdown body (cover letter)
 const { Content } = await resume.render();
@@ -58,6 +58,7 @@ const l = isDE
           languages: "Arbeitssprachen",
           residence: "Wohnort",
           contact: "Kontakt",
+          online: "Online",
           letterSubject: `Bewerbung als ${position}`,
           letterClosing: "Mit freundlichen Grüßen",
           letterPdfLabel: "Anschreiben PDF",
@@ -80,6 +81,7 @@ const l = isDE
           languages: "Working Languages",
           residence: "Residence",
           contact: "Contact",
+          online: "Online",
           letterSubject: `Application for ${position}`,
           letterClosing: "Best regards,",
           letterPdfLabel: "Cover Letter PDF",
@@ -147,6 +149,14 @@ const headerTitle = `${p.name} | ${position}`;
                     <td class="cover-data-label">{l.contact}</td>
                     <td class="cover-data-value">{p.phone} | {p.email}</td>
                 </tr>
+                {(p.url || p.linkedinUrl) && (
+                    <tr>
+                        <td class="cover-data-label">{l.online}</td>
+                        <td class="cover-data-value">
+                            {[p.url, p.linkedinUrl].filter(Boolean).join(' · ')}
+                        </td>
+                    </tr>
+                )}
             </table>
         </div>
     </div>
@@ -154,38 +164,53 @@ const headerTitle = `${p.name} | ${position}`;
     <!-- ==================== COVER LETTER (Anschreiben) ==================== -->
     {hasLetter && (
         <div class="resume-page resume-letter">
-            <div class="letter-sender">
-                <p class="letter-sender-name">{p.name}</p>
-                <p>{p.address}</p>
-                <p>{p.phone}</p>
-                <p>{p.email}</p>
+            <!-- Blue gradient bar (same as cover page) -->
+            <div class="letter-header-bar"></div>
+
+            <!-- 12–27 mm: sender name -->
+            <div class="letter-head">
+                <p class="letter-head-name">{p.name}</p>
             </div>
 
-            <div class="letter-recipient">
-                {resume.data.contact && <p>{resume.data.contact}</p>}
-                <p>{company}</p>
+            <!-- Address field (DIN 5008 Form A) -->
+            <div class="letter-address-field">
+                <!-- Rücksenderangabe (return address, small) -->
+                <div class="letter-return-address">
+                    {p.name} · {p.address}
+                </div>
+                <!-- Recipient address (Anschriftenzone) -->
+                <div class="letter-recipient">
+                    {resume.data.contact && <p>{resume.data.contact}</p>}
+                    <p>{company}</p>
+                    {companyAddress && companyAddress.split('\n').map((line) => (
+                        <p>{line}</p>
+                    ))}
+                </div>
             </div>
 
-            <div class="letter-date">
-                {p.location}, {formattedResumeDate}
-            </div>
+            <!-- Letter content area -->
+            <div class="letter-content">
+                <div class="letter-date">
+                    {p.location}, {formattedResumeDate}
+                </div>
 
-            <div class="letter-subject">
-                {l.letterSubject}
-            </div>
+                <div class="letter-subject">
+                    {l.letterSubject}
+                </div>
 
-            <div class="letter-body">
-                <Content />
-            </div>
+                <div class="letter-body">
+                    <Content />
+                </div>
 
-            <div class="letter-closing">
-                <p>{l.letterClosing}</p>
-                {signature && (
-                    <div class="resume-signature letter-signature">
-                        <Fragment set:html={signatureSvg} />
-                    </div>
-                )}
-                <p class="letter-closing-name">{p.name}</p>
+                <div class="letter-closing">
+                    <p>{l.letterClosing}</p>
+                    {signature && (
+                        <div class="resume-signature letter-signature">
+                            <Fragment set:html={signatureSvg} />
+                        </div>
+                    )}
+                    <p class="letter-closing-name">{p.name}</p>
+                </div>
             </div>
         </div>
     )}

@@ -141,7 +141,7 @@ html {
 
 .cover-application {
   text-align: left;
-  padding: 30mm 20mm 8mm;
+  padding: 30mm 25mm 8mm;
 }
 
 .cover-application-label {
@@ -169,7 +169,7 @@ html {
 /* Bottom section: photo, name, tagline, table – pushed to page bottom */
 .cover-bottom {
   margin-top: auto;
-  padding: 0 20mm 8mm;
+  padding: 0 25mm 20mm;
 }
 
 .cover-photo {
@@ -225,7 +225,7 @@ html {
 /* ---- CV content pages ---- */
 
 .resume-cv-content {
-  padding: 0 20mm 15mm;
+  padding: 0 25mm 15mm;
 }
 
 .cv-page-header {
@@ -394,50 +394,90 @@ html {
   display: none;
 }
 
-/* ---- Cover letter (Anschreiben) ---- */
+/* ---- Cover letter (Anschreiben) – DIN 5008 Form A ---- */
 
 .resume-letter {
-  padding: 20mm 20mm 15mm;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: #111827;
-}
-
-.letter-sender {
+  padding: 0;
   font-size: 0.8125rem;
-  color: #374151;
   line-height: 1.4;
-  margin-bottom: 8mm;
-}
-
-.letter-sender-name {
-  font-weight: 600;
   color: #111827;
 }
 
+/* 0–12 mm: blue gradient bar */
+.letter-header-bar {
+  height: 12mm;
+  background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%));
+}
+
+/* 12–27 mm: sender name (letterhead zone) */
+.letter-head {
+  height: 30mm;
+  padding: 0 25mm;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.letter-head-name {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+/* 27–72 mm: address field (DIN 5008 Form A – 20 mm left, 85 mm wide, 45 mm tall) */
+.letter-address-field {
+  height: 45mm;
+  width: 85mm;
+  margin-left: 20mm;
+  padding-left: 5mm;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Rücksenderangabe (return-address line, ~7 pt, underlined) */
+.letter-return-address {
+  font-size: 0.5625rem;
+  color: #6b7280;
+  border-bottom: 0.5px solid #9ca3af;
+  padding-bottom: 0.5mm;
+  margin-bottom: 2mm;
+  line-height: 1;
+}
+
+/* Recipient address (Anschriftenzone) */
 .letter-recipient {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  margin-bottom: 8mm;
+  font-size: 0.8125rem;
+  line-height: 1.5;
   color: #111827;
+}
+
+.letter-recipient p {
+  margin: 0;
+}
+
+/* 72 mm +: content area (date · subject · body · closing) */
+.letter-content {
+  padding: 0 25mm 25mm;
 }
 
 .letter-date {
   text-align: right;
   font-size: 0.8125rem;
   color: #374151;
-  margin-bottom: 8mm;
+  margin-top: 4mm;
+  margin-bottom: 6mm;
 }
 
 .letter-subject {
   font-weight: 700;
-  font-size: 0.9375rem;
+  font-size: 0.8125rem;
   margin-bottom: 4mm;
   color: #111827;
 }
 
 .letter-body {
-  margin-bottom: 6mm;
+  margin-bottom: 4mm;
 }
 
 .letter-body p {
@@ -455,7 +495,7 @@ html {
 }
 
 .letter-closing {
-  margin-top: 6mm;
+  margin-top: 4mm;
 }
 
 .letter-closing-name {
@@ -516,14 +556,40 @@ html {
     padding-right: 0;
   }
 
-  /* Cover letter pages in print */
+  /* Cover letter pages in print – named page ensures margin: 0 on ALL
+     letter pages (not just the first), so the letter's own 25 mm padding
+     controls the layout consistently across page breaks. */
   .resume-letter {
-    padding-left: 0;
-    padding-right: 0;
+    page: letter;
     page-break-before: always;
     break-before: page;
     page-break-after: always;
     break-after: page;
+  }
+
+  @page letter {
+    size: A4;
+    margin: 25mm 0 20mm 0;
+  }
+
+  @page letter:first {
+    margin: 0 0 20mm 0;
+  }
+
+  .letter-header-bar {
+    background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%)) !important;
+  }
+
+  /* Prevent closing (greeting + signature + name) from being split */
+  .letter-closing {
+    break-inside: avoid;
+    break-before: avoid;
+  }
+
+  /* Prevent orphans/widows in letter body paragraphs */
+  .letter-body {
+    orphans: 3;
+    widows: 3;
   }
 
   .letter-signature {
@@ -538,19 +604,6 @@ html {
 
   .cover-header-bar {
     background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%)) !important;
-    height: 12mm;
-  }
-
-  /* Cover content needs own padding since @page :first has margin: 0 */
-  .cover-application {
-    padding-left: 25mm;
-    padding-right: 25mm;
-  }
-
-  .cover-bottom {
-    padding-left: 25mm;
-    padding-right: 25mm;
-    padding-bottom: 20mm;
   }
 
   .resume-section {

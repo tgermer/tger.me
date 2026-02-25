@@ -62,7 +62,7 @@ function startPreviewServer() {
 
 const MM = 2.8346; // 1mm in PDF points
 
-async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl) {
+async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl, startPage = 1) {
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontSize = 7.5;
   const color = rgb(107 / 255, 114 / 255, 128 / 255); // #6b7280
@@ -74,7 +74,7 @@ async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl) {
   const pageLabel = lang === 'de' ? 'Seite' : 'Page';
   const ofLabel = lang === 'de' ? 'von' : 'of';
 
-  for (let i = 1; i < totalPages; i++) {
+  for (let i = startPage; i < totalPages; i++) {
     const page = pages[i];
     const { width, height } = page.getSize();
 
@@ -238,7 +238,6 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
           page-break-after: avoid !important;
           break-after: avoid !important;
         }
-        @page :first { margin: 25mm 25mm 20mm 25mm; }
         .letter-signature { display: block !important; }
         .letter-signature svg { width: 200px; height: auto; fill: #1a3f8b; }
       `,
@@ -251,9 +250,13 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
       printBackground: true,
     });
 
-    // Post-process: set metadata (no header/footer for standalone letters)
+    // Post-process: add footer and set metadata
     const pdfBytes = await readFile(outputPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    // Footer with URL and page numbers on all pages (startPage: 0)
+    const pdfUrl = `https://tger.me/apply/${slug}`;
+    await addHeaderFooter(pdfDoc, '', lang, pdfUrl, 0);
 
     const subject = lang === 'de' ? 'Bewerbung' : 'Cover Letter';
     pdfDoc.setTitle(`${subject} – ${position}`);
