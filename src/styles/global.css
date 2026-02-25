@@ -222,6 +222,15 @@ html {
   color: #111827;
 }
 
+.cover-data-value a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cover-data-value a:hover {
+  text-decoration: underline;
+}
+
 /* ---- CV content pages ---- */
 
 .resume-cv-content {

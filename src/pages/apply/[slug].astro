@@ -147,13 +147,17 @@ const headerTitle = `${p.name} | ${position}`;
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.contact}</td>
-                    <td class="cover-data-value">{p.phone} | {p.email}</td>
+                    <td class="cover-data-value"><a href={`tel:${p.phone}`} target="_blank" rel="noopener noreferrer">{p.phone}</a> | <a href={`mailto:${p.email}`} target="_blank" rel="noopener noreferrer">{p.email}</a></td>
                 </tr>
-                {(p.url || p.linkedinUrl) && (
+                {(p.url || p.linkedinUrl || p.githubUrl) && (
                     <tr>
                         <td class="cover-data-label">{l.online}</td>
                         <td class="cover-data-value">
-                            {[p.url, p.linkedinUrl].filter(Boolean).join(' · ')}
+                            {[
+                                p.url && <a href={`https://${p.url}`} target="_blank" rel="noopener noreferrer">{p.url}</a>,
+                                p.linkedinUrl && <a href={`https://${p.linkedinUrl}`} target="_blank" rel="noopener noreferrer">{p.linkedinUrl}</a>,
+                                p.githubUrl && <a href={`https://${p.githubUrl}`} target="_blank" rel="noopener noreferrer">{p.githubUrl}</a>,
+                            ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' · ', el], [])}
                         </td>
                     </tr>
                 )}

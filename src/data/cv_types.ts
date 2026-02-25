@@ -67,4 +67,5 @@ export interface PersonalData {
   languageValues: string;
   url?: string;
   linkedinUrl?: string;
+  githubUrl?: string;
 }

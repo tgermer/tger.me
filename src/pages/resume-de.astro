@@ -52,8 +52,20 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                 </tr>
                 <tr>
                     <td class="cover-data-label">Kontakt</td>
-                    <td class="cover-data-value">{personal.phone} | {personal.email}</td>
+                    <td class="cover-data-value"><a href={`tel:${personal.phone}`} target="_blank" rel="noopener noreferrer">{personal.phone}</a> | <a href={`mailto:${personal.email}`} target="_blank" rel="noopener noreferrer">{personal.email}</a></td>
                 </tr>
+                {(personal.url || personal.linkedinUrl || personal.githubUrl) && (
+                    <tr>
+                        <td class="cover-data-label">Online</td>
+                        <td class="cover-data-value">
+                            {[
+                                personal.url && <a href={`https://${personal.url}`} target="_blank" rel="noopener noreferrer">{personal.url}</a>,
+                                personal.linkedinUrl && <a href={`https://${personal.linkedinUrl}`} target="_blank" rel="noopener noreferrer">{personal.linkedinUrl}</a>,
+                                personal.githubUrl && <a href={`https://${personal.githubUrl}`} target="_blank" rel="noopener noreferrer">{personal.githubUrl}</a>,
+                            ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' · ', el], [])}
+                        </td>
+                    </tr>
+                )}
             </table>
         </div>
     </div>

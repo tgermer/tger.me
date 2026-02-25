@@ -12,6 +12,7 @@ export const personal: PersonalData = {
   languageValues: 'German (Native), English (Fluent)',
   url: 'tger.me',
   linkedinUrl: 'linkedin.com/in/tgermer',
+  githubUrl: 'github.com/tgermer',
 };
 
 export const experience: ExperienceItem[] = [
