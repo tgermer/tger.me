@@ -136,7 +136,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     autocomplete="off"
                 />
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors">OK</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors cursor-pointer">Login</button>
             </form>
             <p id="pw-error" class="text-sm text-red-500 mt-2 hidden">Falsches Passwort.</p>
         </div>
@@ -374,17 +374,10 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     </style>
 
     <script>
-        // Simple client-side password gate.
-        const HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // sha256("password")
-
-        async function sha256(message: string): Promise<string> {
-            const msgBuffer = new TextEncoder().encode(message);
-            const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-        }
-
-        if (sessionStorage.getItem("apply-auth") === "1") {
+        // Password gate – verified server-side via Netlify Function.
+        // In dev mode, skip the gate entirely.
+        const isDev = import.meta.env.DEV;
+        if (isDev || sessionStorage.getItem("apply-auth") === "1") {
             document.getElementById("gate")!.classList.add("hidden");
             document.getElementById("content")!.classList.remove("hidden");
         }
@@ -533,12 +526,23 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
         document.getElementById("pw-form")!.addEventListener("submit", async (e) => {
             e.preventDefault();
             const input = document.getElementById("pw-input") as HTMLInputElement;
-            const hash = await sha256(input.value);
-            if (hash === HASH) {
-                sessionStorage.setItem("apply-auth", "1");
-                document.getElementById("gate")!.classList.add("hidden");
-                document.getElementById("content")!.classList.remove("hidden");
-            } else {
+            try {
+                const res = await fetch("/.netlify/functions/check-password", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password: input.value }),
+                });
+                const data = await res.json();
+                if (data.ok) {
+                    sessionStorage.setItem("apply-auth", "1");
+                    document.getElementById("gate")!.classList.add("hidden");
+                    document.getElementById("content")!.classList.remove("hidden");
+                } else {
+                    document.getElementById("pw-error")!.classList.remove("hidden");
+                    input.value = "";
+                    input.focus();
+                }
+            } catch {
                 document.getElementById("pw-error")!.classList.remove("hidden");
                 input.value = "";
                 input.focus();
