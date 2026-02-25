@@ -1,78 +1,9 @@
-export interface ExperienceItem {
-    company: string;
-    companyUrl?: string;
-    location: string;
-    typeOfEmployment: string;
-    position?: string[];
-    description?: { list?: string[] };
-    startDate: string;
-    endDate: string;
-}
-
-export interface EducationItem {
-    school: string;
-    schoolUrl?: string;
-    location: string;
-    startDate: string;
-    endDate: string;
-    fieldOfStudy: string;
-    majorFieldOfStudy?: string;
-    degree: string;
-    grade?: number | string;
-    certificateUrl?: string;
-    thesis?: { title?: string; fullTextUrl?: string; grade?: number | string };
-}
-
-export interface FurtherEducationItem {
-    school: string;
-    schoolUrl?: string;
-    location: string;
-    startDate: string;
-    endDate: string;
-    fieldOfStudy: string;
-    degree?: string;
-    certificateUrl?: string;
-}
-
-export interface SkillCategory {
-    catagorie: string;
-    items: string[];
-}
-
-export interface Reference {
-    name: string;
-    company: string;
-    department?: string;
-    position: string;
-    email: string;
-}
-
-export interface ProjectItem {
-    title: string;
-    url?: string;
-    githubUrl?: string;
-    description?: { list?: string[] };
-    date: string;
-}
-
-export interface PersonalData {
-    name: string;
-    tagline: string;
-    photo: string;
-    birthdate: string;
-    address: string;
-    phone: string;
-    email: string;
-    location: string;
-    languageValues: string;
-    url?: string;
-    linkedinUrl?: string;
-}
+import type { ExperienceItem, EducationItem, FurtherEducationItem, SkillCategory, Reference, ProjectItem, PersonalData } from './cv_types';
 
 export const personal: PersonalData = {
     name: "Tristan Germer",
     tagline: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
-    photo: "/assets/2025-09-02 Google Gemini 2.5 Flash.JPG",
+    photo: "/assets/2025-09-02 Foto Landscape.JPG",
     // photo: "/assets/studieninformationstag-hm-cover.png",
     birthdate: "19.10.1981",
     address: "Petrarcastraße 32, 80933 München",

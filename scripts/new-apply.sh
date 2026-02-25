@@ -54,8 +54,9 @@ if [ ! -f "${CV_SRC}" ]; then
     exit 1
 fi
 
-# Create frozen CV data snapshot
+# Create frozen CV data snapshot (remove type re-exports, only needed in base files)
 cp "${CV_SRC}" "${CV_DST}"
+sed -i '' '/^export type {.*} from/d' "${CV_DST}"
 
 # Build MD frontmatter (always references the snapshot)
 {
