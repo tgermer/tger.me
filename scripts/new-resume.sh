@@ -28,6 +28,10 @@ fi
 read -rp "Sprache (de/en) [de]: " LANG
 LANG="${LANG:-de}"
 
+read -rp "Job-URL (optional): " JOB_URL
+read -rp "Quelle/Kanal (optional, z.B. LinkedIn, Stepstone): " SOURCE
+read -rp "Arbeitsort (optional, z.B. München, Remote): " LOCATION
+
 # Generate random 6-char alphanumeric slug
 # (disable pipefail temporarily – tr gets SIGPIPE when head closes the pipe)
 set +o pipefail
@@ -60,6 +64,16 @@ cp "${CV_SRC}" "${CV_DST}"
     echo "lang: \"${LANG}\""
     echo "date: ${DATE}"
     echo "cvData: \"cv_${SLUG}\""
+    echo "jobUrl: \"${JOB_URL}\""
+    echo "contact: \"\""
+    echo "salary: \"\""
+    echo "source: \"${SOURCE}\""
+    echo "location: \"${LOCATION}\""
+    echo "notes: \"\""
+    echo "# Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen"
+    echo "statusHistory:"
+    echo "  - status: \"beworben\""
+    echo "    date: ${DATE}"
     echo "---"
 } > "${MD_FILE}"
 
