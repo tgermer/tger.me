@@ -2,6 +2,7 @@
 title: Wie ich zum Vibe-Coding kam
 date: 2025-02-17
 excerpt: Vom Nicht-Programmierer zum Vibe-Coder – wie ein YouTube-Interview alles verändert hat.
+showContact: false
 ---
 
 Ich bin kein Programmierer. Nie gewesen. Aber irgendwie hat es mir schon immer Spaß gemacht, an Web-Sachen rumzubasteln und kleine Dinge zu erstellen. HTML hier, ein bisschen CSS da – mehr Spielerei als alles andere. Dass sich das mal grundlegend ändern würde, hätte ich nicht gedacht.

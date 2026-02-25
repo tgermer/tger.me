@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { site } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -15,7 +16,7 @@ const { Content } = await post.render();
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 ---
 
-<BaseLayout title={post.data.title} description={post.data.excerpt}>
+<BaseLayout title={post.data.title} description={post.data.excerpt} ogImage={post.data.image?.src}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <a href="/blog" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-6">
@@ -33,6 +34,12 @@ const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', mon
       <div class="prose max-w-none text-gray-700 dark:text-gray-300">
         <Content />
       </div>
+
+      {post.data.showContact && (
+        <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+          Fragen oder Anmerkungen? Schreib mir an <a href={`mailto:${site.email}`} class="text-blue-600 dark:text-blue-400 hover:underline">{site.email}</a>
+        </p>
+      )}
     </div>
   </div>
 </BaseLayout>

@@ -28,10 +28,12 @@ const portfolio = defineCollection({
 
 const blog = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     date: z.date(),
     excerpt: z.string().optional(),
+    image: image().optional(),
+    showContact: z.boolean().default(true),
   }),
 });
 
