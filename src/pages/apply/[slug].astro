@@ -67,7 +67,7 @@ const l = isDE
     : {
           homeLabel: "Visit tger.me",
           overviewLabel: "Overview",
-          downloadLabel: "Download resume",
+          downloadLabel: "Download CV",
           applicationFor: "Application for",
           experienceHeading: "Professional Experience",
           educationHeading: "University Education",
@@ -96,7 +96,7 @@ function formatDate(dateStr: string): string {
 
 const formattedResumeDate = isDE ? new Date(date).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }) : new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 
-const pageTitle = isDE ? `Lebenslauf – ${p.name} – ${position}` : `Resume – ${p.name} – ${position}`;
+const pageTitle = isDE ? `Lebenslauf – ${p.name} – ${position}` : `CV – ${p.name} – ${position}`;
 
 const headerTitle = `${p.name} | ${position}`;
 ---

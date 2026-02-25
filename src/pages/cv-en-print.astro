@@ -1,6 +1,7 @@
 ---
 import ResumeLayout from "../layouts/ResumeLayout.astro";
-import { personal, experience, education, furtherEducation, skills, projects, references } from "../data/cv_en";
+import { Icon } from "astro-icon/components";
+import { personal, experience, education, furtherEducation, skills, projects } from "../data/cv_en";
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -11,15 +12,18 @@ function formatDate(dateStr: string): string {
 const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 ---
 
-<ResumeLayout title="Resume – Tristan Germer" description="Resume of Tristan Germer – Experience, Education, and Skills." lang="en">
+<ResumeLayout title="CV – Tristan Germer" description="Curriculum Vitae of Tristan Germer – Experience, Education, and Skills." lang="en">
 
     <!-- Print toolbar -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
             <a href="/cv-en" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Back to CV</a>
             <div class="flex items-center gap-3">
-                <a href="/resume-de" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Deutsch</a>
-                <button onclick="window.print()" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">Print / PDF</button>
+                <a href="/cv-de-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Deutsch</a>
+                <a href="/apply/cv-en.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                    <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
+                    Download PDF
+                </a>
             </div>
         </div>
     </div>
@@ -29,7 +33,7 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
         <div class="cover-header-bar"></div>
 
         <div class="cover-application">
-            <h1 class="cover-application-title" style="margin-top: 1rem;">Resume</h1>
+            <h1 class="cover-application-title" style="margin-top: 1rem; font-size: 1.75rem;">Curriculum Vitae</h1>
         </div>
 
         <div class="cover-bottom">
@@ -73,7 +77,7 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
     <!-- CV Content -->
     <div class="resume-page resume-cv-content">
         <div class="cv-page-header">
-            <span>Tristan Germer | Resume</span>
+            <span>Tristan Germer | CV</span>
         </div>
 
         <section class="resume-section">
@@ -189,22 +193,6 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
                     </div>
                 ))}
             </div>
-        </section>
-        )}
-
-        {references?.length > 0 && (
-        <section class="resume-section">
-            <h2 class="resume-heading">References</h2>
-            <dl class="resume-references">
-                {references.map((ref) => (
-                    <div class="resume-reference">
-                        <dt class="resume-entry-title">{ref.name}</dt>
-                        <dd class="resume-entry-sub">{ref.position}, {ref.company}</dd>
-                        {ref.department && <dd class="resume-entry-meta">{ref.department}</dd>}
-                        <dd class="resume-entry-meta">{ref.email}</dd>
-                    </div>
-                ))}
-            </dl>
         </section>
         )}
 

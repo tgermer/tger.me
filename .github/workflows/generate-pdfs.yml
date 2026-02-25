@@ -6,7 +6,7 @@ on:
       - 'src/content/apply/**'
       - 'src/data/cv_*.ts'
       - 'src/pages/apply/**'
-      - 'src/pages/resume-*.astro'
+      - 'src/pages/cv-*-print.astro'
       - 'src/layouts/ResumeLayout.astro'
       - 'src/styles/global.css'
 
@@ -30,7 +30,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Generate PDFs
-        run: node scripts/generate-pdf.mjs
+        run: node scripts/generate-pdf.mjs --all
 
       - name: Commit PDFs
         uses: stefanzweifel/git-auto-commit-action@v5

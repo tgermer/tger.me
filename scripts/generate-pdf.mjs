@@ -5,7 +5,7 @@
  * Usage:
  *   node scripts/generate-pdf.mjs              # all applications
  *   node scripts/generate-pdf.mjs a1b2c3       # specific slug
- *   node scripts/generate-pdf.mjs --all        # all applications + general resume-de/resume-en
+ *   node scripts/generate-pdf.mjs --all        # all applications + general cv-de/cv-en
  *
  * Prerequisites:
  *   npm install -D playwright
@@ -181,7 +181,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
     // Construct the public URL (overview page, not direct PDF)
-    const pdfUrl = slug.startsWith('resume-')
+    const pdfUrl = slug.startsWith('cv-') && slug.endsWith('-print')
       ? `https://tger.me/${slug}`
       : `https://tger.me/apply/${slug}`;
 
@@ -189,7 +189,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
 
     pdfDoc.setTitle(position);
     pdfDoc.setAuthor(authorName);
-    pdfDoc.setSubject(lang === 'de' ? 'Lebenslauf' : 'Resume');
+    pdfDoc.setSubject(lang === 'de' ? 'Lebenslauf' : 'CV');
     pdfDoc.setCreator('Astro + Playwright');
     if (company) {
       pdfDoc.setKeywords([position, company]);
@@ -325,8 +325,8 @@ async function main() {
       // Optionally include general resume pages
       if (includeGeneral) {
         targets.push(
-          { slug: 'resume-de', url: '/resume-de/', output: resolve(OUTPUT_DIR, 'resume-de.pdf') },
-          { slug: 'resume-en', url: '/resume-en/', output: resolve(OUTPUT_DIR, 'resume-en.pdf') },
+          { slug: 'cv-de-print', url: '/cv-de-print/', output: resolve(OUTPUT_DIR, 'cv-de.pdf') },
+          { slug: 'cv-en-print', url: '/cv-en-print/', output: resolve(OUTPUT_DIR, 'cv-en.pdf') },
         );
       }
 
@@ -341,7 +341,7 @@ async function main() {
         await generatePdf(browser, target.slug, target.url, target.output);
 
         // Also generate cover letter PDF if applicable
-        if (!target.slug.startsWith('resume-')) {
+        if (!(target.slug.startsWith('cv-') && target.slug.endsWith('-print'))) {
           const letterOutput = resolve(OUTPUT_DIR, `${target.slug}-letter.pdf`);
           await generateLetterPdf(browser, target.slug, target.url, letterOutput);
         }
