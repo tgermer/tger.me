@@ -45,6 +45,18 @@ const statusDotColors: Record<string, string> = {
     "zurückgezogen": "bg-stone-400",
 };
 
+const statusOrder: Record<string, number> = {
+    beworben: 0,
+    "eingangsbestätigung": 1,
+    "vorstellungsgespräch": 2,
+    "zweitgespräch": 3,
+    assessment: 4,
+    angebot: 5,
+    zusage: 6,
+    absage: 7,
+    "zurückgezogen": 8,
+};
+
 function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
     if (history.length === 0) return null;
     // Sort by date ascending, take last
@@ -143,16 +155,31 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                 </div>
             </div>
 
-            <p class="text-sm text-gray-500 mb-6">{sorted.length} Bewerbung(en) gespeichert.</p>
+            <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
+                <div class="relative flex-1 w-full sm:max-w-xs">
+                    <Icon name="tabler:search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                    <input id="search-input" type="text" placeholder="Suchen…" class="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+                </div>
+                <div class="flex gap-1.5 flex-wrap text-xs">
+                    <button data-sort="date" data-dir="desc" class="sort-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer">Datum ↓</button>
+                    <button data-sort="update" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Update</button>
+                    <button data-sort="status" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Status</button>
+                    <button data-sort="company" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Firma</button>
+                </div>
+            </div>
+
+            <p id="result-count" class="text-sm text-gray-500 mb-4">{sorted.length} Bewerbung(en) gespeichert.</p>
 
             <!-- Mobile: stacked cards -->
-            <div class="md:hidden flex flex-col gap-3">
+            <div id="card-container" class="md:hidden flex flex-col gap-3">
                 {sorted.map((r) => {
                     const current = getCurrentStatus(r.data.statusHistory);
                     const statusKey = current?.status;
                     const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                    const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
+                    const searchText = [r.data.position, r.data.company, r.data.contact, r.data.location, r.data.source, r.data.notes, r.data.salary, statusKey ? statusLabels[statusKey] : "", r.data.statusHistory.map(e => e.info).filter(Boolean).join(" ")].filter(Boolean).join(" ").toLowerCase();
                     return (
-                        <div data-expandable-card class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
+                        <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
                             <div class="flex items-start justify-between gap-2 mb-2">
                                 <div class="min-w-0">
                                     <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
@@ -239,14 +266,16 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                             <th class="px-4 py-3">Links</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody id="table-body" class="divide-y divide-gray-100">
                         {sorted.map((r) => {
                             const current = getCurrentStatus(r.data.statusHistory);
                             const statusKey = current?.status;
                             const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                            const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
+                            const searchText = [r.data.position, r.data.company, r.data.contact, r.data.location, r.data.source, r.data.notes, r.data.salary, statusKey ? statusLabels[statusKey] : "", r.data.statusHistory.map(e => e.info).filter(Boolean).join(" ")].filter(Boolean).join(" ").toLowerCase();
                             return (
                                 <>
-                                <tr data-expandable class="hover:bg-gray-50 transition-colors cursor-pointer">
+                                <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         <p class="text-gray-900">{formatDate(r.data.date)}</p>
                                         <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
@@ -340,10 +369,12 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
         </div>
     </div>
 
+    <style>
+        .search-hidden { display: none !important; }
+    </style>
+
     <script>
         // Simple client-side password gate.
-        // The password hash is checked against a SHA-256 hash stored here.
-        // This is NOT cryptographically secure (content is in the HTML), but prevents casual access.
         const HASH = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"; // sha256("password")
 
         async function sha256(message: string): Promise<string> {
@@ -353,13 +384,12 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
         }
 
-        // Check if already authenticated in this session
         if (sessionStorage.getItem("apply-auth") === "1") {
             document.getElementById("gate")!.classList.add("hidden");
             document.getElementById("content")!.classList.remove("hidden");
         }
 
-        // Desktop: expandable table rows
+        // --- Expand/Collapse ---
         document.querySelectorAll("tr[data-expandable]").forEach((row) => {
             row.addEventListener("click", (e) => {
                 if ((e.target as HTMLElement).closest("a")) return;
@@ -371,7 +401,6 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             });
         });
 
-        // Mobile: expandable cards
         document.querySelectorAll("[data-expandable-card]").forEach((card) => {
             card.addEventListener("click", (e) => {
                 if ((e.target as HTMLElement).closest("a")) return;
@@ -383,6 +412,124 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             });
         });
 
+        // --- Sort & Search ---
+        const sortLabels: Record<string, string> = { date: "Datum", update: "Update", status: "Status", company: "Firma" };
+        const defaultDirs: Record<string, string> = { date: "desc", update: "desc", status: "desc", company: "asc" };
+        let currentSort = { key: "date", dir: "desc" };
+
+        function getVal(el: Element, key: string): string | number {
+            switch (key) {
+                case "date": return el.getAttribute("data-date") || "";
+                case "update": return el.getAttribute("data-update") || "";
+                case "status": return parseInt(el.getAttribute("data-status-order") || "99");
+                case "company": return el.getAttribute("data-company") || "";
+                default: return "";
+            }
+        }
+
+        function performSort() {
+            const { key, dir } = currentSort;
+
+            // Desktop table
+            const tbody = document.getElementById("table-body");
+            if (tbody) {
+                const rows = [...tbody.querySelectorAll("tr[data-expandable]")];
+                const pairs = rows.map((row) => ({
+                    el: row,
+                    detail: row.nextElementSibling?.hasAttribute("data-detail") ? row.nextElementSibling : null,
+                }));
+                pairs.sort((a, b) => {
+                    const va = getVal(a.el, key);
+                    const vb = getVal(b.el, key);
+                    let cmp = va < vb ? -1 : va > vb ? 1 : 0;
+                    if (dir === "desc") cmp = -cmp;
+                    return cmp;
+                });
+                pairs.forEach(({ el, detail }) => {
+                    tbody.appendChild(el);
+                    if (detail) tbody.appendChild(detail);
+                });
+            }
+
+            // Mobile cards
+            const container = document.getElementById("card-container");
+            if (container) {
+                const cards = [...container.querySelectorAll("[data-expandable-card]")];
+                cards.sort((a, b) => {
+                    const va = getVal(a, key);
+                    const vb = getVal(b, key);
+                    let cmp = va < vb ? -1 : va > vb ? 1 : 0;
+                    if (dir === "desc") cmp = -cmp;
+                    return cmp;
+                });
+                cards.forEach((card) => container.appendChild(card));
+            }
+
+            // Update button states
+            document.querySelectorAll(".sort-btn").forEach((btn) => {
+                const k = btn.getAttribute("data-sort")!;
+                const isActive = k === key;
+                if (isActive) {
+                    btn.className = "sort-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer";
+                    btn.textContent = `${sortLabels[k]} ${dir === "desc" ? "↓" : "↑"}`;
+                } else {
+                    btn.className = "sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer";
+                    btn.textContent = sortLabels[k];
+                }
+            });
+        }
+
+        document.querySelectorAll(".sort-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const key = btn.getAttribute("data-sort")!;
+                if (currentSort.key === key) {
+                    currentSort.dir = currentSort.dir === "desc" ? "asc" : "desc";
+                } else {
+                    currentSort = { key, dir: defaultDirs[key] || "desc" };
+                }
+                performSort();
+            });
+        });
+
+        function performSearch(query: string) {
+            const q = query.toLowerCase().trim();
+            let visibleCount = 0;
+            const total = document.querySelectorAll("tr[data-expandable]").length;
+
+            // Desktop
+            document.querySelectorAll("tr[data-expandable]").forEach((row) => {
+                const text = row.getAttribute("data-search") || "";
+                const show = !q || text.includes(q);
+                row.classList.toggle("search-hidden", !show);
+                if (show) visibleCount++;
+                const detail = row.nextElementSibling;
+                if (detail?.hasAttribute("data-detail")) {
+                    if (!show) detail.classList.add("search-hidden");
+                    else detail.classList.remove("search-hidden");
+                }
+            });
+
+            // Mobile
+            document.querySelectorAll("[data-expandable-card]").forEach((card) => {
+                const text = card.getAttribute("data-search") || "";
+                const show = !q || text.includes(q);
+                card.classList.toggle("search-hidden", !show);
+            });
+
+            // Update count
+            const countEl = document.getElementById("result-count");
+            if (countEl) {
+                countEl.textContent = q
+                    ? `${visibleCount} von ${total} Bewerbung(en)`
+                    : `${total} Bewerbung(en) gespeichert.`;
+            }
+        }
+
+        document.getElementById("search-input")?.addEventListener("input", (e) => {
+            performSearch((e.target as HTMLInputElement).value);
+        });
+
+        // --- Password gate ---
         document.getElementById("pw-form")!.addEventListener("submit", async (e) => {
             e.preventDefault();
             const input = document.getElementById("pw-input") as HTMLInputElement;
