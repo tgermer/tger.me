@@ -139,6 +139,7 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
             ))}
         </section>
 
+        {projects?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">Projects</h2>
             {projects.map((project, i) => (
@@ -155,7 +156,9 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
                 </div>
             ))}
         </section>
+        )}
 
+        {skills?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">Skills</h2>
             <div class="resume-skills-grid">
@@ -167,7 +170,9 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
                 ))}
             </div>
         </section>
+        )}
 
+        {references?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">References</h2>
             <div class="resume-references">
@@ -181,6 +186,7 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
                 ))}
             </div>
         </section>
+        )}
 
         <div class="resume-date-footer">
             Munich, {today}

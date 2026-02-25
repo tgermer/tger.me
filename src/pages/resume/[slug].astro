@@ -228,6 +228,7 @@ const headerTitle = `${p.name} | ${position}`;
         </section>
 
         <!-- Projekte -->
+        {cv.projects?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">{l.projectsHeading}</h2>
             {cv.projects.map((project, i) => (
@@ -244,8 +245,10 @@ const headerTitle = `${p.name} | ${position}`;
                 </div>
             ))}
         </section>
+        )}
 
         <!-- Kenntnisse -->
+        {cv.skills?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">{l.skillsHeading}</h2>
             <div class="resume-skills-grid">
@@ -257,8 +260,10 @@ const headerTitle = `${p.name} | ${position}`;
                 ))}
             </div>
         </section>
+        )}
 
         <!-- Referenzen -->
+        {cv.references?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">{l.referencesHeading}</h2>
             <div class="resume-references">
@@ -272,6 +277,7 @@ const headerTitle = `${p.name} | ${position}`;
                 ))}
             </div>
         </section>
+        )}
 
         <!-- Date + Location footer -->
         <div class="resume-date-footer">
