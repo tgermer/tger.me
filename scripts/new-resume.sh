@@ -7,22 +7,32 @@
 #   src/data/cv_<slug>.ts          – Frozen snapshot of all CV + personal data
 #
 # Usage:
-#   ./scripts/new-resume.sh "Stellenbezeichnung" "Firma GmbH" de
-#   ./scripts/new-resume.sh "Project Manager" "Company Inc." en
+#   ./scripts/new-resume.sh
 #
-# Arguments:
-#   $1  Position title (required)
-#   $2  Company name (required)
-#   $3  Language: de or en (default: de)
+# The script prompts interactively for position, company, and language.
 
 set -euo pipefail
 
-POSITION="${1:?Usage: $0 \"Position\" \"Company\" [de|en]}"
-COMPANY="${2:?Usage: $0 \"Position\" \"Company\" [de|en]}"
-LANG="${3:-de}"
+read -rp "Position: " POSITION
+if [ -z "${POSITION}" ]; then
+    echo "Error: Position darf nicht leer sein." >&2
+    exit 1
+fi
+
+read -rp "Firma: " COMPANY
+if [ -z "${COMPANY}" ]; then
+    echo "Error: Firma darf nicht leer sein." >&2
+    exit 1
+fi
+
+read -rp "Sprache (de/en) [de]: " LANG
+LANG="${LANG:-de}"
 
 # Generate random 6-char alphanumeric slug
+# (disable pipefail temporarily – tr gets SIGPIPE when head closes the pipe)
+set +o pipefail
 SLUG=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
+set -o pipefail
 DATE=$(date +%Y-%m-%d)
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
