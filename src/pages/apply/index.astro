@@ -44,10 +44,11 @@ function formatDate(date: Date) {
     return new Date(date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
-function buildContactMailto(email: string, position: string, lang: string, contact?: string) {
-    const greeting = lang === "de"
-        ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
-        : (contact ? `Hello ${contact},` : "Dear Hiring Team,");
+function buildContactMailto(email: string, position: string, lang: string, contact?: string, salutation?: string) {
+    const greeting = salutation
+        || (lang === "de"
+            ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
+            : (contact ? `Hello ${contact},` : "Dear Hiring Team,"));
     return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(greeting + "\n\n")}`;
 }
 
@@ -58,14 +59,15 @@ function stripMarkdown(text: string): string {
         .replace(/\[(.*?)\]\(.*?\)/g, "$1");
 }
 
-function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string, letterBody?: string, source?: string) {
+function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string) {
     const subject = lang === "de"
         ? `Bewerbung als ${position} – ${site.author}`
         : `Application for ${position} – ${site.author}`;
     const pdfUrl = `${site.url}/apply/${slug}.pdf`;
-    const greeting = lang === "de"
-        ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
-        : (contact ? `Hello ${contact},` : "Dear hiring team,");
+    const greeting = salutation
+        || (lang === "de"
+            ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
+            : (contact ? `Hello ${contact},` : "Dear hiring team,"));
     const pdfNote = lang === "de"
         ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}`
         : `My resume is also available at:\n${pdfUrl}`;
@@ -162,7 +164,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                 <p class="text-xs text-gray-500 mb-2 inline-flex items-center gap-1">
                                     <Icon name="tabler:user" class="h-3.5 w-3.5" />
                                     {r.data.contact}
-                                    {r.data.contactEmail && <span class="text-gray-400"> · <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></span>}
+                                    {r.data.contactEmail && <span class="text-gray-400"> · <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></span>}
                                 </p>
                             )}
                             {r.data.notes && (
@@ -177,7 +179,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                 {r.data.jobUrl && (
                                     <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                 )}
-                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
+                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                             </div>
                         </div>
                     );
@@ -234,7 +236,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                     <td class="px-4 py-3 text-gray-600">
                                         {r.data.contact || <span class="text-gray-300">–</span>}
                                         {r.data.contactEmail && (
-                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}><a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></p>
+                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}><a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></p>
                                         )}
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -256,7 +258,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                             )}
-                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
+                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                                         </div>
                                     </td>
                                 </tr>
