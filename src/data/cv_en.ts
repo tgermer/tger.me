@@ -10,6 +10,8 @@ export const personal: PersonalData = {
   email: 'hello@tger.me',
   location: 'Munich',
   languageValues: 'German (Native), English (Fluent)',
+  url: 'tger.me',
+  linkedinUrl: 'linkedin.com/in/tgermer',
 };
 
 export const experience: ExperienceItem[] = [

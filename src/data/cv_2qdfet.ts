@@ -65,6 +65,8 @@ export interface PersonalData {
     email: string;
     location: string;
     languageValues: string;
+    url?: string;
+    linkedinUrl?: string;
 }
 
 export const personal: PersonalData = {
@@ -78,6 +80,8 @@ export const personal: PersonalData = {
     email: "hello@tger.me",
     location: "München",
     languageValues: "Deutsch (Muttersprache), Englisch (fließend)",
+    url: "tger.me",
+    linkedinUrl: "linkedin.com/in/tgermer",
 };
 
 export const experience: ExperienceItem[] = [
