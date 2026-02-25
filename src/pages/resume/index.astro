@@ -1,6 +1,7 @@
 ---
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { getCollection } from "astro:content";
+import { site } from "../../data/site";
 
 const resumes = await getCollection("resume");
 
@@ -40,6 +41,20 @@ function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
 
 function formatDate(date: Date) {
     return new Date(date).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string) {
+    const subject = lang === "de"
+        ? `Bewerbung als ${position} – ${site.author}`
+        : `Application for ${position} – ${site.author}`;
+    const pdfUrl = `${site.url}/resume/${slug}.pdf`;
+    const greeting = lang === "de"
+        ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
+        : (contact ? `Hello ${contact},` : "Dear hiring team,");
+    const body = lang === "de"
+        ? `${greeting}\n\nanbei erhalten Sie meine Bewerbung als ${position} bei ${company}.\n\nMeinen Lebenslauf finden Sie auch unter:\n${pdfUrl}\n\nMit freundlichen Grüßen\n${site.author}`
+        : `${greeting}\n\nPlease find attached my application for the ${position} role at ${company}.\n\nMy resume is also available at:\n${pdfUrl}\n\nBest regards,\n${site.author}`;
+    return `mailto:${email || ""}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 ---
 
@@ -124,6 +139,9 @@ function formatDate(date: Date) {
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
                                         {r.data.contact || <span class="text-gray-300">–</span>}
+                                        {r.data.contactEmail && (
+                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}>{r.data.contactEmail}</p>
+                                        )}
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
                                         {r.data.source || <span class="text-gray-300">–</span>}
@@ -141,6 +159,7 @@ function formatDate(date: Date) {
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">Link</a>
                                             )}
+                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>Mail</a>
                                         </div>
                                     </td>
                                 </tr>

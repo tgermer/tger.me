@@ -29,6 +29,7 @@ read -rp "Sprache (de/en) [de]: " LANG
 LANG="${LANG:-de}"
 
 read -rp "Job-URL (optional): " JOB_URL
+read -rp "Kontakt-E-Mail (optional): " CONTACT_EMAIL
 read -rp "Quelle/Kanal (optional, z.B. LinkedIn, Stepstone): " SOURCE
 read -rp "Arbeitsort (optional, z.B. München, Remote): " LOCATION
 
@@ -66,6 +67,7 @@ cp "${CV_SRC}" "${CV_DST}"
     echo "cvData: \"cv_${SLUG}\""
     echo "jobUrl: \"${JOB_URL}\""
     echo "contact: \"\""
+    echo "contactEmail: \"${CONTACT_EMAIL}\""
     echo "salary: \"\""
     echo "source: \"${SOURCE}\""
     echo "location: \"${LOCATION}\""

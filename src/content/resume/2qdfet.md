@@ -7,6 +7,7 @@ cvData: "cv_2qdfet"
 signature: true
 jobUrl: "https://www.linkedin.com/jobs/view/4370997835"
 contact: "Julius Eger"
+contactEmail: "hello@tger.me"
 salary: "80k"
 source: "LinkedIn"
 location: "München"

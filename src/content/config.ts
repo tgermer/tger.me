@@ -3,6 +3,7 @@ import { defineCollection, z } from 'astro:content';
 // Treats empty strings as undefined so optional fields can use "" as placeholder in frontmatter
 const optionalString = z.preprocess((v) => (v === '' ? undefined : v), z.string().optional());
 const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.string().url().optional());
+const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.string().email().optional());
 
 const portfolio = defineCollection({
   type: 'content',
@@ -66,6 +67,7 @@ const resume = defineCollection({
     // Application tracking fields (empty strings are treated as unset)
     jobUrl: optionalUrl,
     contact: optionalString,
+    contactEmail: optionalEmail,
     salary: optionalString,
     source: optionalString,
     location: optionalString,
