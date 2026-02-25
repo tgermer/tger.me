@@ -5,8 +5,12 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: "Method not allowed" };
   }
 
-  const hash = process.env.APPLY_PASSWORD_HASH;
-  if (!hash) {
+  const hashes = [
+    process.env.APPLY_PASSWORD_HASH,
+    process.env.APPLY_PASSWORD_HASH_SHARED,
+  ].filter(Boolean);
+
+  if (hashes.length === 0) {
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json" },
@@ -36,7 +40,7 @@ exports.handler = async (event) => {
 
   const inputHash = createHash("sha256").update(password).digest("hex");
 
-  if (inputHash === hash) {
+  if (hashes.includes(inputHash)) {
     return {
       statusCode: 200,
       headers: { "Content-Type": "application/json" },
