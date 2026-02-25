@@ -4,7 +4,7 @@ description: Klarheit für Smart-Home-Steuerungen.
 featured: true
 technologies: Vue.js, TypeScript, Vite, CSS
 date: 2026-02-01
-image: /assets/clearcontrol.png
+image: ../../assets/portfolio/clearcontrol.png
 linkGithub: https://github.com/tgermer/ha-remote-designer
 linkWebsite: https://clearcontrol.de
 type: Website, WebApp

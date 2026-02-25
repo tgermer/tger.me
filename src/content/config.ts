@@ -7,13 +7,13 @@ const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.string()
 
 const portfolio = defineCollection({
   type: 'content',
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     featured: z.boolean().default(false),
     technologies: z.string(),
     date: z.date(),
-    image: z.string(),
+    image: image(),
     imageBg: z.string().optional(),
     icon: z.string().optional(),
     iconBg: z.string().optional(),

@@ -4,7 +4,7 @@ description: Website, Logo und Grafiken
 featured: false
 technologies: HTML, CSS, Bootstrap, Jekyll
 date: 2024-12-01
-image: /assets/teamclusion-logo-white.svg
+image: ../../assets/portfolio/teamclusion-logo-white.svg
 imageBg: "#1B57A6"
 linkWebsite: https://www.teamclusion.de
 type: Website

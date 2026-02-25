@@ -4,11 +4,11 @@ description: Jokes at your fingertips.
 featured: false
 technologies: Swift, SwiftUI
 date: 2024-12-01
-image: /assets/joke-fetcher-app-icon.svg
+image: ../../assets/portfolio/joke-fetcher-app-icon.svg
 linkGithub: https://github.com/tgermer/RandomJokesApp
 type: iOS App
 screenshotsAvailable: true
-screenshotsPath: /assets/joke-fetcher-app/
+screenshotsPath: joke-fetcher-app
 ---
 
 Die **Joke Fetcher App** ist eine iOS-Anwendung, die mit Swift und SwiftUI entwickelt wurde. Sie ruft zufällige Witze von einer öffentlichen API ab und präsentiert diese auf einem ansprechenden Interface.

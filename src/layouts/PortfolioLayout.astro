@@ -1,15 +1,15 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { Icon } from 'astro-icon/components';
-import fs from 'node:fs';
-import path from 'node:path';
 
 interface Props {
   title: string;
   description: string;
   type: string;
   technologies: string;
-  image: string;
+  image: ImageMetadata;
   imageBg?: string;
   icon?: string;
   iconBg?: string;
@@ -37,26 +37,29 @@ const {
 } = Astro.props;
 
 const techList = technologies.split(',').map((t) => t.trim());
+const isSvg = image.format === 'svg';
 
-// Build screenshot list – explicit files take priority, then auto-discovery from path
-const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
-const screenshots: string[] = [];
+// Build screenshot list – auto-discovery via import.meta.glob (images in src/assets/screenshots/)
+const allScreenshotModules = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/screenshots/**/*.{png,jpg,jpeg,webp}',
+  { eager: true }
+);
+
+let screenshots: ImageMetadata[] = [];
 if (screenshotsAvailable) {
-  if (screenshotsFiles && screenshotsFiles.length > 0) {
-    screenshots.push(...screenshotsFiles);
-  } else if (screenshotsPath) {
-    const publicDir = path.join(process.cwd(), 'public', screenshotsPath);
-    if (fs.existsSync(publicDir)) {
-      const files = fs.readdirSync(publicDir)
-        .filter((f) => imageExtensions.has(path.extname(f).toLowerCase()))
-        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-      screenshots.push(...files.map((f) => `${screenshotsPath}${f}`));
-    }
+  if (screenshotsPath) {
+    screenshots = Object.entries(allScreenshotModules)
+      .filter(([key]) => key.includes(`/${screenshotsPath}/`))
+      .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true }))
+      .map(([_, mod]) => mod.default);
+  } else if (screenshotsFiles && screenshotsFiles.length > 0) {
+    // Fallback: explicit file URLs (no optimization, kept for compatibility)
   }
 }
+const screenshotUrls = screenshots.map((s) => s.src);
 ---
 
-<BaseLayout title={title} description={description} ogImage={image}>
+<BaseLayout title={title} description={description} ogImage={image.src}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -140,18 +143,18 @@ if (screenshotsAvailable) {
           </button>
 
           <div id="gallery-scroll" class="flex gap-3 overflow-x-auto pb-3 scrollbar-thin" style="cursor: ew-resize;">
-            {screenshots.map((src, i) => (
+            {screenshots.map((screenshot, i) => (
               <button
                 class="gallery-thumb shrink-0 rounded-xl overflow-hidden hover:opacity-90 transition-opacity shadow-md"
                 style="cursor: ew-resize;"
-                data-src={src}
                 data-index={i}
                 aria-label={`Screenshot ${i + 1}`}
               >
-                <img
-                  src={src}
+                <Image
+                  src={screenshot}
                   alt={`${title} Screenshot ${i + 1}`}
                   class="h-64 w-auto object-cover pointer-events-none"
+                  height={256}
                   loading="lazy"
                 />
               </button>
@@ -163,7 +166,23 @@ if (screenshotsAvailable) {
       <!-- Single project image (no screenshots) -->
       {!screenshotsAvailable && (
         <div class="mb-10 rounded-2xl overflow-hidden shadow-lg">
-          <img src={image} alt={title} class={`w-full object-contain max-h-96 ${imageBg ? '' : 'bg-gray-50 dark:bg-gray-900'}`} style={imageBg ? `background-color: ${imageBg};` : undefined} />
+          {isSvg ? (
+            <img
+              src={image.src}
+              alt={title}
+              class={`w-full object-contain max-h-96 ${imageBg ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
+              style={imageBg ? `background-color: ${imageBg};` : undefined}
+            />
+          ) : (
+            <Image
+              src={image}
+              alt={title}
+              class={`w-full object-contain max-h-96 ${imageBg ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
+              style={imageBg ? `background-color: ${imageBg};` : undefined}
+              widths={[600, 1200]}
+              sizes="(min-width: 1024px) 960px, 100vw"
+            />
+          )}
         </div>
       )}
 
@@ -198,7 +217,7 @@ if (screenshotsAvailable) {
       <span id="lightbox-counter" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm"></span>
     </div>
 
-    <script define:vars={{ screenshots }}>
+    <script define:vars={{ screenshots: screenshotUrls }}>
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightbox-img');
       const lightboxCounter = document.getElementById('lightbox-counter');

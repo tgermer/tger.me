@@ -4,10 +4,10 @@ description: Ein datengetriebenes Portal zur effizienten Verwaltung und Analyse 
 featured: true
 technologies: Angular, JavaScript, Bootstrap, SQL, REST, D3.js
 date: 2018-03-15
-image: /assets/zahlenportal-hm/zahlenportal-hm-desktop-01.png
+image: ../../assets/portfolio/zahlenportal-hm-desktop-01.png
 type: Website
 screenshotsAvailable: true
-screenshotsPath: /assets/zahlenportal-hm/
+screenshotsPath: zahlenportal-hm
 ---
 
 Das **Zahlenportal** der Hochschule München ist eine zentrale Plattform zur Verwaltung und Visualisierung von Studierendenkennzahlen. Es ersetzt dezentrale, manuelle Prozesse durch einen einheitlichen, datenbasierten Zugriff für alle Stakeholder.
