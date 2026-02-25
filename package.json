@@ -8,7 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "pdf": "node scripts/generate-pdf.mjs",
-    "pdf:install": "npx playwright install chromium",
+    "pdf:install": "npm install && npx playwright install chromium",
     "new-resume": "bash scripts/new-resume.sh"
   },
   "dependencies": {
