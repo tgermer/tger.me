@@ -11,50 +11,50 @@ const sorted = resumes.sort((a, b) => new Date(b.data.date).getTime() - new Date
 
 const statusLabels: Record<string, string> = {
     beworben: "Beworben",
-    "eingangsbestätigung": "Eingangsbestätigung",
-    "vorstellungsgespräch": "Vorstellungsgespräch",
-    "zweitgespräch": "Zweitgespräch",
+    eingangsbestätigung: "Eingangsbestätigung",
+    vorstellungsgespräch: "Vorstellungsgespräch",
+    zweitgespräch: "Zweitgespräch",
     assessment: "Assessment",
     angebot: "Angebot",
     zusage: "Zusage",
     absage: "Absage",
-    "zurückgezogen": "Zurückgezogen",
+    zurückgezogen: "Zurückgezogen",
 };
 
 const statusColors: Record<string, string> = {
     beworben: "bg-gray-100 text-gray-700",
-    "eingangsbestätigung": "bg-blue-50 text-blue-700",
-    "vorstellungsgespräch": "bg-indigo-50 text-indigo-700",
-    "zweitgespräch": "bg-violet-50 text-violet-700",
+    eingangsbestätigung: "bg-blue-50 text-blue-700",
+    vorstellungsgespräch: "bg-indigo-50 text-indigo-700",
+    zweitgespräch: "bg-violet-50 text-violet-700",
     assessment: "bg-purple-50 text-purple-700",
     angebot: "bg-amber-50 text-amber-700",
     zusage: "bg-green-50 text-green-700",
     absage: "bg-red-50 text-red-700",
-    "zurückgezogen": "bg-stone-100 text-stone-500",
+    zurückgezogen: "bg-stone-100 text-stone-500",
 };
 
 const statusDotColors: Record<string, string> = {
     beworben: "bg-gray-400",
-    "eingangsbestätigung": "bg-blue-400",
-    "vorstellungsgespräch": "bg-indigo-400",
-    "zweitgespräch": "bg-violet-400",
+    eingangsbestätigung: "bg-blue-400",
+    vorstellungsgespräch: "bg-indigo-400",
+    zweitgespräch: "bg-violet-400",
     assessment: "bg-purple-400",
     angebot: "bg-amber-400",
     zusage: "bg-green-400",
     absage: "bg-red-400",
-    "zurückgezogen": "bg-stone-400",
+    zurückgezogen: "bg-stone-400",
 };
 
 const statusOrder: Record<string, number> = {
     beworben: 0,
-    "eingangsbestätigung": 1,
-    "vorstellungsgespräch": 2,
-    "zweitgespräch": 3,
+    eingangsbestätigung: 1,
+    vorstellungsgespräch: 2,
+    zweitgespräch: 3,
     assessment: 4,
     angebot: 5,
     zusage: 6,
     absage: 7,
-    "zurückgezogen": 8,
+    zurückgezogen: 8,
 };
 
 function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
@@ -69,10 +69,7 @@ function formatDate(date: Date) {
 }
 
 function buildContactMailto(email: string, position: string, lang: string, contact?: string, salutation?: string) {
-    const greeting = salutation
-        || (lang === "de"
-            ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
-            : (contact ? `Hello ${contact},` : "Dear Hiring Team,"));
+    const greeting = salutation || (lang === "de" ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,") : contact ? `Hello ${contact},` : "Dear Hiring Team,");
     return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(greeting + "\n\n")}`;
 }
 
@@ -84,30 +81,17 @@ function stripMarkdown(text: string): string {
 }
 
 function buildMailtoUrl(position: string, company: string, slug: string, lang: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string) {
-    const subject = lang === "de"
-        ? `Bewerbung als ${position} – ${site.author}`
-        : `Application for ${position} – ${site.author}`;
+    const subject = lang === "de" ? `Bewerbung als ${position} – ${site.author}` : `Application for ${position} – ${site.author}`;
     const pdfUrl = `${site.url}/apply/${slug}.pdf`;
-    const greeting = salutation
-        || (lang === "de"
-            ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
-            : (contact ? `Hello ${contact},` : "Dear hiring team,"));
-    const pdfNote = lang === "de"
-        ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}`
-        : `My resume is also available at:\n${pdfUrl}`;
-    const closing = lang === "de"
-        ? `Mit freundlichen Grüßen\n${site.author}`
-        : `Best regards,\n${site.author}`;
+    const greeting = salutation || (lang === "de" ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,") : contact ? `Hello ${contact},` : "Dear hiring team,");
+    const pdfNote = lang === "de" ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}` : `My resume is also available at:\n${pdfUrl}`;
+    const closing = lang === "de" ? `Mit freundlichen Grüßen\n${site.author}` : `Best regards,\n${site.author}`;
 
     let intro: string;
     if (lang === "de") {
-        intro = source
-            ? `über ${source} bin ich auf die Stelle als ${position} bei ${company} aufmerksam geworden und möchte mich hiermit bewerben.`
-            : `hiermit möchte ich mich als ${position} bei ${company} bewerben.`;
+        intro = source ? `über ${source} bin ich auf die Stelle als ${position} bei ${company} aufmerksam geworden und möchte mich hiermit bewerben.` : `hiermit möchte ich mich als ${position} bei ${company} bewerben.`;
     } else {
-        intro = source
-            ? `I came across the ${position} role at ${company} on ${source} and would like to apply.`
-            : `I would like to apply for the ${position} role at ${company}.`;
+        intro = source ? `I came across the ${position} role at ${company} on ${source} and would like to apply.` : `I would like to apply for the ${position} role at ${company}.`;
     }
 
     let body: string;
@@ -122,20 +106,13 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
 ---
 
 <ResumeLayout title="Bewerbungen" description="Übersicht aller Bewerbungen" lang="de">
-
     <!-- Password gate -->
     <div id="gate" class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
             <h1 class="text-lg font-bold text-gray-900 mb-4">Bewerbungen</h1>
             <p class="text-sm text-gray-500 mb-4">Bitte Passwort eingeben, um die Übersicht anzuzeigen.</p>
             <form id="pw-form" class="flex gap-2">
-                <input
-                    id="pw-input"
-                    type="password"
-                    placeholder="Passwort"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    autocomplete="off"
-                />
+                <input id="pw-input" type="password" placeholder="Passwort" class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off" />
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors cursor-pointer">Login</button>
             </form>
             <p id="pw-error" class="text-sm text-red-500 mt-2 hidden">Falsches Passwort.</p>
@@ -152,7 +129,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                     <a href="/cv-en-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
                     <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download DE</a>
                     <a href="/apply/cv-en.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download EN</a>
-                    <button id="lockout-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-red-300 text-red-600 rounded-full hover:bg-red-50 transition-colors cursor-pointer" title="Sitzung sperren"><Icon name="tabler:lock" class="h-4 w-4" />Lockout</button>
+                    <button id="lockout-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-red-300 text-red-600 rounded-full hover:bg-red-50 transition-colors cursor-pointer" title="Sitzung sperren"><Icon name="tabler:lock" class="h-4 w-4" /></button>
                 </div>
             </div>
 
@@ -173,83 +150,133 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
 
             <!-- Mobile: stacked cards -->
             <div id="card-container" class="md:hidden flex flex-col gap-3">
-                {sorted.map((r) => {
-                    const current = getCurrentStatus(r.data.statusHistory);
-                    const statusKey = current?.status;
-                    const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                    const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
-                    const searchText = [r.data.position, r.data.company, r.data.contact, r.data.location, r.data.source, r.data.notes, r.data.salary, statusKey ? statusLabels[statusKey] : "", r.data.statusHistory.map(e => e.info).filter(Boolean).join(" ")].filter(Boolean).join(" ").toLowerCase();
-                    return (
-                        <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <div class="min-w-0">
-                                    <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
-                                        {r.data.position}
-                                    </a>
-                                    <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
-                                    <p class="text-sm text-gray-500">{r.data.company}</p>
+                {
+                    sorted.map((r) => {
+                        const current = getCurrentStatus(r.data.statusHistory);
+                        const statusKey = current?.status;
+                        const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                        const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
+                        const searchText = [
+                            r.data.position,
+                            r.data.company,
+                            r.data.contact,
+                            r.data.location,
+                            r.data.source,
+                            r.data.notes,
+                            r.data.salary,
+                            statusKey ? statusLabels[statusKey] : "",
+                            r.data.statusHistory
+                                .map((e) => e.info)
+                                .filter(Boolean)
+                                .join(" "),
+                        ]
+                            .filter(Boolean)
+                            .join(" ")
+                            .toLowerCase();
+                        return (
+                            <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="min-w-0">
+                                        <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                            {r.data.position}
+                                        </a>
+                                        <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
+                                        <p class="text-sm text-gray-500">{r.data.company}</p>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        {statusKey && <span class:list={["text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>{statusLabels[statusKey] || statusKey}</span>}
+                                        {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
+                                    </div>
                                 </div>
-                                <div class="flex items-center gap-1 shrink-0">
-                                    {statusKey && (
-                                        <span class:list={["text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
-                                            {statusLabels[statusKey] || statusKey}
+                                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 mb-3">
+                                    <span class="inline-flex items-center gap-1">
+                                        <Icon name="tabler:calendar" class="h-3.5 w-3.5" />
+                                        {formatDate(r.data.date)}
+                                    </span>
+                                    {r.data.location && (
+                                        <span class="inline-flex items-center gap-1">
+                                            <Icon name="tabler:map-pin" class="h-3.5 w-3.5" />
+                                            {r.data.location}
                                         </span>
                                     )}
-                                    {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
+                                    {r.data.source && (
+                                        <span class="inline-flex items-center gap-1">
+                                            <Icon name="tabler:world" class="h-3.5 w-3.5" />
+                                            {r.data.source}
+                                        </span>
+                                    )}
+                                    {r.data.salary && (
+                                        <span class="inline-flex items-center gap-1">
+                                            <Icon name="tabler:currency-euro" class="h-3.5 w-3.5" />
+                                            {r.data.salary}
+                                        </span>
+                                    )}
                                 </div>
-                            </div>
-                            <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 mb-3">
-                                <span class="inline-flex items-center gap-1"><Icon name="tabler:calendar" class="h-3.5 w-3.5" />{formatDate(r.data.date)}</span>
-                                {r.data.location && <span class="inline-flex items-center gap-1"><Icon name="tabler:map-pin" class="h-3.5 w-3.5" />{r.data.location}</span>}
-                                {r.data.source && <span class="inline-flex items-center gap-1"><Icon name="tabler:world" class="h-3.5 w-3.5" />{r.data.source}</span>}
-                                {r.data.salary && <span class="inline-flex items-center gap-1"><Icon name="tabler:currency-euro" class="h-3.5 w-3.5" />{r.data.salary}</span>}
-                            </div>
-                            {r.data.contact && (
-                                <p class="text-xs text-gray-500 mb-2 inline-flex items-center gap-1">
-                                    <Icon name="tabler:user" class="h-3.5 w-3.5" />
-                                    {r.data.contact}
-                                    {r.data.contactEmail && <span class="text-gray-400"> · <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></span>}
-                                </p>
-                            )}
-                            {r.data.notes && (
-                                <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>{r.data.notes}</p>
-                            )}
-                            {history.length > 0 && (
-                                <div data-detail class="hidden border-t border-gray-100 pt-3 mb-2">
-                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
-                                    {history.map((entry, i) => (
-                                        <div class="flex gap-3">
-                                            <div class="flex flex-col items-center">
-                                                <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
-                                                {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
-                                            </div>
-                                            <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
-                                                <div class="flex items-center gap-2">
-                                                    <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>
-                                                        {statusLabels[entry.status] || entry.status}
-                                                    </span>
-                                                    <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
+                                {r.data.contact && (
+                                    <p class="text-xs text-gray-500 mb-2 inline-flex items-center gap-1">
+                                        <Icon name="tabler:user" class="h-3.5 w-3.5" />
+                                        {r.data.contact}
+                                        {r.data.contactEmail && (
+                                            <span class="text-gray-400">
+                                                {" "}
+                                                ·{" "}
+                                                <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">
+                                                    {r.data.contactEmail}
+                                                </a>
+                                            </span>
+                                        )}
+                                    </p>
+                                )}
+                                {r.data.notes && (
+                                    <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>
+                                        {r.data.notes}
+                                    </p>
+                                )}
+                                {history.length > 0 && (
+                                    <div data-detail class="hidden border-t border-gray-100 pt-3 mb-2">
+                                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
+                                        {history.map((entry, i) => (
+                                            <div class="flex gap-3">
+                                                <div class="flex flex-col items-center">
+                                                    <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
+                                                    {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
                                                 </div>
-                                                {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>{statusLabels[entry.status] || entry.status}</span>
+                                                        <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
+                                                    </div>
+                                                    {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                )}
+                                <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
+                                    <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf">
+                                        <Icon name="tabler:file-text" class="h-4 w-4" />
+                                    </a>
+                                    <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF">
+                                        <Icon name="tabler:download" class="h-4 w-4" />
+                                    </a>
+                                    {r.body && r.body.trim().length > 0 && (
+                                        <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF">
+                                            <Icon name="tabler:file-type-doc" class="h-4 w-4" />
+                                        </a>
+                                    )}
+                                    {r.data.jobUrl && (
+                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">
+                                            <Icon name="tabler:external-link" class="h-4 w-4" />
+                                        </a>
+                                    )}
+                                    <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
+                                        <Icon name="tabler:mail" class="h-4 w-4" />
+                                    </a>
                                 </div>
-                            )}
-                            <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
-                                <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
-                                <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
-                                {r.body && r.body.trim().length > 0 && (
-                                    <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF"><Icon name="tabler:file-type-doc" class="h-4 w-4" /></a>
-                                )}
-                                {r.data.jobUrl && (
-                                    <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
-                                )}
-                                <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                }
             </div>
 
             <!-- Desktop: table -->
@@ -268,102 +295,120 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                         </tr>
                     </thead>
                     <tbody id="table-body" class="divide-y divide-gray-100">
-                        {sorted.map((r) => {
-                            const current = getCurrentStatus(r.data.statusHistory);
-                            const statusKey = current?.status;
-                            const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-                            const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
-                            const searchText = [r.data.position, r.data.company, r.data.contact, r.data.location, r.data.source, r.data.notes, r.data.salary, statusKey ? statusLabels[statusKey] : "", r.data.statusHistory.map(e => e.info).filter(Boolean).join(" ")].filter(Boolean).join(" ").toLowerCase();
-                            return (
-                                <>
-                                <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <p class="text-gray-900">{formatDate(r.data.date)}</p>
-                                        <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
-                                            {r.data.position}
-                                        </a>
-                                        <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
-                                        <p class="text-gray-500">{r.data.company}</p>
-                                        {r.data.notes && (
-                                            <p class="text-xs text-gray-400 mt-1 max-w-xs truncate" title={r.data.notes}>{r.data.notes}</p>
-                                        )}
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <div class="flex items-center gap-1.5">
-                                            {statusKey ? (
-                                                <span class:list={["inline-block text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
-                                                    {statusLabels[statusKey] || statusKey}
-                                                </span>
-                                            ) : (
-                                                <span class="text-xs text-gray-300">–</span>
-                                            )}
-                                            {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
-                                        </div>
-                                        {current?.date && (
-                                            <p class="text-xs text-gray-400 mt-1">{formatDate(current.date)}</p>
-                                        )}
-                                    </td>
-                                    <td class="px-4 py-3 text-gray-600">
-                                        {r.data.contact || <span class="text-gray-300">–</span>}
-                                        {r.data.contactEmail && (
-                                            <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}><a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">{r.data.contactEmail}</a></p>
-                                        )}
-                                    </td>
-                                    <td class="px-4 py-3 text-gray-600">
-                                        {r.data.source || <span class="text-gray-300">–</span>}
-                                    </td>
-                                    <td class="px-4 py-3 text-gray-600">
-                                        {r.data.location || <span class="text-gray-300">–</span>}
-                                    </td>
-                                    <td class="px-4 py-3 text-gray-600 whitespace-nowrap">
-                                        {r.data.salary || <span class="text-gray-300">–</span>}
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <div class="flex items-center gap-2">
-                                            <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
-                                            <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
-                                            {r.body && r.body.trim().length > 0 && (
-                                                <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF"><Icon name="tabler:file-type-doc" class="h-4 w-4" /></a>
-                                            )}
-                                            {r.data.jobUrl && (
-                                                <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
-                                            )}
-                                            <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}><Icon name="tabler:mail" class="h-4 w-4" /></a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {history.length > 0 && (
-                                <tr data-detail class="hidden">
-                                    <td colspan="8" class="px-4 py-0 bg-gray-50/50">
-                                        <div class="py-3 pl-2">
-                                            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
-                                            {history.map((entry, i) => (
-                                                <div class="flex gap-3">
-                                                    <div class="flex flex-col items-center">
-                                                        <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
-                                                        {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
-                                                    </div>
-                                                    <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
-                                                        <div class="flex items-center gap-2">
-                                                            <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>
-                                                                {statusLabels[entry.status] || entry.status}
-                                                            </span>
-                                                            <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
-                                                        </div>
-                                                        {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
-                                                    </div>
+                        {
+                            sorted.map((r) => {
+                                const current = getCurrentStatus(r.data.statusHistory);
+                                const statusKey = current?.status;
+                                const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+                                const lastUpdate = history.length > 0 ? new Date(history[history.length - 1].date).toISOString() : new Date(r.data.date).toISOString();
+                                const searchText = [
+                                    r.data.position,
+                                    r.data.company,
+                                    r.data.contact,
+                                    r.data.location,
+                                    r.data.source,
+                                    r.data.notes,
+                                    r.data.salary,
+                                    statusKey ? statusLabels[statusKey] : "",
+                                    r.data.statusHistory
+                                        .map((e) => e.info)
+                                        .filter(Boolean)
+                                        .join(" "),
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")
+                                    .toLowerCase();
+                                return (
+                                    <>
+                                        <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
+                                            <td class="px-4 py-3 whitespace-nowrap">
+                                                <p class="text-gray-900">{formatDate(r.data.date)}</p>
+                                                <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                                    {r.data.position}
+                                                </a>
+                                                <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
+                                                <p class="text-gray-500">{r.data.company}</p>
+                                                {r.data.notes && (
+                                                    <p class="text-xs text-gray-400 mt-1 max-w-xs truncate" title={r.data.notes}>
+                                                        {r.data.notes}
+                                                    </p>
+                                                )}
+                                            </td>
+                                            <td class="px-4 py-3 whitespace-nowrap">
+                                                <div class="flex items-center gap-1.5">
+                                                    {statusKey ? <span class:list={["inline-block text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>{statusLabels[statusKey] || statusKey}</span> : <span class="text-xs text-gray-300">–</span>}
+                                                    {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </td>
-                                </tr>
-                                )}
-                                </>
-                            );
-                        })}
+                                                {current?.date && <p class="text-xs text-gray-400 mt-1">{formatDate(current.date)}</p>}
+                                            </td>
+                                            <td class="px-4 py-3 text-gray-600">
+                                                {r.data.contact || <span class="text-gray-300">–</span>}
+                                                {r.data.contactEmail && (
+                                                    <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}>
+                                                        <a href={buildContactMailto(r.data.contactEmail, r.data.position, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">
+                                                            {r.data.contactEmail}
+                                                        </a>
+                                                    </p>
+                                                )}
+                                            </td>
+                                            <td class="px-4 py-3 text-gray-600">{r.data.source || <span class="text-gray-300">–</span>}</td>
+                                            <td class="px-4 py-3 text-gray-600">{r.data.location || <span class="text-gray-300">–</span>}</td>
+                                            <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{r.data.salary || <span class="text-gray-300">–</span>}</td>
+                                            <td class="px-4 py-3 whitespace-nowrap">
+                                                <div class="flex items-center gap-2">
+                                                    <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf">
+                                                        <Icon name="tabler:file-text" class="h-4 w-4" />
+                                                    </a>
+                                                    <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF">
+                                                        <Icon name="tabler:download" class="h-4 w-4" />
+                                                    </a>
+                                                    {r.body && r.body.trim().length > 0 && (
+                                                        <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF">
+                                                            <Icon name="tabler:file-type-doc" class="h-4 w-4" />
+                                                        </a>
+                                                    )}
+                                                    {r.data.jobUrl && (
+                                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">
+                                                            <Icon name="tabler:external-link" class="h-4 w-4" />
+                                                        </a>
+                                                    )}
+                                                    <a href={buildMailtoUrl(r.data.position, r.data.company, r.slug, r.data.lang, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
+                                                        <Icon name="tabler:mail" class="h-4 w-4" />
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {history.length > 0 && (
+                                            <tr data-detail class="hidden">
+                                                <td colspan="8" class="px-4 py-0 bg-gray-50/50">
+                                                    <div class="py-3 pl-2">
+                                                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
+                                                        {history.map((entry, i) => (
+                                                            <div class="flex gap-3">
+                                                                <div class="flex flex-col items-center">
+                                                                    <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
+                                                                    {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
+                                                                </div>
+                                                                <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
+                                                                    <div class="flex items-center gap-2">
+                                                                        <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>{statusLabels[entry.status] || entry.status}</span>
+                                                                        <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
+                                                                    </div>
+                                                                    {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </>
+                                );
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
@@ -371,7 +416,9 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     </div>
 
     <style>
-        .search-hidden { display: none !important; }
+        .search-hidden {
+            display: none !important;
+        }
     </style>
 
     <script>
@@ -413,11 +460,16 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
 
         function getVal(el: Element, key: string): string | number {
             switch (key) {
-                case "date": return el.getAttribute("data-date") || "";
-                case "update": return el.getAttribute("data-update") || "";
-                case "status": return parseInt(el.getAttribute("data-status-order") || "99");
-                case "company": return el.getAttribute("data-company") || "";
-                default: return "";
+                case "date":
+                    return el.getAttribute("data-date") || "";
+                case "update":
+                    return el.getAttribute("data-update") || "";
+                case "status":
+                    return parseInt(el.getAttribute("data-status-order") || "99");
+                case "company":
+                    return el.getAttribute("data-company") || "";
+                default:
+                    return "";
             }
         }
 
@@ -513,9 +565,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             // Update count
             const countEl = document.getElementById("result-count");
             if (countEl) {
-                countEl.textContent = q
-                    ? `${visibleCount} von ${total} Bewerbung(en)`
-                    : `${total} Bewerbung(en) gespeichert.`;
+                countEl.textContent = q ? `${visibleCount} von ${total} Bewerbung(en)` : `${total} Bewerbung(en) gespeichert.`;
             }
         }
 
