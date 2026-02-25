@@ -19,6 +19,10 @@ export async function getStaticPaths() {
 const { resume } = Astro.props;
 const { position, company, lang, date, cvData, signature } = resume.data;
 
+// Render markdown body (cover letter)
+const { Content } = await resume.render();
+const hasLetter = resume.body && resume.body.trim().length > 0;
+
 const isDE = lang === "de";
 
 // Use custom CV data file if specified, otherwise fall back to default
@@ -54,6 +58,9 @@ const l = isDE
           languages: "Arbeitssprachen",
           residence: "Wohnort",
           contact: "Kontakt",
+          letterSubject: `Bewerbung als ${position}`,
+          letterClosing: "Mit freundlichen Grüßen",
+          letterPdfLabel: "Anschreiben PDF",
       }
     : {
           backLabel: "Back to CV",
@@ -73,6 +80,9 @@ const l = isDE
           languages: "Working Languages",
           residence: "Residence",
           contact: "Contact",
+          letterSubject: `Application for ${position}`,
+          letterClosing: "Best regards,",
+          letterPdfLabel: "Cover Letter PDF",
       };
 
 function formatDate(dateStr: string): string {
@@ -93,7 +103,12 @@ const headerTitle = `${p.name} | ${position}`;
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
             <a href={l.backHref} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {l.backLabel}</a>
-            <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.downloadLabel}</a>
+            <div class="flex items-center gap-2">
+                {hasLetter && (
+                    <a href={`/apply/${resume.slug}-letter.pdf`} target="_blank" class="text-sm px-4 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">{l.letterPdfLabel}</a>
+                )}
+                <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.downloadLabel}</a>
+            </div>
         </div>
     </div>
 
@@ -135,6 +150,45 @@ const headerTitle = `${p.name} | ${position}`;
             </table>
         </div>
     </div>
+
+    <!-- ==================== COVER LETTER (Anschreiben) ==================== -->
+    {hasLetter && (
+        <div class="resume-page resume-letter">
+            <div class="letter-sender">
+                <p class="letter-sender-name">{p.name}</p>
+                <p>{p.address}</p>
+                <p>{p.phone}</p>
+                <p>{p.email}</p>
+            </div>
+
+            <div class="letter-recipient">
+                {resume.data.contact && <p>{resume.data.contact}</p>}
+                <p>{company}</p>
+            </div>
+
+            <div class="letter-date">
+                {p.location}, {formattedResumeDate}
+            </div>
+
+            <div class="letter-subject">
+                {l.letterSubject}
+            </div>
+
+            <div class="letter-body">
+                <Content />
+            </div>
+
+            <div class="letter-closing">
+                <p>{l.letterClosing}</p>
+                {signature && (
+                    <div class="resume-signature letter-signature">
+                        <Fragment set:html={signatureSvg} />
+                    </div>
+                )}
+                <p class="letter-closing-name">{p.name}</p>
+            </div>
+        </div>
+    )}
 
     <!-- ==================== PAGE 2+: CV CONTENT ==================== -->
     <div class="resume-page resume-cv-content">

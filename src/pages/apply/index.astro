@@ -140,6 +140,9 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                             <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
                                 <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
                                 <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
+                                {r.body && r.body.trim().length > 0 && (
+                                    <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF"><Icon name="tabler:file-type-doc" class="h-4 w-4" /></a>
+                                )}
                                 {r.data.jobUrl && (
                                     <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                 )}
@@ -216,6 +219,9 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                         <div class="flex items-center gap-2">
                                             <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
                                             <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
+                                            {r.body && r.body.trim().length > 0 && (
+                                                <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF"><Icon name="tabler:file-type-doc" class="h-4 w-4" /></a>
+                                            )}
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                             )}

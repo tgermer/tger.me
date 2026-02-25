@@ -164,6 +164,11 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
       .$eval('.cover-application-company', (el) => el.textContent?.trim() || '')
       .catch(() => '');
 
+    // Hide cover letter section from CV PDF
+    await page.addStyleTag({
+      content: '.resume-letter { display: none !important; }',
+    });
+
     // Generate PDF (margins controlled by CSS @page rules, header/footer added via pdf-lib)
     await page.pdf({
       path: outputPath,
@@ -175,7 +180,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     const pdfBytes = await readFile(outputPath);
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
-    // Construct the public resume URL (overview page, not direct PDF)
+    // Construct the public URL (overview page, not direct PDF)
     const pdfUrl = slug.startsWith('resume-')
       ? `https://tger.me/${slug}`
       : `https://tger.me/apply/${slug}`;
@@ -193,6 +198,77 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     await writeFile(outputPath, modifiedBytes);
 
     console.log(`  OK: ${outputPath.replace(ROOT + '/', '')}`);
+  } finally {
+    await page.close();
+  }
+}
+
+async function generateLetterPdf(browser, slug, urlPath, outputPath) {
+  const page = await browser.newPage();
+  try {
+    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle' });
+
+    // Check if the page has a cover letter section
+    const hasLetter = await page.$('.resume-letter') !== null;
+    if (!hasLetter) {
+      return false;
+    }
+
+    // Extract data from the rendered page
+    const lang = await page.$eval('html', (el) => el.getAttribute('lang') || 'de');
+    const position = await page
+      .$eval('.cover-application-title', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+    const authorName = await page
+      .$eval('.cover-name', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+    const company = await page
+      .$eval('.cover-application-company', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+
+    // Inject CSS to hide everything except the letter
+    await page.addStyleTag({
+      content: `
+        .resume-toolbar { display: none !important; }
+        .resume-cover { display: none !important; }
+        .resume-cv-content { display: none !important; }
+        .resume-letter {
+          page-break-before: avoid !important;
+          break-before: avoid !important;
+          page-break-after: avoid !important;
+          break-after: avoid !important;
+        }
+        @page :first { margin: 25mm 25mm 20mm 25mm; }
+        .letter-signature { display: block !important; }
+        .letter-signature svg { width: 200px; height: auto; fill: #1a3f8b; }
+      `,
+    });
+
+    // Generate PDF
+    await page.pdf({
+      path: outputPath,
+      preferCSSPageSize: true,
+      printBackground: true,
+    });
+
+    // Post-process: set metadata (no header/footer for standalone letters)
+    const pdfBytes = await readFile(outputPath);
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    const subject = lang === 'de' ? 'Bewerbung' : 'Cover Letter';
+    pdfDoc.setTitle(`${subject} – ${position}`);
+    pdfDoc.setAuthor(authorName);
+    pdfDoc.setSubject(subject);
+    pdfDoc.setCreator('Astro + Playwright');
+    if (company) {
+      pdfDoc.setKeywords([position, company]);
+    }
+
+    const modifiedBytes = await pdfDoc.save();
+    await writeFile(outputPath, modifiedBytes);
+
+    console.log(`  OK: ${outputPath.replace(ROOT + '/', '')}`);
+    return true;
   } finally {
     await page.close();
   }
@@ -243,7 +319,7 @@ async function main() {
         }
       }
 
-      // Optionally include general application pages
+      // Optionally include general resume pages
       if (includeGeneral) {
         targets.push(
           { slug: 'resume-de', url: '/resume-de/', output: resolve(OUTPUT_DIR, 'resume-de.pdf') },
@@ -260,6 +336,12 @@ async function main() {
 
       for (const target of targets) {
         await generatePdf(browser, target.slug, target.url, target.output);
+
+        // Also generate cover letter PDF if applicable
+        if (!target.slug.startsWith('resume-')) {
+          const letterOutput = resolve(OUTPUT_DIR, `${target.slug}-letter.pdf`);
+          await generateLetterPdf(browser, target.slug, target.url, letterOutput);
+        }
       }
 
       console.log('\nDone!');
