@@ -240,7 +240,7 @@ html {
 .cv-page-header {
   padding: 4mm 0 3mm;
   margin-bottom: 4mm;
-  border-bottom: 2px solid hsl(207, 91%, 55%);
+  /* border-bottom: 2px solid hsl(207, 91%, 55%); */
   font-size: 0.75rem;
   color: #6b7280;
   letter-spacing: 0.02em;

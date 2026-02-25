@@ -12,7 +12,6 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
 ---
 
 <ResumeLayout title="Lebenslauf – Tristan Germer" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse." lang="de">
-
     <!-- Print toolbar -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
@@ -54,18 +53,34 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                     <td class="cover-data-label">Kontakt</td>
                     <td class="cover-data-value"><a href={`tel:${personal.phone}`} target="_blank" rel="noopener noreferrer">{personal.phone}</a> | <a href={`mailto:${personal.email}`} target="_blank" rel="noopener noreferrer">{personal.email}</a></td>
                 </tr>
-                {(personal.url || personal.linkedinUrl || personal.githubUrl) && (
-                    <tr>
-                        <td class="cover-data-label">Online</td>
-                        <td class="cover-data-value">
-                            {[
-                                personal.url && <a href={`https://${personal.url}`} target="_blank" rel="noopener noreferrer">{personal.url}</a>,
-                                personal.linkedinUrl && <a href={`https://${personal.linkedinUrl}`} target="_blank" rel="noopener noreferrer">{personal.linkedinUrl}</a>,
-                                personal.githubUrl && <a href={`https://${personal.githubUrl}`} target="_blank" rel="noopener noreferrer">{personal.githubUrl}</a>,
-                            ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' · ', el], [])}
-                        </td>
-                    </tr>
-                )}
+                {
+                    (personal.url || personal.linkedinUrl || personal.githubUrl) && (
+                        <tr>
+                            <td class="cover-data-label">Online</td>
+                            <td class="cover-data-value">
+                                {[
+                                    personal.url && (
+                                        <a href={`https://${personal.url}`} target="_blank" rel="noopener noreferrer">
+                                            {personal.url}
+                                        </a>
+                                    ),
+                                    personal.linkedinUrl && (
+                                        <a href={`https://${personal.linkedinUrl}`} target="_blank" rel="noopener noreferrer">
+                                            {personal.linkedinUrl}
+                                        </a>
+                                    ),
+                                    personal.githubUrl && (
+                                        <a href={`https://${personal.githubUrl}`} target="_blank" rel="noopener noreferrer">
+                                            {personal.githubUrl}
+                                        </a>
+                                    ),
+                                ]
+                                    .filter(Boolean)
+                                    .reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " · ", el]), [])}
+                            </td>
+                        </tr>
+                    )
+                }
             </table>
         </div>
     </div>
@@ -79,134 +94,180 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         <section class="resume-section">
             <h2 class="resume-heading">Beruflicher Werdegang</h2>
             <table class="resume-table">
-            {experience.map((job, i) => (
-                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <td class="resume-date">
-                        {job.endDate
-                            ? <>{formatDate(job.startDate)}<br />{formatDate(job.endDate)}</>
-                            : `Seit ${formatDate(job.startDate)}`}
-                    </td>
-                    <td class="resume-detail">
-                        {job.position && job.position.length > 0 ? (
-                            <>
-                                <p class="resume-entry-title">{job.position.join(", ")}</p>
-                                <p class="resume-entry-sub">
-                                    {job.company}{job.location && `, ${job.location}`}
-                                    <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
-                                </p>
-                            </>
-                        ) : (
-                            <>
-                                <p class="resume-entry-title">{job.company}</p>
-                                {job.location && <p class="resume-entry-sub">{job.location} · {job.typeOfEmployment}</p>}
-                                {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
-                            </>
-                        )}
-                        {job.description?.list && job.description.list.length > 0 && (
-                            <ul class="resume-list">
-                                {job.description.list.map((item) => <li>{item}</li>)}
-                            </ul>
-                        )}
-                    </td>
-                </tr>
-            ))}
+                {
+                    experience.map((job, i) => (
+                        <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                            <td class="resume-date">
+                                {job.endDate ? (
+                                    <>
+                                        {formatDate(job.startDate)}
+                                        <br />
+                                        {formatDate(job.endDate)}
+                                    </>
+                                ) : (
+                                    `Seit ${formatDate(job.startDate)}`
+                                )}
+                            </td>
+                            <td class="resume-detail">
+                                {job.position && job.position.length > 0 ? (
+                                    <>
+                                        <p class="resume-entry-title">{job.position.join(", ")}</p>
+                                        <p class="resume-entry-sub">
+                                            {job.company}
+                                            {job.location && `, ${job.location}`}
+                                            <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <p class="resume-entry-title">{job.company}</p>
+                                        {job.location && (
+                                            <p class="resume-entry-sub">
+                                                {job.location} · {job.typeOfEmployment}
+                                            </p>
+                                        )}
+                                        {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
+                                    </>
+                                )}
+                                {job.description?.list && job.description.list.length > 0 && (
+                                    <ul class="resume-list">
+                                        {job.description.list.map((item) => (
+                                            <li>{item}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </td>
+                        </tr>
+                    ))
+                }
             </table>
         </section>
 
         <section class="resume-section">
             <h2 class="resume-heading">Hochschulausbildung</h2>
             <table class="resume-table">
-            {education.map((edu, i) => (
-                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <td class="resume-date">{formatDate(edu.startDate)}<br />{formatDate(edu.endDate)}</td>
-                    <td class="resume-detail-mid">
-                        <p class="resume-entry-title">{edu.fieldOfStudy}, {edu.degree}</p>
-                        {edu.majorFieldOfStudy && <p class="resume-entry-meta">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
-                        {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
-                    </td>
-                    <td class="resume-detail-right">
-                        <p class="resume-entry-sub">{edu.school}</p>
-                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
-                    </td>
-                </tr>
-            ))}
+                {
+                    education.map((edu, i) => (
+                        <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                            <td class="resume-date">
+                                {formatDate(edu.startDate)}
+                                <br />
+                                {formatDate(edu.endDate)}
+                            </td>
+                            <td class="resume-detail-mid">
+                                <p class="resume-entry-title">
+                                    {edu.fieldOfStudy}, {edu.degree}
+                                </p>
+                                {edu.majorFieldOfStudy && <p class="resume-entry-meta">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
+                                {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
+                            </td>
+                            <td class="resume-detail-right">
+                                <p class="resume-entry-sub">{edu.school}</p>
+                                {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                            </td>
+                        </tr>
+                    ))
+                }
             </table>
         </section>
 
         <section class="resume-section">
             <h2 class="resume-heading">Zusatzqualifikationen</h2>
             <table class="resume-table">
-            {furtherEducation.map((edu, i) => (
-                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <td class="resume-date">
-                        {formatDate(edu.startDate) === formatDate(edu.endDate)
-                            ? formatDate(edu.startDate)
-                            : <>{formatDate(edu.startDate)}<br />{formatDate(edu.endDate)}</>}
-                    </td>
-                    <td class="resume-detail-mid">
-                        <p class="resume-entry-title">{edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}</p>
-                    </td>
-                    <td class="resume-detail-right">
-                        <p class="resume-entry-sub">{edu.school}</p>
-                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
-                    </td>
-                </tr>
-            ))}
+                {
+                    furtherEducation.map((edu, i) => (
+                        <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                            <td class="resume-date">
+                                {formatDate(edu.startDate) === formatDate(edu.endDate) ? (
+                                    formatDate(edu.startDate)
+                                ) : (
+                                    <>
+                                        {formatDate(edu.startDate)}
+                                        <br />
+                                        {formatDate(edu.endDate)}
+                                    </>
+                                )}
+                            </td>
+                            <td class="resume-detail-mid">
+                                <p class="resume-entry-title">
+                                    {edu.fieldOfStudy}
+                                    {edu.degree && `, ${edu.degree}`}
+                                </p>
+                            </td>
+                            <td class="resume-detail-right">
+                                <p class="resume-entry-sub">{edu.school}</p>
+                                {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                            </td>
+                        </tr>
+                    ))
+                }
             </table>
         </section>
 
-        {projects?.length > 0 && (
-        <section class="resume-section">
-            <h2 class="resume-heading">Projekte</h2>
-            <table class="resume-table">
-            {projects.map((project, i) => (
-                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <td class="resume-date">{formatDate(project.date)}</td>
-                    <td class="resume-detail">
-                        <p class="resume-entry-title">{project.title}</p>
-                        {project.description?.list && project.description.list.length > 0 && (
-                            <ul class="resume-list">
-                                {project.description.list.map((item) => <li>{item}</li>)}
-                            </ul>
-                        )}
-                    </td>
-                </tr>
-            ))}
-            </table>
-        </section>
-        )}
+        {
+            projects?.length > 0 && (
+                <section class="resume-section">
+                    <h2 class="resume-heading">Projekte</h2>
+                    <table class="resume-table">
+                        {projects.map((project, i) => (
+                            <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                                <td class="resume-date">{formatDate(project.date)}</td>
+                                <td class="resume-detail">
+                                    <p class="resume-entry-title">{project.title}</p>
+                                    {project.description?.list && project.description.list.length > 0 && (
+                                        <ul class="resume-list">
+                                            {project.description.list.map((item) => (
+                                                <li>{item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </table>
+                </section>
+            )
+        }
 
-        {skills?.length > 0 && (
-        <section class="resume-section">
-            <h2 class="resume-heading">Kenntnisse</h2>
-            <div class="resume-skills-grid">
-                {skills.map((cat) => (
-                    <div class="resume-skill-group">
-                        <h3 class="resume-skill-label">{cat.catagorie}</h3>
-                        <ul class="resume-skill-items">
-                            {cat.items.map((item) => <li>{item}</li>)}
-                        </ul>
+        {
+            skills?.length > 0 && (
+                <section class="resume-section">
+                    <h2 class="resume-heading">Kenntnisse</h2>
+                    <div class="resume-skills-grid">
+                        {skills.map((cat) => (
+                            <div class="resume-skill-group">
+                                <h3 class="resume-skill-label">{cat.catagorie}</h3>
+                                <ul class="resume-skill-items">
+                                    {cat.items.map((item) => (
+                                        <li>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-        </section>
-        )}
+                </section>
+            )
+        }
 
-        {references?.length > 0 && (
-        <section class="resume-section">
-            <h2 class="resume-heading">Referenzen</h2>
-            <dl class="resume-references">
-                {references.map((ref) => (
-                    <div class="resume-reference">
-                        <dt class="resume-entry-title">{ref.name}</dt>
-                        <dd class="resume-entry-sub">{ref.position}, {ref.company}</dd>
-                        {ref.department && <dd class="resume-entry-meta">{ref.department}</dd>}
-                        <dd class="resume-entry-meta">{ref.email}</dd>
-                    </div>
-                ))}
-            </dl>
-        </section>
-        )}
+        {
+            references?.length > 0 && (
+                <section class="resume-section">
+                    <h2 class="resume-heading">Referenzen</h2>
+                    <dl class="resume-references">
+                        {references.map((ref) => (
+                            <div class="resume-reference">
+                                <dt class="resume-entry-title">{ref.name}</dt>
+                                <dd class="resume-entry-sub">
+                                    {ref.position}, {ref.company}
+                                </dd>
+                                {ref.department && <dd class="resume-entry-meta">{ref.department}</dd>}
+                                <dd class="resume-entry-meta">{ref.email}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                </section>
+            )
+        }
 
         <div class="resume-date-footer">
             München, {today}

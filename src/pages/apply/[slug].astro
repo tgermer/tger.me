@@ -1,5 +1,6 @@
 ---
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
@@ -41,9 +42,9 @@ const p = cv.personal;
 
 const l = isDE
     ? {
-          backLabel: "Zurück zum Lebenslauf",
-          backHref: "/cv-de",
-          downloadLabel: "PDF herunterladen",
+          homeLabel: "tger.me besuchen",
+          overviewLabel: "Zurück zur Übersicht",
+          downloadLabel: "Lebenslauf herunterladen",
           applicationFor: "Bewerbung als",
           experienceHeading: "Beruflicher Werdegang",
           educationHeading: "Hochschulausbildung",
@@ -61,12 +62,12 @@ const l = isDE
           online: "Online",
           letterSubject: `Bewerbung als ${position}`,
           letterClosing: "Mit freundlichen Grüßen",
-          letterPdfLabel: "Anschreiben PDF",
+          letterPdfLabel: "Anschreiben herunterladen",
       }
     : {
-          backLabel: "Back to CV",
-          backHref: "/cv-en",
-          downloadLabel: "Download PDF",
+          homeLabel: "Visit tger.me",
+          overviewLabel: "Back to overview",
+          downloadLabel: "Download resume",
           applicationFor: "Application for",
           experienceHeading: "Professional Experience",
           educationHeading: "University Education",
@@ -84,7 +85,7 @@ const l = isDE
           online: "Online",
           letterSubject: `Application for ${position}`,
           letterClosing: "Best regards,",
-          letterPdfLabel: "Cover Letter PDF",
+          letterPdfLabel: "Download cover letter",
       };
 
 function formatDate(dateStr: string): string {
@@ -103,13 +104,22 @@ const headerTitle = `${p.name} | ${position}`;
 <ResumeLayout title={pageTitle} description={`${position} – ${company}`} lang={lang}>
     <!-- Print toolbar (hidden in print) -->
     <div class="resume-toolbar">
-        <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
-            <a href={l.backHref} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {l.backLabel}</a>
+        <div class="max-w-[210mm] mx-auto px-1 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 text-sm">
+                <a href="/" class="inline-flex items-center gap-1 text-gray-500 hover:text-gray-900 transition-colors"><Icon name="tabler:world-www" class="h-4 w-4" />{l.homeLabel}</a>
+                <a id="back-to-overview" href="/apply" class="text-gray-500 hover:text-gray-900 transition-colors hidden">&larr; {l.overviewLabel}</a>
+            </div>
             <div class="flex items-center gap-2">
                 {hasLetter && (
-                    <a href={`/apply/${resume.slug}-letter.pdf`} target="_blank" class="text-sm px-4 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">{l.letterPdfLabel}</a>
+                    <a href={`/apply/${resume.slug}-letter.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
+                        <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
+                        {l.letterPdfLabel}
+                    </a>
                 )}
-                <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.downloadLabel}</a>
+                <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                    <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
+                    {l.downloadLabel}
+                </a>
             </div>
         </div>
     </div>
@@ -428,4 +438,14 @@ const headerTitle = `${p.name} | ${position}`;
             )}
         </div>
     </div>
+
+    <script>
+        // Show "back to overview" link if navigated from /apply index
+        try {
+            const ref = document.referrer && new URL(document.referrer);
+            if (ref && (ref.pathname === "/apply" || ref.pathname === "/apply/")) {
+                document.getElementById("back-to-overview")?.classList.remove("hidden");
+            }
+        } catch {}
+    </script>
 </ResumeLayout>
