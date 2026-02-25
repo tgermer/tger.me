@@ -9,7 +9,7 @@ import signatureSvg from "../../assets/signature.svg?raw";
 const cvModules = import.meta.glob("../../data/cv_*.ts", { eager: true }) as Record<string, any>;
 
 export async function getStaticPaths() {
-    const resumes = await getCollection("resume");
+    const resumes = await getCollection("apply");
     return resumes.map((resume) => ({
         params: { slug: resume.slug },
         props: { resume },
@@ -93,7 +93,7 @@ const headerTitle = `${p.name} | ${position}`;
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
             <a href={l.backHref} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {l.backLabel}</a>
-            <a href={`/resume/${resume.slug}.pdf`} target="_blank" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.downloadLabel}</a>
+            <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.downloadLabel}</a>
         </div>
     </div>
 

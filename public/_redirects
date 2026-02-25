@@ -1,0 +1,2 @@
+# Redirect old /resume/ URLs to /apply/
+/resume/*  /apply/:splat  301

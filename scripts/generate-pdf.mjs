@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Generate PDF files for resume pages using Playwright (headless Chromium).
+ * Generate PDF files for application pages using Playwright (headless Chromium).
  *
  * Usage:
- *   node scripts/generate-pdf.mjs              # all resumes
+ *   node scripts/generate-pdf.mjs              # all applications
  *   node scripts/generate-pdf.mjs a1b2c3       # specific slug
- *   node scripts/generate-pdf.mjs --all        # all resumes + general resume-de/resume-en
+ *   node scripts/generate-pdf.mjs --all        # all applications + general resume-de/resume-en
  *
  * Prerequisites:
  *   npm install -D playwright
@@ -21,8 +21,8 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
-const RESUME_DIR = resolve(ROOT, 'src/content/resume');
-const OUTPUT_DIR = resolve(ROOT, 'public/resume');
+const APPLY_DIR = resolve(ROOT, 'src/content/apply');
+const OUTPUT_DIR = resolve(ROOT, 'public/apply');
 const PORT = 4322;
 const BASE_URL = `http://localhost:${PORT}`;
 
@@ -178,7 +178,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     // Construct the public resume URL (overview page, not direct PDF)
     const pdfUrl = slug.startsWith('resume-')
       ? `https://tger.me/${slug}`
-      : `https://tger.me/resume/${slug}`;
+      : `https://tger.me/apply/${slug}`;
 
     await addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl);
 
@@ -226,24 +226,24 @@ async function main() {
         // Specific slug
         targets.push({
           slug: targetSlug,
-          url: `/resume/${targetSlug}/`,
+          url: `/apply/${targetSlug}/`,
           output: resolve(OUTPUT_DIR, `${targetSlug}.pdf`),
         });
       } else {
-        // All slug-based resumes
-        const files = await readdir(RESUME_DIR);
+        // All slug-based applications
+        const files = await readdir(APPLY_DIR);
         for (const file of files) {
           if (!file.endsWith('.md')) continue;
           const slug = file.replace('.md', '');
           targets.push({
             slug,
-            url: `/resume/${slug}/`,
+            url: `/apply/${slug}/`,
             output: resolve(OUTPUT_DIR, `${slug}.pdf`),
           });
         }
       }
 
-      // Optionally include general resume pages
+      // Optionally include general application pages
       if (includeGeneral) {
         targets.push(
           { slug: 'resume-de', url: '/resume-de/', output: resolve(OUTPUT_DIR, 'resume-de.pdf') },
@@ -252,7 +252,7 @@ async function main() {
       }
 
       if (targets.length === 0) {
-        console.log('No resume files found.');
+        console.log('No application files found.');
         return;
       }
 

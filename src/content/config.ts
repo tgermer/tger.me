@@ -52,7 +52,7 @@ const statusEntry = z.object({
   date: z.date(),
 });
 
-const resume = defineCollection({
+const apply = defineCollection({
   type: 'content',
   schema: z.object({
     position: z.string(),
@@ -76,4 +76,4 @@ const resume = defineCollection({
   }),
 });
 
-export const collections = { portfolio, blog, resume };
+export const collections = { portfolio, blog, apply };

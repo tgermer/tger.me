@@ -4,7 +4,7 @@ import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import { site } from "../../data/site";
 
-const resumes = await getCollection("resume");
+const resumes = await getCollection("apply");
 
 // Sort by date descending (newest first)
 const sorted = resumes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
@@ -55,7 +55,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     const subject = lang === "de"
         ? `Bewerbung als ${position} – ${site.author}`
         : `Application for ${position} – ${site.author}`;
-    const pdfUrl = `${site.url}/resume/${slug}.pdf`;
+    const pdfUrl = `${site.url}/apply/${slug}.pdf`;
     const greeting = lang === "de"
         ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,")
         : (contact ? `Hello ${contact},` : "Dear hiring team,");
@@ -66,12 +66,12 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
 }
 ---
 
-<ResumeLayout title="Resume-Übersicht" description="Übersicht aller Lebensläufe" lang="de">
+<ResumeLayout title="Bewerbungen" description="Übersicht aller Bewerbungen" lang="de">
 
     <!-- Password gate -->
     <div id="gate" class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
-            <h1 class="text-lg font-bold text-gray-900 mb-4">Resume-Übersicht</h1>
+            <h1 class="text-lg font-bold text-gray-900 mb-4">Bewerbungen</h1>
             <p class="text-sm text-gray-500 mb-4">Bitte Passwort eingeben, um die Übersicht anzuzeigen.</p>
             <form id="pw-form" class="flex gap-2">
                 <input
@@ -91,7 +91,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     <div id="content" class="hidden min-h-screen bg-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">Resume-Übersicht</h1>
+                <h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1>
                 <div class="flex gap-3">
                     <a href="/resume-de" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. DE</a>
                     <a href="/resume-en" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
@@ -109,7 +109,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                             <div class="flex items-start justify-between gap-2 mb-2">
                                 <div class="min-w-0">
-                                    <a href={`/resume/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                    <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
                                         {r.data.position}
                                     </a>
                                     <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
@@ -138,8 +138,8 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                 <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>{r.data.notes}</p>
                             )}
                             <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
-                                <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
-                                <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="PDF herunterladen"><Icon name="tabler:download" class="h-4 w-4" /></a>
+                                <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
+                                <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
                                 {r.data.jobUrl && (
                                     <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                 )}
@@ -176,7 +176,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                         <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <a href={`/resume/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                        <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
                                             {r.data.position}
                                         </a>
                                         <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
@@ -214,8 +214,8 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         <div class="flex items-center gap-2">
-                                            <a href={`/resume/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
-                                            <a href={`/resume/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="PDF herunterladen"><Icon name="tabler:download" class="h-4 w-4" /></a>
+                                            <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
+                                            <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF"><Icon name="tabler:download" class="h-4 w-4" /></a>
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige"><Icon name="tabler:external-link" class="h-4 w-4" /></a>
                                             )}
@@ -245,7 +245,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
         }
 
         // Check if already authenticated in this session
-        if (sessionStorage.getItem("resume-auth") === "1") {
+        if (sessionStorage.getItem("apply-auth") === "1") {
             document.getElementById("gate")!.classList.add("hidden");
             document.getElementById("content")!.classList.remove("hidden");
         }
@@ -255,7 +255,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             const input = document.getElementById("pw-input") as HTMLInputElement;
             const hash = await sha256(input.value);
             if (hash === HASH) {
-                sessionStorage.setItem("resume-auth", "1");
+                sessionStorage.setItem("apply-auth", "1");
                 document.getElementById("gate")!.classList.add("hidden");
                 document.getElementById("content")!.classList.remove("hidden");
             } else {

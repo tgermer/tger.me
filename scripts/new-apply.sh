@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
-# Creates a new resume with a frozen CV data snapshot.
+# Creates a new application with a frozen CV data snapshot.
 #
 # For each application, two files are created:
-#   src/content/resume/<slug>.md   – Astro content entry (metadata)
-#   src/data/cv_<slug>.ts          – Frozen snapshot of all CV + personal data
+#   src/content/apply/<slug>.md   – Astro content entry (metadata)
+#   src/data/cv_<slug>.ts         – Frozen snapshot of all CV + personal data
 #
 # Usage:
-#   ./scripts/new-resume.sh
+#   ./scripts/new-apply.sh
 #
 # The script prompts interactively for position, company, and language.
 
@@ -41,10 +41,10 @@ set -o pipefail
 DATE=$(date +%Y-%m-%d)
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-RESUME_DIR="${ROOT}/src/content/resume"
+APPLY_DIR="${ROOT}/src/content/apply"
 DATA_DIR="${ROOT}/src/data"
 
-MD_FILE="${RESUME_DIR}/${SLUG}.md"
+MD_FILE="${APPLY_DIR}/${SLUG}.md"
 CV_SRC="${DATA_DIR}/cv_${LANG}.ts"
 CV_DST="${DATA_DIR}/cv_${SLUG}.ts"
 
@@ -80,7 +80,7 @@ cp "${CV_SRC}" "${CV_DST}"
 } > "${MD_FILE}"
 
 echo ""
-echo "  Resume created successfully!"
+echo "  Application created successfully!"
 echo ""
 echo "  Slug:     ${SLUG}"
 echo "  Position: ${POSITION}"
@@ -89,13 +89,13 @@ echo "  Lang:     ${LANG}"
 echo "  Date:     ${DATE}"
 echo ""
 echo "  Files:"
-echo "    src/content/resume/${SLUG}.md     (metadata)"
-echo "    src/data/cv_${SLUG}.ts            (frozen CV snapshot)"
+echo "    src/content/apply/${SLUG}.md     (metadata)"
+echo "    src/data/cv_${SLUG}.ts           (frozen CV snapshot)"
 echo ""
-echo "  URL:      /resume/${SLUG}/"
+echo "  URL:      /apply/${SLUG}/"
 echo ""
 echo "  Next steps:"
 echo "    1. Edit src/data/cv_${SLUG}.ts to customize for this application"
-echo "    2. Preview with: npm run dev → /resume/${SLUG}/"
+echo "    2. Preview with: npm run dev → /apply/${SLUG}/"
 echo "    3. Generate PDF: npm run pdf ${SLUG}"
 echo ""

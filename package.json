@@ -9,7 +9,7 @@
     "astro": "astro",
     "pdf": "node scripts/generate-pdf.mjs",
     "pdf:install": "npx playwright install chromium",
-    "new-resume": "bash scripts/new-resume.sh"
+    "new-apply": "bash scripts/new-apply.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

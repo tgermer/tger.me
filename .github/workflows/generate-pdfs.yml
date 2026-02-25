@@ -1,11 +1,11 @@
-name: Generate Resume PDFs
+name: Generate Application PDFs
 
 on:
   push:
     paths:
-      - 'src/content/resume/**'
+      - 'src/content/apply/**'
       - 'src/data/cv_*.ts'
-      - 'src/pages/resume/**'
+      - 'src/pages/apply/**'
       - 'src/pages/resume-*.astro'
       - 'src/layouts/ResumeLayout.astro'
       - 'src/styles/global.css'
@@ -35,5 +35,5 @@ jobs:
       - name: Commit PDFs
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'chore: auto-generate resume PDFs'
-          file_pattern: 'public/resume/*.pdf'
+          commit_message: 'chore: auto-generate application PDFs'
+          file_pattern: 'public/apply/*.pdf'
