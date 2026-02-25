@@ -32,32 +32,30 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
             <h1 class="cover-application-title" style="margin-top: 1rem;">Lebenslauf</h1>
         </div>
 
-        <div class="cover-person">
+        <div class="cover-bottom">
             <img src={personal.photo} alt={personal.name} class="cover-photo" />
-            <div class="cover-person-info">
-                <h2 class="cover-name">{personal.name}</h2>
-                <p class="cover-tagline">{personal.tagline}</p>
-            </div>
-        </div>
+            <h2 class="cover-name">{personal.name}</h2>
+            <p class="cover-tagline">{personal.tagline}</p>
 
-        <table class="cover-data-table">
-            <tr>
-                <td class="cover-data-label">Geburtstag</td>
-                <td class="cover-data-value">{personal.birthdate}</td>
-            </tr>
-            <tr>
-                <td class="cover-data-label">Arbeitssprachen</td>
-                <td class="cover-data-value">{personal.languageValues}</td>
-            </tr>
-            <tr>
-                <td class="cover-data-label">Wohnort</td>
-                <td class="cover-data-value">{personal.address}</td>
-            </tr>
-            <tr>
-                <td class="cover-data-label">Kontakt</td>
-                <td class="cover-data-value">{personal.phone} | {personal.email}</td>
-            </tr>
-        </table>
+            <table class="cover-data-table">
+                <tr>
+                    <td class="cover-data-label">Geburtstag</td>
+                    <td class="cover-data-value">{personal.birthdate}</td>
+                </tr>
+                <tr>
+                    <td class="cover-data-label">Arbeitssprachen</td>
+                    <td class="cover-data-value">{personal.languageValues}</td>
+                </tr>
+                <tr>
+                    <td class="cover-data-label">Wohnort</td>
+                    <td class="cover-data-value">{personal.address}</td>
+                </tr>
+                <tr>
+                    <td class="cover-data-label">Kontakt</td>
+                    <td class="cover-data-value">{personal.phone} | {personal.email}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <!-- CV Content -->
@@ -68,14 +66,15 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
 
         <section class="resume-section">
             <h2 class="resume-heading">Beruflicher Werdegang</h2>
+            <table class="resume-table">
             {experience.map((job, i) => (
-                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <div class="resume-date">
+                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <td class="resume-date">
                         {job.endDate
-                            ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}`
+                            ? <>{formatDate(job.startDate)}<br />{formatDate(job.endDate)}</>
                             : `Seit ${formatDate(job.startDate)}`}
-                    </div>
-                    <div class="resume-detail">
+                    </td>
+                    <td class="resume-detail">
                         {job.position && job.position.length > 0 ? (
                             <>
                                 <p class="resume-entry-title">{job.position.join(", ")}</p>
@@ -96,65 +95,72 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                                 {job.description.list.map((item) => <li>{item}</li>)}
                             </ul>
                         )}
-                    </div>
-                </div>
+                    </td>
+                </tr>
             ))}
+            </table>
         </section>
 
         <section class="resume-section">
             <h2 class="resume-heading">Hochschulausbildung</h2>
+            <table class="resume-table">
             {education.map((edu, i) => (
-                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
-                    <div class="resume-date">{formatDate(edu.startDate)} – {formatDate(edu.endDate)}</div>
-                    <div class="resume-detail-mid">
+                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <td class="resume-date">{formatDate(edu.startDate)}<br />{formatDate(edu.endDate)}</td>
+                    <td class="resume-detail-mid">
                         <p class="resume-entry-title">{edu.fieldOfStudy}, {edu.degree}</p>
                         {edu.majorFieldOfStudy && <p class="resume-entry-meta">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
                         {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
-                    </div>
-                    <div class="resume-detail-right">
+                    </td>
+                    <td class="resume-detail-right">
                         <p class="resume-entry-sub">{edu.school}</p>
                         {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
-                    </div>
-                </div>
+                    </td>
+                </tr>
             ))}
+            </table>
         </section>
 
         <section class="resume-section">
             <h2 class="resume-heading">Zusatzqualifikationen</h2>
+            <table class="resume-table">
             {furtherEducation.map((edu, i) => (
-                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
-                    <div class="resume-date">
+                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <td class="resume-date">
                         {formatDate(edu.startDate) === formatDate(edu.endDate)
                             ? formatDate(edu.startDate)
-                            : `${formatDate(edu.startDate)} – ${formatDate(edu.endDate)}`}
-                    </div>
-                    <div class="resume-detail-mid">
+                            : <>{formatDate(edu.startDate)}<br />{formatDate(edu.endDate)}</>}
+                    </td>
+                    <td class="resume-detail-mid">
                         <p class="resume-entry-title">{edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}</p>
-                    </div>
-                    <div class="resume-detail-right">
+                    </td>
+                    <td class="resume-detail-right">
                         <p class="resume-entry-sub">{edu.school}</p>
                         {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
-                    </div>
-                </div>
+                    </td>
+                </tr>
             ))}
+            </table>
         </section>
 
         {projects?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">Projekte</h2>
+            <table class="resume-table">
             {projects.map((project, i) => (
-                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                    <div class="resume-date">{formatDate(project.date)}</div>
-                    <div class="resume-detail">
+                <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <td class="resume-date">{formatDate(project.date)}</td>
+                    <td class="resume-detail">
                         <p class="resume-entry-title">{project.title}</p>
                         {project.description?.list && project.description.list.length > 0 && (
                             <ul class="resume-list">
                                 {project.description.list.map((item) => <li>{item}</li>)}
                             </ul>
                         )}
-                    </div>
-                </div>
+                    </td>
+                </tr>
             ))}
+            </table>
         </section>
         )}
 
@@ -165,7 +171,9 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                 {skills.map((cat) => (
                     <div class="resume-skill-group">
                         <h3 class="resume-skill-label">{cat.catagorie}</h3>
-                        <p class="resume-skill-items">{cat.items.join(" · ")}</p>
+                        <ul class="resume-skill-items">
+                            {cat.items.map((item) => <li>{item}</li>)}
+                        </ul>
                     </div>
                 ))}
             </div>
@@ -175,16 +183,16 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         {references?.length > 0 && (
         <section class="resume-section">
             <h2 class="resume-heading">Referenzen</h2>
-            <div class="resume-references">
+            <dl class="resume-references">
                 {references.map((ref) => (
                     <div class="resume-reference">
-                        <p class="resume-entry-title">{ref.name}</p>
-                        <p class="resume-entry-sub">{ref.position}, {ref.company}</p>
-                        {ref.department && <p class="resume-entry-meta">{ref.department}</p>}
-                        <p class="resume-entry-meta">{ref.email}</p>
+                        <dt class="resume-entry-title">{ref.name}</dt>
+                        <dd class="resume-entry-sub">{ref.position}, {ref.company}</dd>
+                        {ref.department && <dd class="resume-entry-meta">{ref.department}</dd>}
+                        <dd class="resume-entry-meta">{ref.email}</dd>
                     </div>
                 ))}
-            </div>
+            </dl>
         </section>
         )}
 

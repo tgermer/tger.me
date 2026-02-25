@@ -140,8 +140,8 @@ html {
 }
 
 .cover-application {
-  text-align: center;
-  padding: 12mm 20mm 8mm;
+  text-align: left;
+  padding: 30mm 20mm 8mm;
 }
 
 .cover-application-label {
@@ -155,7 +155,7 @@ html {
 .cover-application-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: hsl(219, 86%, 41%);
+  /* color: hsl(219, 86%, 41%); */
   line-height: 1.3;
   margin-bottom: 0.5rem;
 }
@@ -166,32 +166,27 @@ html {
   font-weight: 500;
 }
 
-/* Photo + name row */
-.cover-person {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding: 8mm 20mm;
-  justify-content: center;
+/* Bottom section: photo, name, tagline, table – pushed to page bottom */
+.cover-bottom {
+  margin-top: auto;
+  padding: 0 20mm 8mm;
 }
 
 .cover-photo {
-  width: 140px;
-  height: 170px;
+  display: block;
+  max-width: 75%;
+  height: auto;
+  max-height: 100mm;
   object-fit: cover;
   border-radius: 4px;
-  flex-shrink: 0;
-}
-
-.cover-person-info {
-  text-align: left;
 }
 
 .cover-name {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 600;
   color: #111827;
-  margin-bottom: 0.375rem;
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
   letter-spacing: -0.01em;
 }
 
@@ -203,10 +198,10 @@ html {
 
 /* Personal data table */
 .cover-data-table {
-  margin: 6mm 20mm 0;
+  margin-top: 2rem;
   border-top: 1px solid #d1d5db;
   border-collapse: collapse;
-  width: calc(100% - 40mm);
+  width: 100%;
   font-size: 0.875rem;
 }
 
@@ -218,7 +213,7 @@ html {
   padding: 0.625rem 1rem 0.625rem 0;
   color: #6b7280;
   font-weight: 500;
-  width: 10rem;
+  width: 7rem;
   vertical-align: top;
 }
 
@@ -248,55 +243,49 @@ html {
 }
 
 .resume-heading {
-  font-size: 1rem;
-  font-weight: 700;
-  color: hsl(219, 86%, 41%);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding-bottom: 0.25rem;
-  border-bottom: 1.5px solid hsl(219, 86%, 41%);
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  /* color: hsl(219, 86%, 41%); */
+  /* text-transform: uppercase; */
+  letter-spacing: -0.01em;
+  /* padding-bottom: 0.15rem; */
+  /* border-bottom: 1.5px solid hsl(219, 86%, 41%); */
+  margin-bottom: 0.15rem;
 }
 
-/* Entries: 2-column (date | detail) */
-.resume-entry {
-  display: flex;
-  gap: 1rem;
-  padding: 0.5rem 0;
+/* Semantic table layout for resume entries */
+.resume-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.resume-entry-border {
+.resume-entry-border td {
   border-top: 1px solid #e5e7eb;
 }
 
 .resume-date {
-  width: 7rem;
-  flex-shrink: 0;
+  width: 3.5rem;
   font-size: 0.8125rem;
   color: #6b7280;
-  padding-top: 0.125rem;
+  padding: 0.5rem 1rem 0.5rem 0;
+  vertical-align: top;
 }
 
 .resume-detail {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Entries: 3-column (date | mid | right) for education */
-.resume-entry-3col {
-  display: flex;
-  gap: 1rem;
+  padding: 0.5rem 0;
+  vertical-align: top;
 }
 
 .resume-detail-mid {
-  flex: 2;
-  min-width: 0;
+  padding: 0.5rem 1rem 0.5rem 0;
+  vertical-align: top;
 }
 
 .resume-detail-right {
-  flex: 1.2;
-  min-width: 0;
+  width: 10rem;
   text-align: right;
+  padding: 0.5rem 0;
+  vertical-align: top;
 }
 
 /* Entry text styles */
@@ -327,7 +316,8 @@ html {
   list-style-type: disc;
   font-size: 0.8125rem;
   color: #374151;
-  line-height: 1.5;
+  line-height: 1.3;
+  hyphens: auto;
 }
 
 .resume-list li {
@@ -337,12 +327,13 @@ html {
 /* Skills grid */
 .resume-skills-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 1.5rem;
+  grid-template-columns: 1fr;
+  /* gap: 0.5rem 1.5rem; */
 }
 
 .resume-skill-group {
-  margin-bottom: 0.125rem;
+  margin-bottom: 0.225rem;
+  line-height: 1;
 }
 
 .resume-skill-label {
@@ -352,12 +343,25 @@ html {
   letter-spacing: 0.05em;
   color: #6b7280;
   margin-bottom: 0.0625rem;
+  display: inline;
 }
 
 .resume-skill-items {
   font-size: 0.8125rem;
   color: #374151;
   line-height: 1.4;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline;
+}
+
+.resume-skill-items li {
+  display: inline;
+}
+
+.resume-skill-items li:not(:last-child)::after {
+  content: " \00B7  ";
 }
 
 /* References */
@@ -369,6 +373,12 @@ html {
 
 .resume-reference {
   font-size: 0.8125rem;
+}
+
+.resume-references dt,
+.resume-references dd {
+  margin: 0;
+  padding: 0;
 }
 
 /* Date footer */
@@ -386,7 +396,11 @@ html {
 @media print {
   @page {
     size: A4;
-    margin: 12mm 15mm;
+    margin: 25mm 25mm 20mm 25mm;
+  }
+
+  @page :first {
+    margin: 0;
   }
 
   html, body {
@@ -400,6 +414,10 @@ html {
   }
 
   .resume-toolbar {
+    display: none !important;
+  }
+
+  .cv-page-header {
     display: none !important;
   }
 
@@ -424,29 +442,26 @@ html {
 
   .cover-header-bar {
     background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%)) !important;
+    height: 12mm;
   }
 
-  .cover-data-table {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-  }
-
+  /* Cover content needs own padding since @page :first has margin: 0 */
   .cover-application {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 25mm;
+    padding-right: 25mm;
   }
 
-  .cover-person {
-    padding-left: 0;
-    padding-right: 0;
+  .cover-bottom {
+    padding-left: 25mm;
+    padding-right: 25mm;
+    padding-bottom: 20mm;
   }
 
   .resume-section {
     break-inside: avoid-page;
   }
 
-  .resume-entry {
+  .resume-table tr {
     break-inside: avoid;
   }
 
