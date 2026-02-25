@@ -30,4 +30,17 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { portfolio, blog };
+const resume = defineCollection({
+  type: 'content',
+  schema: z.object({
+    position: z.string(),
+    company: z.string(),
+    lang: z.enum(['de', 'en']).default('de'),
+    date: z.date(),
+    // Optional: name of a custom CV data file in src/data/ (without .ts extension).
+    // Example: "cv_ey_de" → loads src/data/cv_ey_de.ts instead of cv_de.ts.
+    cvData: z.string().optional(),
+  }),
+});
+
+export const collections = { portfolio, blog, resume };

@@ -1,0 +1,281 @@
+---
+import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import { getCollection } from "astro:content";
+import * as cvDe from "../../data/cv_de";
+import * as cvEn from "../../data/cv_en";
+
+// Eagerly import all CV data files so custom ones can be resolved at build time
+const cvModules = import.meta.glob("../../data/cv_*.ts", { eager: true }) as Record<string, any>;
+
+export async function getStaticPaths() {
+    const resumes = await getCollection("resume");
+    return resumes.map((resume) => ({
+        params: { slug: resume.slug },
+        props: { resume },
+    }));
+}
+
+const { resume } = Astro.props;
+const { position, company, lang, date, cvData } = resume.data;
+
+const isDE = lang === "de";
+
+// Use custom CV data file if specified, otherwise fall back to default
+let cv: any;
+if (cvData) {
+    const key = `../../data/${cvData}.ts`;
+    cv = cvModules[key];
+    if (!cv) {
+        throw new Error(`Custom CV data file not found: src/data/${cvData}.ts`);
+    }
+} else {
+    cv = isDE ? cvDe : cvEn;
+}
+
+const p = cv.personal;
+
+const l = isDE
+    ? {
+          backLabel: "Zurück zum Lebenslauf",
+          backHref: "/cv-de",
+          printLabel: "Drucken / PDF",
+          applicationFor: "Bewerbung als",
+          experienceHeading: "Beruflicher Werdegang",
+          educationHeading: "Hochschulausbildung",
+          furtherEducationHeading: "Zusatzqualifikationen",
+          projectsHeading: "Projekte",
+          skillsHeading: "Kenntnisse",
+          referencesHeading: "Referenzen",
+          since: "Seit",
+          major: "Schwerpunkt",
+          thesis: "Thesis",
+          birthday: "Geburtstag",
+          languages: "Arbeitssprachen",
+          residence: "Wohnort",
+          contact: "Kontakt",
+      }
+    : {
+          backLabel: "Back to CV",
+          backHref: "/cv-en",
+          printLabel: "Print / PDF",
+          applicationFor: "Application for",
+          experienceHeading: "Professional Experience",
+          educationHeading: "University Education",
+          furtherEducationHeading: "Additional Qualifications",
+          projectsHeading: "Projects",
+          skillsHeading: "Skills",
+          referencesHeading: "References",
+          since: "Since",
+          major: "Major",
+          thesis: "Thesis",
+          birthday: "Date of Birth",
+          languages: "Working Languages",
+          residence: "Residence",
+          contact: "Contact",
+      };
+
+function formatDate(dateStr: string): string {
+    if (!dateStr) return "";
+    const [year, month] = dateStr.split("-");
+    return `${month}/${year}`;
+}
+
+const formattedResumeDate = isDE
+    ? new Date(date).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" })
+    : new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
+
+const pageTitle = isDE
+    ? `Lebenslauf – ${p.name} – ${position}`
+    : `Resume – ${p.name} – ${position}`;
+
+const headerTitle = `${p.name} | ${position}`;
+---
+
+<ResumeLayout title={pageTitle} description={`${position} – ${company}`} lang={lang}>
+
+    <!-- Print toolbar (hidden in print) -->
+    <div class="resume-toolbar">
+        <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
+            <a href={l.backHref} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {l.backLabel}</a>
+            <button onclick="window.print()" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">{l.printLabel}</button>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 1: COVER ==================== -->
+    <div class="resume-page resume-cover">
+        <!-- Blue header bar -->
+        <div class="cover-header-bar"></div>
+
+        <!-- Application info -->
+        <div class="cover-application">
+            <p class="cover-application-label">{l.applicationFor}</p>
+            <h1 class="cover-application-title">{position}</h1>
+            <p class="cover-application-company">{company}</p>
+        </div>
+
+        <!-- Photo + Name -->
+        <div class="cover-person">
+            <img src={p.photo} alt={p.name} class="cover-photo" />
+            <div class="cover-person-info">
+                <h2 class="cover-name">{p.name}</h2>
+                <p class="cover-tagline">{p.tagline}</p>
+            </div>
+        </div>
+
+        <!-- Personal data table -->
+        <table class="cover-data-table">
+            <tr>
+                <td class="cover-data-label">{l.birthday}</td>
+                <td class="cover-data-value">{p.birthdate}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">{l.languages}</td>
+                <td class="cover-data-value">{p.languageValues}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">{l.residence}</td>
+                <td class="cover-data-value">{p.address}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">{l.contact}</td>
+                <td class="cover-data-value">{p.phone} | {p.email}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ==================== PAGE 2+: CV CONTENT ==================== -->
+    <div class="resume-page resume-cv-content">
+
+        <!-- Page header (repeats in print via running header CSS) -->
+        <div class="cv-page-header">
+            <span>{headerTitle}</span>
+        </div>
+
+        <!-- Berufserfahrung -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.experienceHeading}</h2>
+            {cv.experience.map((job, i) => (
+                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">
+                        {job.endDate
+                            ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}`
+                            : `${l.since} ${formatDate(job.startDate)}`}
+                    </div>
+                    <div class="resume-detail">
+                        {job.position && job.position.length > 0 ? (
+                            <>
+                                <p class="resume-entry-title">{job.position.join(", ")}</p>
+                                <p class="resume-entry-sub">
+                                    {job.company}{job.location && `, ${job.location}`}
+                                    <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                                <p class="resume-entry-title">{job.company}</p>
+                                {job.location && <p class="resume-entry-sub">{job.location} · {job.typeOfEmployment}</p>}
+                                {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
+                            </>
+                        )}
+                        {job.description?.list && job.description.list.length > 0 && (
+                            <ul class="resume-list">
+                                {job.description.list.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <!-- Hochschulausbildung – 3-column table -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.educationHeading}</h2>
+            {cv.education.map((edu, i) => (
+                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">{formatDate(edu.startDate)} – {formatDate(edu.endDate)}</div>
+                    <div class="resume-detail-mid">
+                        <p class="resume-entry-title">{edu.fieldOfStudy}, {edu.degree}</p>
+                        {edu.majorFieldOfStudy && <p class="resume-entry-meta">{l.major}: {edu.majorFieldOfStudy}</p>}
+                        {edu.thesis?.title && <p class="resume-entry-meta">{l.thesis}: {edu.thesis.title}</p>}
+                    </div>
+                    <div class="resume-detail-right">
+                        <p class="resume-entry-sub">{edu.school}</p>
+                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <!-- Zusatzqualifikationen – 3-column table -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.furtherEducationHeading}</h2>
+            {cv.furtherEducation.map((edu, i) => (
+                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">
+                        {formatDate(edu.startDate) === formatDate(edu.endDate)
+                            ? formatDate(edu.startDate)
+                            : `${formatDate(edu.startDate)} – ${formatDate(edu.endDate)}`}
+                    </div>
+                    <div class="resume-detail-mid">
+                        <p class="resume-entry-title">{edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}</p>
+                    </div>
+                    <div class="resume-detail-right">
+                        <p class="resume-entry-sub">{edu.school}</p>
+                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <!-- Projekte -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.projectsHeading}</h2>
+            {cv.projects.map((project, i) => (
+                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">{formatDate(project.date)}</div>
+                    <div class="resume-detail">
+                        <p class="resume-entry-title">{project.title}</p>
+                        {project.description?.list && project.description.list.length > 0 && (
+                            <ul class="resume-list">
+                                {project.description.list.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <!-- Kenntnisse -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.skillsHeading}</h2>
+            <div class="resume-skills-grid">
+                {cv.skills.map((cat) => (
+                    <div class="resume-skill-group">
+                        <h3 class="resume-skill-label">{cat.catagorie}</h3>
+                        <p class="resume-skill-items">{cat.items.join(" · ")}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <!-- Referenzen -->
+        <section class="resume-section">
+            <h2 class="resume-heading">{l.referencesHeading}</h2>
+            <div class="resume-references">
+                {cv.references.map((ref) => (
+                    <div class="resume-reference">
+                        <p class="resume-entry-title">{ref.name}</p>
+                        <p class="resume-entry-sub">{ref.position}, {ref.company}</p>
+                        {ref.department && <p class="resume-entry-meta">{ref.department}</p>}
+                        <p class="resume-entry-meta">{ref.email}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <!-- Date + Location footer -->
+        <div class="resume-date-footer">
+            {p.location}, {formattedResumeDate}
+        </div>
+    </div>
+</ResumeLayout>

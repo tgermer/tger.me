@@ -1,0 +1,32 @@
+---
+import "@fontsource/ibm-plex-sans/300.css";
+import "@fontsource/ibm-plex-sans/400.css";
+import "@fontsource/ibm-plex-sans/500.css";
+import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/ibm-plex-sans/700.css";
+import "../styles/global.css";
+
+interface Props {
+    title?: string;
+    description?: string;
+    lang?: string;
+}
+
+const { title = "Lebenslauf – Tristan Germer", description = "Lebenslauf von Tristan Germer", lang = "de" } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={description} />
+        <meta name="author" content="Tristan Germer" />
+        <meta name="robots" content="noindex, nofollow, noai, noimageai" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{title}</title>
+    </head>
+    <body class="bg-white text-gray-900 font-sans antialiased resume-body">
+        <slot />
+    </body>
+</html>

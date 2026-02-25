@@ -1,0 +1,189 @@
+---
+import ResumeLayout from "../layouts/ResumeLayout.astro";
+import { personal, experience, education, furtherEducation, skills, projects, references } from "../data/cv_de";
+
+function formatDate(dateStr: string): string {
+    if (!dateStr) return "";
+    const [year, month] = dateStr.split("-");
+    return `${month}/${year}`;
+}
+
+const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<ResumeLayout title="Lebenslauf – Tristan Germer" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse." lang="de">
+
+    <!-- Print toolbar -->
+    <div class="resume-toolbar">
+        <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
+            <a href="/cv-de" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Zurück zum Lebenslauf</a>
+            <div class="flex items-center gap-3">
+                <a href="/resume-en" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">English</a>
+                <button onclick="window.print()" class="text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">Drucken / PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cover Page -->
+    <div class="resume-page resume-cover">
+        <div class="cover-header-bar"></div>
+
+        <div class="cover-application">
+            <h1 class="cover-application-title" style="margin-top: 1rem;">Lebenslauf</h1>
+        </div>
+
+        <div class="cover-person">
+            <img src={personal.photo} alt={personal.name} class="cover-photo" />
+            <div class="cover-person-info">
+                <h2 class="cover-name">{personal.name}</h2>
+                <p class="cover-tagline">{personal.tagline}</p>
+            </div>
+        </div>
+
+        <table class="cover-data-table">
+            <tr>
+                <td class="cover-data-label">Geburtstag</td>
+                <td class="cover-data-value">{personal.birthdate}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">Arbeitssprachen</td>
+                <td class="cover-data-value">{personal.languageValues}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">Wohnort</td>
+                <td class="cover-data-value">{personal.address}</td>
+            </tr>
+            <tr>
+                <td class="cover-data-label">Kontakt</td>
+                <td class="cover-data-value">{personal.phone} | {personal.email}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- CV Content -->
+    <div class="resume-page resume-cv-content">
+        <div class="cv-page-header">
+            <span>Tristan Germer | Lebenslauf</span>
+        </div>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Beruflicher Werdegang</h2>
+            {experience.map((job, i) => (
+                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">
+                        {job.endDate
+                            ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}`
+                            : `Seit ${formatDate(job.startDate)}`}
+                    </div>
+                    <div class="resume-detail">
+                        {job.position && job.position.length > 0 ? (
+                            <>
+                                <p class="resume-entry-title">{job.position.join(", ")}</p>
+                                <p class="resume-entry-sub">
+                                    {job.company}{job.location && `, ${job.location}`}
+                                    <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                                <p class="resume-entry-title">{job.company}</p>
+                                {job.location && <p class="resume-entry-sub">{job.location} · {job.typeOfEmployment}</p>}
+                                {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
+                            </>
+                        )}
+                        {job.description?.list && job.description.list.length > 0 && (
+                            <ul class="resume-list">
+                                {job.description.list.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Hochschulausbildung</h2>
+            {education.map((edu, i) => (
+                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">{formatDate(edu.startDate)} – {formatDate(edu.endDate)}</div>
+                    <div class="resume-detail-mid">
+                        <p class="resume-entry-title">{edu.fieldOfStudy}, {edu.degree}</p>
+                        {edu.majorFieldOfStudy && <p class="resume-entry-meta">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
+                        {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
+                    </div>
+                    <div class="resume-detail-right">
+                        <p class="resume-entry-sub">{edu.school}</p>
+                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Zusatzqualifikationen</h2>
+            {furtherEducation.map((edu, i) => (
+                <div class:list={["resume-entry resume-entry-3col", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">
+                        {formatDate(edu.startDate) === formatDate(edu.endDate)
+                            ? formatDate(edu.startDate)
+                            : `${formatDate(edu.startDate)} – ${formatDate(edu.endDate)}`}
+                    </div>
+                    <div class="resume-detail-mid">
+                        <p class="resume-entry-title">{edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}</p>
+                    </div>
+                    <div class="resume-detail-right">
+                        <p class="resume-entry-sub">{edu.school}</p>
+                        {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Projekte</h2>
+            {projects.map((project, i) => (
+                <div class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
+                    <div class="resume-date">{formatDate(project.date)}</div>
+                    <div class="resume-detail">
+                        <p class="resume-entry-title">{project.title}</p>
+                        {project.description?.list && project.description.list.length > 0 && (
+                            <ul class="resume-list">
+                                {project.description.list.map((item) => <li>{item}</li>)}
+                            </ul>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Kenntnisse</h2>
+            <div class="resume-skills-grid">
+                {skills.map((cat) => (
+                    <div class="resume-skill-group">
+                        <h3 class="resume-skill-label">{cat.catagorie}</h3>
+                        <p class="resume-skill-items">{cat.items.join(" · ")}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <section class="resume-section">
+            <h2 class="resume-heading">Referenzen</h2>
+            <div class="resume-references">
+                {references.map((ref) => (
+                    <div class="resume-reference">
+                        <p class="resume-entry-title">{ref.name}</p>
+                        <p class="resume-entry-sub">{ref.position}, {ref.company}</p>
+                        {ref.department && <p class="resume-entry-meta">{ref.department}</p>}
+                        <p class="resume-entry-meta">{ref.email}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <div class="resume-date-footer">
+            München, {today}
+        </div>
+    </div>
+</ResumeLayout>
