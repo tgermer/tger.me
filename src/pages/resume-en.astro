@@ -1,7 +1,6 @@
 ---
 import ResumeLayout from "../layouts/ResumeLayout.astro";
-import { site } from "../data/site";
-import { experience, education, furtherEducation, skills, projects, references } from "../data/cv_en";
+import { personal, experience, education, furtherEducation, skills, projects, references } from "../data/cv_en";
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -34,29 +33,29 @@ const today = new Date().toLocaleDateString("en-US", { day: "numeric", month: "l
         </div>
 
         <div class="cover-person">
-            <img src="/assets/2025-09-02 Google Gemini 2.5 Flash.JPG" alt="Tristan Germer" class="cover-photo" />
+            <img src={personal.photo} alt={personal.name} class="cover-photo" />
             <div class="cover-person-info">
-                <h2 class="cover-name">Tristan Germer</h2>
-                <p class="cover-tagline">{site.taglineEn}</p>
+                <h2 class="cover-name">{personal.name}</h2>
+                <p class="cover-tagline">{personal.tagline}</p>
             </div>
         </div>
 
         <table class="cover-data-table">
             <tr>
                 <td class="cover-data-label">Date of Birth</td>
-                <td class="cover-data-value">{site.birthdate}</td>
+                <td class="cover-data-value">{personal.birthdate}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">Working Languages</td>
-                <td class="cover-data-value">German (Native), English (Fluent)</td>
+                <td class="cover-data-value">{personal.languageValues}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">Residence</td>
-                <td class="cover-data-value">{site.address}</td>
+                <td class="cover-data-value">{personal.address}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">Contact</td>
-                <td class="cover-data-value">{site.phone} | {site.email}</td>
+                <td class="cover-data-value">{personal.phone} | {personal.email}</td>
             </tr>
         </table>
     </div>

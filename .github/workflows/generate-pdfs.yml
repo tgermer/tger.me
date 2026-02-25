@@ -1,0 +1,39 @@
+name: Generate Resume PDFs
+
+on:
+  push:
+    paths:
+      - 'src/content/resume/**'
+      - 'src/data/cv_*.ts'
+      - 'src/pages/resume/**'
+      - 'src/pages/resume-*.astro'
+      - 'src/layouts/ResumeLayout.astro'
+      - 'src/styles/global.css'
+
+jobs:
+  generate-pdfs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate PDFs
+        run: node scripts/generate-pdf.mjs
+
+      - name: Commit PDFs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: auto-generate resume PDFs'
+          file_pattern: 'public/resume/*.pdf'

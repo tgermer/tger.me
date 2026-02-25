@@ -1,7 +1,6 @@
 ---
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { getCollection } from "astro:content";
-import { site } from "../../data/site";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
 
@@ -33,6 +32,8 @@ if (cvData) {
     cv = isDE ? cvDe : cvEn;
 }
 
+const p = cv.personal;
+
 const l = isDE
     ? {
           backLabel: "Zurück zum Lebenslauf",
@@ -48,14 +49,10 @@ const l = isDE
           since: "Seit",
           major: "Schwerpunkt",
           thesis: "Thesis",
-          degree: "M.Sc. Technische Kommunikation",
-          tagline: site.taglineDe,
           birthday: "Geburtstag",
           languages: "Arbeitssprachen",
-          languageValues: "Deutsch (Muttersprache), Englisch (fließend)",
           residence: "Wohnort",
           contact: "Kontakt",
-          location: "München",
       }
     : {
           backLabel: "Back to CV",
@@ -71,14 +68,10 @@ const l = isDE
           since: "Since",
           major: "Major",
           thesis: "Thesis",
-          degree: "M.Sc. Technical Communication",
-          tagline: site.taglineEn,
           birthday: "Date of Birth",
           languages: "Working Languages",
-          languageValues: "German (Native), English (Fluent)",
           residence: "Residence",
           contact: "Contact",
-          location: "Munich",
       };
 
 function formatDate(dateStr: string): string {
@@ -92,10 +85,10 @@ const formattedResumeDate = isDE
     : new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 
 const pageTitle = isDE
-    ? `Lebenslauf – Tristan Germer – ${position}`
-    : `Resume – Tristan Germer – ${position}`;
+    ? `Lebenslauf – ${p.name} – ${position}`
+    : `Resume – ${p.name} – ${position}`;
 
-const headerTitle = `Tristan Germer | ${position}`;
+const headerTitle = `${p.name} | ${position}`;
 ---
 
 <ResumeLayout title={pageTitle} description={`${position} – ${company}`} lang={lang}>
@@ -122,10 +115,10 @@ const headerTitle = `Tristan Germer | ${position}`;
 
         <!-- Photo + Name -->
         <div class="cover-person">
-            <img src="/assets/2025-09-02 Google Gemini 2.5 Flash.JPG" alt="Tristan Germer" class="cover-photo" />
+            <img src={p.photo} alt={p.name} class="cover-photo" />
             <div class="cover-person-info">
-                <h2 class="cover-name">Tristan Germer</h2>
-                <p class="cover-tagline">{l.tagline}</p>
+                <h2 class="cover-name">{p.name}</h2>
+                <p class="cover-tagline">{p.tagline}</p>
             </div>
         </div>
 
@@ -133,19 +126,19 @@ const headerTitle = `Tristan Germer | ${position}`;
         <table class="cover-data-table">
             <tr>
                 <td class="cover-data-label">{l.birthday}</td>
-                <td class="cover-data-value">{site.birthdate}</td>
+                <td class="cover-data-value">{p.birthdate}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">{l.languages}</td>
-                <td class="cover-data-value">{l.languageValues}</td>
+                <td class="cover-data-value">{p.languageValues}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">{l.residence}</td>
-                <td class="cover-data-value">{site.address}</td>
+                <td class="cover-data-value">{p.address}</td>
             </tr>
             <tr>
                 <td class="cover-data-label">{l.contact}</td>
-                <td class="cover-data-value">{site.phone} | {site.email}</td>
+                <td class="cover-data-value">{p.phone} | {p.email}</td>
             </tr>
         </table>
     </div>
@@ -282,7 +275,7 @@ const headerTitle = `Tristan Germer | ${position}`;
 
         <!-- Date + Location footer -->
         <div class="resume-date-footer">
-            {l.location}, {formattedResumeDate}
+            {p.location}, {formattedResumeDate}
         </div>
     </div>
 </ResumeLayout>

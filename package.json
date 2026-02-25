@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "pdf": "node scripts/generate-pdf.mjs",
+    "pdf:install": "npx playwright install chromium",
+    "new-resume": "bash scripts/new-resume.sh"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
@@ -18,6 +21,7 @@
     "tailwindcss": "^4.2.0"
   },
   "devDependencies": {
-    "@types/node": "^25.3.0"
+    "@types/node": "^25.3.0",
+    "playwright": "^1.50.0"
   }
 }
