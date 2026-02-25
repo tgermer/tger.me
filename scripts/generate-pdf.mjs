@@ -13,8 +13,9 @@
  */
 
 import { chromium } from 'playwright';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { spawn } from 'node:child_process';
-import { readdir, mkdir } from 'node:fs/promises';
+import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -59,15 +60,90 @@ function startPreviewServer() {
   return proc;
 }
 
+const MM = 2.8346; // 1mm in PDF points
+
+async function addHeaderFooter(pdfDoc, headerTitle, lang) {
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const fontSize = 7.5;
+  const color = rgb(107 / 255, 114 / 255, 128 / 255); // #6b7280
+
+  const pages = pdfDoc.getPages();
+  const totalPages = pages.length;
+
+  const pageLabel = lang === 'de' ? 'Seite' : 'Page';
+  const ofLabel = lang === 'de' ? 'von' : 'of';
+
+  for (let i = 1; i < totalPages; i++) {
+    const page = pages[i];
+    const { width, height } = page.getSize();
+
+    // Header: title at 12.5mm from top, 25mm from left
+    if (headerTitle) {
+      page.drawText(headerTitle, {
+        x: 25 * MM,
+        y: height - 12.5 * MM,
+        size: fontSize,
+        font,
+        color,
+      });
+    }
+
+    // Footer: "Seite X von Y" right-aligned, 12.5mm from bottom, 25mm from right
+    const footerText = `${pageLabel} ${i + 1} ${ofLabel} ${totalPages}`;
+    const footerWidth = font.widthOfTextAtSize(footerText, fontSize);
+    page.drawText(footerText, {
+      x: width - 25 * MM - footerWidth,
+      y: 12.5 * MM,
+      size: fontSize,
+      font,
+      color,
+    });
+  }
+}
+
 async function generatePdf(browser, slug, urlPath, outputPath) {
   const page = await browser.newPage();
   try {
     await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle' });
+
+    // Extract data from the rendered page
+    const headerTitle = await page
+      .$eval('.cv-page-header span', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+    const lang = await page.$eval('html', (el) => el.getAttribute('lang') || 'de');
+    const position = await page
+      .$eval('.cover-application-title', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+    const authorName = await page
+      .$eval('.cover-name', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+    const company = await page
+      .$eval('.cover-application-company', (el) => el.textContent?.trim() || '')
+      .catch(() => '');
+
+    // Generate PDF (margins controlled by CSS @page rules, header/footer added via pdf-lib)
     await page.pdf({
       path: outputPath,
       preferCSSPageSize: true,
       printBackground: true,
     });
+
+    // Post-process: add header/footer (pages 2+) and set metadata
+    const pdfBytes = await readFile(outputPath);
+    const pdfDoc = await PDFDocument.load(pdfBytes);
+
+    await addHeaderFooter(pdfDoc, headerTitle, lang);
+
+    pdfDoc.setTitle(position);
+    pdfDoc.setAuthor(authorName);
+    pdfDoc.setSubject(lang === 'de' ? 'Lebenslauf' : 'Resume');
+    pdfDoc.setCreator('Astro + Playwright');
+    if (company) {
+      pdfDoc.setKeywords([position, company]);
+    }
+    const modifiedBytes = await pdfDoc.save();
+    await writeFile(outputPath, modifiedBytes);
+
     console.log(`  OK: ${outputPath.replace(ROOT + '/', '')}`);
   } finally {
     await page.close();
