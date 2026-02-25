@@ -33,6 +33,18 @@ const statusColors: Record<string, string> = {
     "zurückgezogen": "bg-stone-100 text-stone-500",
 };
 
+const statusDotColors: Record<string, string> = {
+    beworben: "bg-gray-400",
+    "eingangsbestätigung": "bg-blue-400",
+    "vorstellungsgespräch": "bg-indigo-400",
+    "zweitgespräch": "bg-violet-400",
+    assessment: "bg-purple-400",
+    angebot: "bg-amber-400",
+    zusage: "bg-green-400",
+    absage: "bg-red-400",
+    "zurückgezogen": "bg-stone-400",
+};
+
 function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
     if (history.length === 0) return null;
     // Sort by date ascending, take last
@@ -138,8 +150,9 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                 {sorted.map((r) => {
                     const current = getCurrentStatus(r.data.statusHistory);
                     const statusKey = current?.status;
+                    const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                     return (
-                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                        <div data-expandable-card class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
                             <div class="flex items-start justify-between gap-2 mb-2">
                                 <div class="min-w-0">
                                     <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
@@ -148,11 +161,14 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                     <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
                                     <p class="text-sm text-gray-500">{r.data.company}</p>
                                 </div>
-                                {statusKey && (
-                                    <span class:list={["shrink-0 text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
-                                        {statusLabels[statusKey] || statusKey}
-                                    </span>
-                                )}
+                                <div class="flex items-center gap-1 shrink-0">
+                                    {statusKey && (
+                                        <span class:list={["text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
+                                            {statusLabels[statusKey] || statusKey}
+                                        </span>
+                                    )}
+                                    {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
+                                </div>
                             </div>
                             <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500 mb-3">
                                 <span class="inline-flex items-center gap-1"><Icon name="tabler:calendar" class="h-3.5 w-3.5" />{formatDate(r.data.date)}</span>
@@ -169,6 +185,28 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                             )}
                             {r.data.notes && (
                                 <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>{r.data.notes}</p>
+                            )}
+                            {history.length > 0 && (
+                                <div data-detail class="hidden border-t border-gray-100 pt-3 mb-2">
+                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
+                                    {history.map((entry, i) => (
+                                        <div class="flex gap-3">
+                                            <div class="flex flex-col items-center">
+                                                <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
+                                                {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
+                                            </div>
+                                            <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
+                                                <div class="flex items-center gap-2">
+                                                    <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>
+                                                        {statusLabels[entry.status] || entry.status}
+                                                    </span>
+                                                    <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
+                                                </div>
+                                                {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             )}
                             <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
                                 <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf"><Icon name="tabler:file-text" class="h-4 w-4" /></a>
@@ -205,8 +243,10 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                         {sorted.map((r) => {
                             const current = getCurrentStatus(r.data.statusHistory);
                             const statusKey = current?.status;
+                            const history = [...r.data.statusHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
                             return (
-                                <tr class="hover:bg-gray-50 transition-colors">
+                                <>
+                                <tr data-expandable class="hover:bg-gray-50 transition-colors cursor-pointer">
                                     <td class="px-4 py-3 whitespace-nowrap">
                                         <p class="text-gray-900">{formatDate(r.data.date)}</p>
                                         <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
@@ -222,13 +262,16 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                         )}
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap">
-                                        {statusKey ? (
-                                            <span class:list={["inline-block text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
-                                                {statusLabels[statusKey] || statusKey}
-                                            </span>
-                                        ) : (
-                                            <span class="text-xs text-gray-300">–</span>
-                                        )}
+                                        <div class="flex items-center gap-1.5">
+                                            {statusKey ? (
+                                                <span class:list={["inline-block text-xs font-medium px-2 py-1 rounded-full", statusColors[statusKey] || "bg-gray-100 text-gray-700"]}>
+                                                    {statusLabels[statusKey] || statusKey}
+                                                </span>
+                                            ) : (
+                                                <span class="text-xs text-gray-300">–</span>
+                                            )}
+                                            {history.length > 0 && <Icon name="tabler:chevron-down" class="expand-icon h-3.5 w-3.5 text-gray-400 transition-transform duration-200" />}
+                                        </div>
                                         {current?.date && (
                                             <p class="text-xs text-gray-400 mt-1">{formatDate(current.date)}</p>
                                         )}
@@ -262,6 +305,33 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                                         </div>
                                     </td>
                                 </tr>
+                                {history.length > 0 && (
+                                <tr data-detail class="hidden">
+                                    <td colspan="8" class="px-4 py-0 bg-gray-50/50">
+                                        <div class="py-3 pl-2">
+                                            <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
+                                            {history.map((entry, i) => (
+                                                <div class="flex gap-3">
+                                                    <div class="flex flex-col items-center">
+                                                        <div class:list={["w-2.5 h-2.5 rounded-full shrink-0 mt-1", statusDotColors[entry.status] || "bg-gray-400"]} />
+                                                        {i < history.length - 1 && <div class="w-px flex-1 bg-gray-200 min-h-4" />}
+                                                    </div>
+                                                    <div class:list={["min-w-0", i < history.length - 1 ? "pb-3" : ""]}>
+                                                        <div class="flex items-center gap-2">
+                                                            <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>
+                                                                {statusLabels[entry.status] || entry.status}
+                                                            </span>
+                                                            <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
+                                                        </div>
+                                                        {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                                )}
+                                </>
                             );
                         })}
                     </tbody>
@@ -288,6 +358,30 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             document.getElementById("gate")!.classList.add("hidden");
             document.getElementById("content")!.classList.remove("hidden");
         }
+
+        // Desktop: expandable table rows
+        document.querySelectorAll("tr[data-expandable]").forEach((row) => {
+            row.addEventListener("click", (e) => {
+                if ((e.target as HTMLElement).closest("a")) return;
+                const detail = row.nextElementSibling;
+                if (detail?.hasAttribute("data-detail")) {
+                    detail.classList.toggle("hidden");
+                    row.querySelector(".expand-icon")?.classList.toggle("rotate-180");
+                }
+            });
+        });
+
+        // Mobile: expandable cards
+        document.querySelectorAll("[data-expandable-card]").forEach((card) => {
+            card.addEventListener("click", (e) => {
+                if ((e.target as HTMLElement).closest("a")) return;
+                const detail = card.querySelector("[data-detail]");
+                if (detail) {
+                    detail.classList.toggle("hidden");
+                    card.querySelector(".expand-icon")?.classList.toggle("rotate-180");
+                }
+            });
+        });
 
         document.getElementById("pw-form")!.addEventListener("submit", async (e) => {
             e.preventDefault();

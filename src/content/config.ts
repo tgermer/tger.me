@@ -50,6 +50,7 @@ const applicationStatus = z.enum([
 const statusEntry = z.object({
   status: applicationStatus,
   date: z.date(),
+  info: optionalString,
 });
 
 const apply = defineCollection({
