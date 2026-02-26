@@ -1,0 +1,12 @@
+---
+import AboutContent from "../../components/AboutContent.astro";
+import type { Lang } from "../../data/i18n";
+
+export function getStaticPaths() {
+    return [{ params: { lang: "de" } }, { params: { lang: "en" } }];
+}
+
+const { lang } = Astro.params as { lang: Lang };
+---
+
+<AboutContent lang={lang} />

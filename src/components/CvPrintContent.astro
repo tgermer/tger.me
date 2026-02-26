@@ -1,13 +1,25 @@
 ---
 import { Image } from "astro:assets";
-import ResumeLayout from "../../layouts/ResumeLayout.astro";
+import ResumeLayout from "../layouts/ResumeLayout.astro";
 import { Icon } from "astro-icon/components";
-import { personal, experience, education, furtherEducation, skills, projects } from "../../data/cv_de";
+import { t, type Lang } from "../data/i18n";
+import * as cvDe from "../data/cv_de";
+import * as cvEn from "../data/cv_en";
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>("../../assets/apply/*.{jpg,jpeg,png}", { eager: true });
-const photoKey = `../../assets/apply/${personal.photo}`;
+interface Props {
+    lang: Lang;
+}
+
+const { lang } = Astro.props;
+const l = t(lang);
+const cv = lang === "de" ? cvDe : cvEn;
+const { personal, experience, education, furtherEducation, skills, projects } = cv;
+const otherLang = lang === "de" ? "en" : "de";
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
+const photoKey = `../assets/apply/${personal.photo}`;
 const photoModule = imageModules[photoKey];
-if (!photoModule) throw new Error(`Photo not found: src/assets/${personal.photo}`);
+if (!photoModule) throw new Error(`Photo not found: src/assets/apply/${personal.photo}`);
 const photoImage = photoModule.default;
 
 function formatDate(dateStr: string): string {
@@ -16,19 +28,19 @@ function formatDate(dateStr: string): string {
     return `${month}/${year}`;
 }
 
-const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric", month: "long", year: "numeric" });
 ---
 
-<ResumeLayout title="Lebenslauf – Tristan Germer" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse." lang="de">
+<ResumeLayout title={l.cvPrintPageTitle} description={l.cvPrintPageDescription} lang={lang}>
     <!-- Print toolbar -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
-            <a href="/de/cv" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Zurück zum Lebenslauf</a>
+            <a href={`/${lang}/cv`} class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; {l.cvPrintBackLabel}</a>
             <div class="flex items-center gap-3">
-                <a href="/en/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">English</a>
-                <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                <a href={`/${otherLang}/cv-print`} class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">{l.cvPrintLangSwitchLabel}</a>
+                <a href={l.cvPrintPdfHref} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
                     <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
-                    PDF herunterladen
+                    {l.cvPrintDownloadLabel}
                 </a>
             </div>
         </div>
@@ -39,7 +51,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         <div class="cover-header-bar"></div>
 
         <div class="cover-application">
-            <h1 class="cover-application-title" style="margin-top: 1rem; font-size: 1.75rem;">Lebenslauf</h1>
+            <h1 class="cover-application-title" style="margin-top: 1rem; font-size: 1.75rem;">{l.cvPrintCoverTitle}</h1>
         </div>
 
         <div class="cover-bottom">
@@ -49,25 +61,25 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
 
             <table class="cover-data-table">
                 <tr>
-                    <td class="cover-data-label">Geburtstag</td>
+                    <td class="cover-data-label">{l.cvPrintBirthdayLabel}</td>
                     <td class="cover-data-value">{personal.birthdate}</td>
                 </tr>
                 <tr>
-                    <td class="cover-data-label">Arbeitssprachen</td>
+                    <td class="cover-data-label">{l.cvPrintLanguagesLabel}</td>
                     <td class="cover-data-value">{personal.languageValues}</td>
                 </tr>
                 <tr>
-                    <td class="cover-data-label">Wohnort</td>
+                    <td class="cover-data-label">{l.cvPrintResidenceLabel}</td>
                     <td class="cover-data-value">{personal.address}</td>
                 </tr>
                 <tr>
-                    <td class="cover-data-label">Kontakt</td>
+                    <td class="cover-data-label">{l.cvPrintContactLabel}</td>
                     <td class="cover-data-value"><a href={`tel:${personal.phone}`} target="_blank" rel="noopener noreferrer">{personal.phone}</a> | <a href={`mailto:${personal.email}`} target="_blank" rel="noopener noreferrer">{personal.email}</a></td>
                 </tr>
                 {
                     (personal.url || personal.linkedinUrl || personal.githubUrl) && (
                         <tr>
-                            <td class="cover-data-label">Online</td>
+                            <td class="cover-data-label">{l.cvPrintOnlineLabel}</td>
                             <td class="cover-data-value">
                                 {[
                                     personal.url && (
@@ -87,7 +99,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                                     ),
                                 ]
                                     .filter(Boolean)
-                                    .reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " · ", el]), [])}
+                                    .reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " · ", el]), [] as any[])}
                             </td>
                         </tr>
                     )
@@ -99,11 +111,11 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
     <!-- CV Content -->
     <div class="resume-page resume-cv-content">
         <div class="cv-page-header">
-            <span>Tristan Germer | Lebenslauf</span>
+            <span>{l.cvPrintPageHeader}</span>
         </div>
 
         <section class="resume-section">
-            <h2 class="resume-heading">Beruflicher Werdegang</h2>
+            <h2 class="resume-heading">{l.cvPrintExperienceHeading}</h2>
             <table class="resume-table">
                 {
                     experience.map((job, i) => (
@@ -116,7 +128,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                                         {formatDate(job.endDate)}
                                     </>
                                 ) : (
-                                    `Seit ${formatDate(job.startDate)}`
+                                    `${l.cvPrintSince} ${formatDate(job.startDate)}`
                                 )}
                             </td>
                             <td class="resume-detail">
@@ -155,7 +167,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         </section>
 
         <section class="resume-section">
-            <h2 class="resume-heading">Hochschulausbildung</h2>
+            <h2 class="resume-heading">{l.cvPrintEducationHeading}</h2>
             <table class="resume-table">
                 {
                     education.map((edu, i) => (
@@ -169,7 +181,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
                                 <p class="resume-entry-title">
                                     {edu.fieldOfStudy}, {edu.degree}
                                 </p>
-                                {edu.majorFieldOfStudy && <p class="resume-entry-meta">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
+                                {edu.majorFieldOfStudy && <p class="resume-entry-meta">{l.cvPrintMajorLabel} {edu.majorFieldOfStudy}</p>}
                                 {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
                             </td>
                             <td class="resume-detail-right">
@@ -183,7 +195,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         </section>
 
         <section class="resume-section">
-            <h2 class="resume-heading">Zusatzqualifikationen</h2>
+            <h2 class="resume-heading">{l.cvPrintFurtherEducationHeading}</h2>
             <table class="resume-table">
                 {
                     furtherEducation.map((edu, i) => (
@@ -218,7 +230,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         {
             projects?.length > 0 && (
                 <section class="resume-section">
-                    <h2 class="resume-heading">Projekte</h2>
+                    <h2 class="resume-heading">{l.cvPrintProjectsHeading}</h2>
                     <table class="resume-table">
                         {projects.map((project, i) => (
                             <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
@@ -243,7 +255,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         {
             skills?.length > 0 && (
                 <section class="resume-section">
-                    <h2 class="resume-heading">Kenntnisse</h2>
+                    <h2 class="resume-heading">{l.cvPrintSkillsHeading}</h2>
                     <div class="resume-skills-grid">
                         {skills.map((cat) => (
                             <div class="resume-skill-group">
@@ -261,7 +273,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         }
 
         <div class="resume-date-footer">
-            München, {today}
+            {l.cvPrintLocationPrefix}, {today}
         </div>
     </div>
 </ResumeLayout>

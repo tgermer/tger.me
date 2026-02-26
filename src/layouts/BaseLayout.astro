@@ -1,5 +1,4 @@
 ---
-import "@fontsource/ibm-plex-sans/300.css";
 import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "@fontsource/ibm-plex-sans/600.css";
@@ -57,6 +56,17 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+        <!-- Structured Data: Person -->
+        <script is:inline type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Tristan Germer",
+            "url": "https://tger.me",
+            "jobTitle": "Digitalization & Automation Specialist",
+            "sameAs": ["https://www.linkedin.com/in/tgermer/"],
+            "email": "mailto:hello@tger.me",
+        })} />
+
         <!-- Theme: apply before render to prevent FOUC -->
         <!-- Language persistence: redirect to preferred language on direct page load -->
         <script is:inline>
@@ -102,7 +112,7 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
         <main id="main-content">
             <slot />
         </main>
-        <Footer />
+        <Footer lang={lang} />
 
     </body>
 </html>

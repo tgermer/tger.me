@@ -1,19 +1,35 @@
 ---
-import PageLayout from "../../layouts/PageLayout.astro";
-import { Icon } from 'astro-icon/components';
-import { experience, education, furtherEducation, skills, projects, references } from "../../data/cv_de";
+import PageLayout from "../layouts/PageLayout.astro";
+import { Icon } from "astro-icon/components";
+import { t, type Lang } from "../data/i18n";
+import * as cvDe from "../data/cv_de";
+import * as cvEn from "../data/cv_en";
+
+interface Props {
+    lang: Lang;
+}
+
+const { lang } = Astro.props;
+const l = t(lang);
+const cv = lang === "de" ? cvDe : cvEn;
+const { experience, education, furtherEducation, skills, projects, references } = cv;
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
     const [year, month] = dateStr.split("-");
     return `${month}/${year}`;
 }
+
+const alternates = [
+    { hreflang: "de", href: "https://tger.me/de/cv" },
+    { hreflang: "en", href: "https://tger.me/en/cv" },
+];
 ---
 
-<PageLayout title="Lebenslauf" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse." alternates={[{hreflang: "de", href: "https://tger.me/de/cv"}, {hreflang: "en", href: "https://tger.me/en/cv"}]}>
+<PageLayout title={l.cvPageTitle} description={l.cvPageDescription} lang={lang} alternates={alternates}>
     <!-- Download -->
     <div class="flex items-center justify-end mb-8">
-        <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">
+        <a href={l.cvPdfHref} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">
             <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
             Download
         </a>
@@ -21,14 +37,14 @@ function formatDate(dateStr: string): string {
 
     <!-- Berufserfahrung -->
     <section class="mb-12">
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:briefcase" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Beruflicher Werdegang</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:briefcase" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvExperienceHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
                 experience.map((job) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
                             <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
-                                <span class="md:hidden">{job.endDate ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}` : `Seit ${formatDate(job.startDate)}`}</span>
+                                <span class="md:hidden">{job.endDate ? `${formatDate(job.startDate)} – ${formatDate(job.endDate)}` : `${l.cvSince} ${formatDate(job.startDate)}`}</span>
                                 <div class="hidden md:block">
                                     {job.endDate ? (
                                         <>
@@ -37,7 +53,7 @@ function formatDate(dateStr: string): string {
                                         </>
                                     ) : (
                                         <>
-                                            <div>Seit</div>
+                                            <div>{l.cvSince}</div>
                                             <div>{formatDate(job.startDate)}</div>
                                         </>
                                     )}
@@ -100,7 +116,7 @@ function formatDate(dateStr: string): string {
 
     <!-- Ausbildung -->
     <section class="mb-12">
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:school" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Hochschulausbildung</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:school" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvEducationHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
                 education.map((edu) => (
@@ -129,7 +145,7 @@ function formatDate(dateStr: string): string {
                                     )}
                                     {edu.location && `, ${edu.location}`}
                                 </p>
-                                {edu.majorFieldOfStudy && <p class="text-gray-900 dark:text-white">Schwerpunkt: {edu.majorFieldOfStudy}</p>}
+                                {edu.majorFieldOfStudy && <p class="text-gray-900 dark:text-white">{l.cvMajorLabel} {edu.majorFieldOfStudy}</p>}
                                 {edu.thesis?.title && (
                                     <p class="text-gray-900 dark:text-white mt-1">
                                         Thesis:{" "}
@@ -152,7 +168,7 @@ function formatDate(dateStr: string): string {
 
     <!-- Weiterbildung -->
     <section class="mb-12">
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:certificate" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Zusatzqualifikationen</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:certificate" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvFurtherEducationHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
                 furtherEducation.map((edu) => (
@@ -191,7 +207,7 @@ function formatDate(dateStr: string): string {
                                 {edu.certificateUrl && (
                                     <a href={edu.certificateUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
                                         <Icon name="tabler:certificate" class="h-3.5 w-3.5" />
-                                        Zertifikat ansehen
+                                        {l.cvViewCertificate}
                                     </a>
                                 )}
                             </div>
@@ -204,7 +220,7 @@ function formatDate(dateStr: string): string {
 
     <!-- Projekte -->
     <section class="mb-12">
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:code" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Projekte</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:code" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvProjectsHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
                 projects.map((project) => (
@@ -236,7 +252,7 @@ function formatDate(dateStr: string): string {
 
     <!-- Kenntnisse -->
     <section class="mb-12">
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:brain" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Kenntnisse</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:brain" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvSkillsHeading}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {
                 skills.map((cat) => (
@@ -255,7 +271,7 @@ function formatDate(dateStr: string): string {
 
     <!-- Referenzen -->
     <section>
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:users" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> Referenzen</h2>
+        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:users" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvReferencesHeading}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {
                 references.map((ref) => (
