@@ -16,7 +16,7 @@ const { Content } = await post.render();
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 ---
 
-<BaseLayout title={post.data.title} description={post.data.excerpt} ogImage={post.data.image?.src}>
+<BaseLayout title={post.data.title} description={post.data.excerpt} ogImage={post.data.image?.src} ogType="article">
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <a href="/blog" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-6">
@@ -26,20 +26,22 @@ const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', mon
         Zum Blog
       </a>
 
-      <header class="mb-8">
-        <time class="text-sm text-gray-500 dark:text-gray-400">{dateStr}</time>
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
-      </header>
+      <article>
+        <header class="mb-8">
+          <time datetime={post.data.date.toISOString()} class="text-sm text-gray-500 dark:text-gray-400">{dateStr}</time>
+          <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
+        </header>
 
-      <div class="prose max-w-none text-gray-700 dark:text-gray-300">
-        <Content />
-      </div>
+        <div class="prose max-w-none text-gray-700 dark:text-gray-300">
+          <Content />
+        </div>
 
-      {post.data.showContact && (
-        <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
-          Fragen oder Anmerkungen? Schreib mir an <a href={`mailto:${site.email}`} class="text-blue-600 dark:text-blue-400 hover:underline">{site.email}</a>
-        </p>
-      )}
+        {post.data.showContact && (
+          <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+            Fragen oder Anmerkungen? Schreib mir an <a href={`mailto:${site.email}`} class="text-blue-600 dark:text-blue-400 hover:underline">{site.email}</a>
+          </p>
+        )}
+      </article>
     </div>
   </div>
 </BaseLayout>

@@ -62,11 +62,12 @@ const screenshotUrls = screenshots.map((s) => s.src);
 <BaseLayout title={title} description={description} ogImage={image.src}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <article>
 
       <!-- Header -->
       <div class="mb-8">
         <a href="/portfolio" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4">
-          <Icon name="tabler:arrow-left" class="h-4 w-4" />
+          <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
           Zurück zur Übersicht
         </a>
 
@@ -78,7 +79,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
           </div>
           {icon && (
             <div class="shrink-0">
-              <img src={icon} alt={title} class="h-24 w-24 object-contain rounded-2xl shadow-md" style={(iconBg || imageBg) ? `background-color: ${iconBg || imageBg};` : undefined} />
+              <img src={icon} alt="" class="h-24 w-24 object-contain rounded-2xl shadow-md" style={(iconBg || imageBg) ? `background-color: ${iconBg || imageBg};` : undefined} />
             </div>
           )}
         </div>
@@ -101,7 +102,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
               rel="noopener noreferrer"
               class="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-300 transition-colors"
             >
-              <Icon name="tabler:brand-github" class="h-4 w-4" />
+              <Icon name="tabler:brand-github" class="h-4 w-4" aria-hidden="true" />
               GitHub
             </a>
           )}
@@ -112,7 +113,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
               rel="noopener noreferrer"
               class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
             >
-              <Icon name="tabler:external-link" class="h-4 w-4" />
+              <Icon name="tabler:external-link" class="h-4 w-4" aria-hidden="true" />
               Website besuchen
             </a>
           )}
@@ -194,10 +195,11 @@ const screenshotUrls = screenshots.map((s) => s.src);
       <!-- Back button -->
       <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
         <a href="/portfolio" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-          <Icon name="tabler:arrow-left" class="h-4 w-4" />
+          <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
           Alle Projekte ansehen
         </a>
       </div>
+      </article>
     </div>
   </div>
 

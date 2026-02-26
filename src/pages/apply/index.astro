@@ -112,6 +112,7 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             <h1 class="text-lg font-bold text-gray-900 mb-4">Bewerbungen</h1>
             <p class="text-sm text-gray-500 mb-4">Bitte Passwort eingeben, um die Übersicht anzuzeigen.</p>
             <form id="pw-form" class="flex gap-2">
+                <label for="pw-input" class="sr-only">Passwort</label>
                 <input id="pw-input" type="password" placeholder="Passwort" class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off" />
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors cursor-pointer">Login</button>
             </form>

@@ -5,12 +5,13 @@ interface Props {
   title: string;
   description?: string;
   subtitle?: string;
+  lang?: string;
 }
 
-const { title, description, subtitle } = Astro.props;
+const { title, description, subtitle, lang } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} lang={lang}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-6">
