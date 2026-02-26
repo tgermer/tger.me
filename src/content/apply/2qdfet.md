@@ -24,9 +24,6 @@ statusHistory:
     - status: "zusage"
       date: 2026-02-26
       info: "Telefonat mit Hr. Eger, Start ab 01.04."
-    - status: "angebot"
-      date: 2026-02-26
-      info: "Ich warete noch darauf"
 ---
 
 über LinkedIn bin ich auf die Position als Senior Consultant Integrierte Managementsysteme bei MHP aufmerksam geworden. Die Verbindung von Audit, Compliance und strategischer Weiterentwicklung von Managementsystemen in einem internationalen Umfeld entspricht genau meiner beruflichen Ausrichtung – deshalb bewerbe ich mich mit großem Interesse.
