@@ -25,7 +25,7 @@ statusHistory:
       date: 2026-02-26
 ---
 
-in den vergangenen Monaten durfte ich für Projekt M Immobilien bereits die Website umsetzen und erste Automatisierungen auf den Weg bringen. Dabei habe ich erlebt, wie viel Potenzial in Ihrem Unternehmen steckt – und wie viel Arbeitszeit durch gezielte Digitalisierung freigesetzt werden kann. Deshalb möchte ich diese Zusammenarbeit nun in Vollzeit fortführen.
+in den vergangenen Monaten durfte ich für die Projekt M Immobilien GmbH bereits die Website umsetzen und erste Automatisierungen auf den Weg bringen. Dabei habe ich erlebt, wie viel Potenzial in Ihrem Unternehmen steckt – und wie viel Arbeitszeit durch gezielte Digitalisierung freigesetzt werden kann. Deshalb möchte ich diese Zusammenarbeit nun in Vollzeit fortführen.
 
 Als Boutique-Makler mit zertifizierter Sachverständigentätigkeit verbinden Sie persönliche Beratung mit fachlicher Tiefe. Gerade im Gutachterbereich sehe ich erhebliches Potenzial: Von der Datenerfassung über die Erstellung von Verkehrswertgutachten bis hin zur Kundenkommunikation lassen sich viele wiederkehrende Schritte automatisieren – ohne die Qualität zu beeinträchtigen, die Ihre Kunden schätzen.
 
@@ -33,4 +33,4 @@ Mein beruflicher Hintergrund passt genau zu dieser Aufgabe: An der Hochschule M�
 
 Ich kenne Ihre Arbeitsweise bereits und weiß, wo die größten Hebel liegen. Ob automatisierte Gutachtenvorlagen, effizientere Exposé-Erstellung oder digitale Workflows – ich möchte messbare Entlastung schaffen, damit Sie und Ihr Team sich auf das konzentrieren können, was den Unterschied macht: die persönliche Beratung Ihrer Kunden.
 
-Ich freue mich auf ein Gespräch darüber, wie wir die Digitalisierung von Projekt M gemeinsam vorantreiben können.
+Ich freue mich auf ein persönliches Gespräch darüber, wie wir die Digitalisierung der Projekt M Immobilien GmbH gemeinsam vorantreiben können.
