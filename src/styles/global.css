@@ -9,9 +9,14 @@
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & hyphenation */
 html {
   scroll-behavior: smooth;
+  hyphens: auto;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  hyphens: none;
 }
 
 /* Gradient helper */
