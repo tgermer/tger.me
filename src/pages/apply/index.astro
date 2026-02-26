@@ -149,8 +149,8 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                     <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors"><Icon name="tabler:chevron-left" class="h-6 w-6" /><h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1></a>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="/cv-de-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. DE</a>
-                    <a href="/cv-en-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
+                    <a href="/de/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. DE</a>
+                    <a href="/en/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
                     <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download DE</a>
                     <a href="/apply/cv-en.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download EN</a>
                     <button id="lockout-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-red-300 text-red-600 rounded-full hover:bg-red-50 transition-colors cursor-pointer" title="Sitzung sperren"><Icon name="tabler:lock" class="h-4 w-4" /></button>
@@ -467,8 +467,8 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             #result-count,
             #card-container,
             .expand-icon,
-            a[href="/cv-de-print"],
-            a[href="/cv-en-print"],
+            a[href="/de/cv-print"],
+            a[href="/en/cv-print"],
             a[href$=".pdf"],
             a[href$="-letter.pdf"] {
                 display: none !important;

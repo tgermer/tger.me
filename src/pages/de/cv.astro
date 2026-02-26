@@ -1,7 +1,7 @@
 ---
-import PageLayout from "../layouts/PageLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import { Icon } from 'astro-icon/components';
-import { experience, education, furtherEducation, skills, projects, references } from "../data/cv_de";
+import { experience, education, furtherEducation, skills, projects, references } from "../../data/cv_de";
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -10,12 +10,12 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<PageLayout title="Lebenslauf" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse.">
+<PageLayout title="Lebenslauf" description="Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse." alternates={[{hreflang: "de", href: "https://tger.me/de/cv"}, {hreflang: "en", href: "https://tger.me/en/cv"}]}>
     <!-- Language switcher + Download -->
     <div class="flex items-center justify-between mb-8">
         <div class="flex gap-2">
             <span class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-full">Deutsch</span>
-            <a href="/cv-en" class="px-4 py-1.5 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"> English </a>
+            <a href="/en/cv" class="px-4 py-1.5 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"> English </a>
         </div>
         <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">
             <Icon name="tabler:file-type-pdf" class="h-4 w-4" />

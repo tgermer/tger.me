@@ -200,9 +200,11 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
     // Construct the public URL (overview page, not direct PDF)
-    const pdfUrl = slug.startsWith('cv-') && slug.endsWith('-print')
-      ? `https://tger.me/${slug}`
-      : `https://tger.me/apply/${slug}`;
+    const generalPdfUrls = {
+      'cv-de-print': 'https://tger.me/de/cv-print',
+      'cv-en-print': 'https://tger.me/en/cv-print',
+    };
+    const pdfUrl = generalPdfUrls[slug] || `https://tger.me/apply/${slug}`;
 
     await addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl);
 
@@ -347,8 +349,8 @@ async function main() {
       // Optionally include general resume pages
       if (includeGeneral) {
         targets.push(
-          { slug: 'cv-de-print', url: '/cv-de-print/', output: resolve(OUTPUT_DIR, 'cv-de.pdf') },
-          { slug: 'cv-en-print', url: '/cv-en-print/', output: resolve(OUTPUT_DIR, 'cv-en.pdf') },
+          { slug: 'cv-de-print', url: '/de/cv-print/', output: resolve(OUTPUT_DIR, 'cv-de.pdf') },
+          { slug: 'cv-en-print', url: '/en/cv-print/', output: resolve(OUTPUT_DIR, 'cv-en.pdf') },
         );
       }
 

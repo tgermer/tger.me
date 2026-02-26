@@ -1,11 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import ResumeLayout from "../layouts/ResumeLayout.astro";
+import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { Icon } from "astro-icon/components";
-import { personal, experience, education, furtherEducation, skills, projects } from "../data/cv_de";
+import { personal, experience, education, furtherEducation, skills, projects } from "../../data/cv_de";
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
-const photoKey = `../assets/apply/${personal.photo}`;
+const imageModules = import.meta.glob<{ default: ImageMetadata }>("../../assets/apply/*.{jpg,jpeg,png}", { eager: true });
+const photoKey = `../../assets/apply/${personal.photo}`;
 const photoModule = imageModules[photoKey];
 if (!photoModule) throw new Error(`Photo not found: src/assets/${personal.photo}`);
 const photoImage = photoModule.default;
@@ -23,9 +23,9 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
     <!-- Print toolbar -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-6 py-3 flex items-center justify-between">
-            <a href="/cv-de" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Zurück zum Lebenslauf</a>
+            <a href="/de/cv" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">&larr; Zurück zum Lebenslauf</a>
             <div class="flex items-center gap-3">
-                <a href="/cv-en-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">English</a>
+                <a href="/en/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">English</a>
                 <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
                     <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
                     PDF herunterladen

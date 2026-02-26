@@ -1,7 +1,7 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
+import PageLayout from '../../layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { experience, education, furtherEducation, skills, projects, references } from '../data/cv_en';
+import { experience, education, furtherEducation, skills, projects, references } from '../../data/cv_en';
 
 function formatDate(dateStr: string): string {
   if (!dateStr) return '';
@@ -10,12 +10,12 @@ function formatDate(dateStr: string): string {
 }
 ---
 
-<PageLayout title="Curriculum Vitae" description="CV of Tristan Germer – Work experience, education and skills." lang="en">
+<PageLayout title="Curriculum Vitae" description="CV of Tristan Germer – Work experience, education and skills." lang="en" alternates={[{hreflang: "de", href: "https://tger.me/de/cv"}, {hreflang: "en", href: "https://tger.me/en/cv"}]}>
 
   <!-- Language switcher + Download -->
   <div class="flex items-center justify-between mb-8">
     <div class="flex gap-2">
-      <a href="/cv-de" class="px-4 py-1.5 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+      <a href="/de/cv" class="px-4 py-1.5 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
         Deutsch
       </a>
       <span class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-full">English</span>
