@@ -58,7 +58,12 @@ const statusEntry = z.object({
 const apply = defineCollection({
   type: 'content',
   schema: z.object({
-    position: z.string(),
+    // Speculative/unsolicited application (Initiativbewerbung).
+    // true + position empty → "Initiativbewerbung" / "Speculative Application"
+    // true + position set   → "Initiativbewerbung als {position}" / "Speculative Application for {position}"
+    initiative: z.boolean().default(false),
+    // Job title being applied for. Optional for speculative applications (initiative: true).
+    position: optionalString,
     company: z.string(),
     lang: z.enum(['de', 'en']).default('de'),
     date: z.date(),

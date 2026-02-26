@@ -21,13 +21,23 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { position, company, lang, date, cvData, signature, salutation, companyAddress } = resume.data;
+const { initiative, position, company, lang, date, cvData, signature, salutation, companyAddress } = resume.data;
 
 // Render markdown body (cover letter)
 const { Content } = await resume.render();
 const hasLetter = resume.body && resume.body.trim().length > 0;
 
 const isDE = lang === "de";
+
+// Display logic for speculative applications (Initiativbewerbung)
+const initiativeLabel = isDE ? "Initiativbewerbung" : "Speculative Application";
+const displayPosition = initiative
+    ? (position ? (isDE ? `${initiativeLabel} als ${position}` : `${initiativeLabel} for ${position}`) : initiativeLabel)
+    : position || "";
+const coverLabel = initiative
+    ? (position ? (isDE ? "Initiativbewerbung als" : "Speculative Application for") : "")
+    : (isDE ? "Bewerbung als" : "Application for");
+const coverTitle = initiative && !position ? initiativeLabel : position || "";
 
 // Use custom CV data file if specified, otherwise fall back to default
 let cv: any;
@@ -54,7 +64,7 @@ const l = isDE
           homeLabel: "tger.me besuchen",
           overviewLabel: "Übersicht",
           downloadLabel: "Lebenslauf herunterladen",
-          applicationFor: "Bewerbung als",
+          applicationFor: coverLabel,
           experienceHeading: "Beruflicher Werdegang",
           educationHeading: "Hochschulausbildung",
           furtherEducationHeading: "Zusatzqualifikationen",
@@ -69,7 +79,7 @@ const l = isDE
           residence: "Wohnort",
           contact: "Kontakt",
           online: "Online",
-          letterSubject: `Bewerbung als ${position}`,
+          letterSubject: displayPosition,
           letterClosing: "Mit freundlichen Grüßen",
           letterPdfLabel: "Anschreiben herunterladen",
       }
@@ -77,7 +87,7 @@ const l = isDE
           homeLabel: "Visit tger.me",
           overviewLabel: "Overview",
           downloadLabel: "Download CV",
-          applicationFor: "Application for",
+          applicationFor: coverLabel,
           experienceHeading: "Professional Experience",
           educationHeading: "University Education",
           furtherEducationHeading: "Additional Qualifications",
@@ -92,7 +102,7 @@ const l = isDE
           residence: "Residence",
           contact: "Contact",
           online: "Online",
-          letterSubject: `Application for ${position}`,
+          letterSubject: displayPosition,
           letterClosing: "Best regards,",
           letterPdfLabel: "Download cover letter",
       };
@@ -105,12 +115,12 @@ function formatDate(dateStr: string): string {
 
 const formattedResumeDate = isDE ? new Date(date).toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }) : new Date(date).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 
-const pageTitle = isDE ? `Lebenslauf – ${p.name} – ${position}` : `CV – ${p.name} – ${position}`;
+const pageTitle = isDE ? `Lebenslauf – ${p.name} – ${displayPosition}` : `CV – ${p.name} – ${displayPosition}`;
 
-const headerTitle = `${p.name} | ${position}`;
+const headerTitle = `${p.name} | ${displayPosition}`;
 ---
 
-<ResumeLayout title={pageTitle} description={`${position} – ${company}`} lang={lang}>
+<ResumeLayout title={pageTitle} description={`${displayPosition} – ${company}`} lang={lang}>
     <!-- Print toolbar (hidden in print) -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-1 py-3 flex items-center justify-between">
@@ -140,8 +150,8 @@ const headerTitle = `${p.name} | ${position}`;
 
         <!-- Application info -->
         <div class="cover-application">
-            <p class="cover-application-label">{l.applicationFor}</p>
-            <h1 class="cover-application-title">{position}</h1>
+            {l.applicationFor && <p class="cover-application-label">{l.applicationFor}</p>}
+            <h1 class="cover-application-title">{coverTitle}</h1>
             <p class="cover-application-company">{company}</p>
         </div>
 
