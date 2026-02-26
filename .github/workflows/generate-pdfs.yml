@@ -6,10 +6,6 @@ on:
     paths:
       - 'src/content/apply/**'
       - 'src/data/cv_*.ts'
-      - 'src/pages/apply/**'
-      - 'src/pages/cv-*-print.astro'
-      - 'src/layouts/ResumeLayout.astro'
-      - 'src/styles/global.css'
 
 jobs:
   generate-pdfs:
@@ -23,54 +19,71 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if PDFs need regeneration
-        id: check
+      - name: Determine changed slugs
+        id: slugs
         run: |
           # Find the last commit that touched any PDF
           LAST_PDF_COMMIT=$(git log -1 --format=%H -- 'public/apply/*.pdf' 2>/dev/null || echo "")
 
           if [ -z "$LAST_PDF_COMMIT" ]; then
-            echo "No PDF commits found — generating all."
-            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo "No PDF commits found — generating all application slugs."
+            SLUGS=$(ls src/content/apply/*.md 2>/dev/null | xargs -I{} basename {} .md | tr '\n' ' ')
           else
-            # Check if source files changed since that PDF commit
             CHANGED=$(git diff --name-only "$LAST_PDF_COMMIT"..HEAD -- \
               'src/content/apply/' \
-              'src/data/cv_*.ts' \
-              'src/pages/apply/' \
-              'src/pages/cv-*-print.astro' \
-              'src/layouts/ResumeLayout.astro' \
-              'src/styles/global.css')
+              'src/data/cv_*.ts')
 
-            if [ -n "$CHANGED" ]; then
-              echo "Source files changed since last PDF generation:"
-              echo "$CHANGED"
-              echo "needed=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "PDFs are up to date — skipping."
-              echo "needed=false" >> "$GITHUB_OUTPUT"
+            if [ -z "$CHANGED" ]; then
+              echo "No relevant changes — skipping."
+              echo "slugs=" >> "$GITHUB_OUTPUT"
+              exit 0
             fi
+
+            echo "Changed files since last PDF commit:"
+            echo "$CHANGED"
+
+            # Extract slugs from changed file paths
+            SLUGS=""
+            for f in $CHANGED; do
+              case "$f" in
+                src/content/apply/*.md)
+                  SLUGS="$SLUGS $(basename "$f" .md)"
+                  ;;
+                src/data/cv_*.ts)
+                  slug=$(basename "$f" .ts | sed 's/^cv_//')
+                  # Skip base templates (cv_de, cv_en, cv_types)
+                  case "$slug" in de|en|types) continue ;; esac
+                  SLUGS="$SLUGS $slug"
+                  ;;
+              esac
+            done
+
+            # Deduplicate
+            SLUGS=$(echo "$SLUGS" | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
           fi
 
+          echo "Slugs to regenerate: $SLUGS"
+          echo "slugs=$SLUGS" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-node@v4
-        if: steps.check.outputs.needed == 'true'
+        if: steps.slugs.outputs.slugs != ''
         with:
           node-version: 20
           cache: npm
 
       - run: npm ci
-        if: steps.check.outputs.needed == 'true'
+        if: steps.slugs.outputs.slugs != ''
 
       - name: Install Playwright Chromium
-        if: steps.check.outputs.needed == 'true'
+        if: steps.slugs.outputs.slugs != ''
         run: npx playwright install --with-deps chromium
 
       - name: Generate PDFs
-        if: steps.check.outputs.needed == 'true'
-        run: node scripts/generate-pdf.mjs --all
+        if: steps.slugs.outputs.slugs != ''
+        run: node scripts/generate-pdf.mjs ${{ steps.slugs.outputs.slugs }}
 
       - name: Commit PDFs
-        if: steps.check.outputs.needed == 'true'
+        if: steps.slugs.outputs.slugs != ''
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate application PDFs'

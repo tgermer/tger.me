@@ -5,6 +5,7 @@
  * Usage:
  *   node scripts/generate-pdf.mjs              # all applications
  *   node scripts/generate-pdf.mjs a1b2c3       # specific slug
+ *   node scripts/generate-pdf.mjs a1b2c3 x4y5z # multiple slugs
  *   node scripts/generate-pdf.mjs --all        # all applications + general cv-de/cv-en
  *
  * Prerequisites:
@@ -148,7 +149,7 @@ async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl, startPage = 1)
 async function generatePdf(browser, slug, urlPath, outputPath) {
   const page = await browser.newPage();
   try {
-    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'load', timeout: 30000 });
+    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle', timeout: 30000 });
 
     // Extract data from the rendered page
     const headerTitle = await page
@@ -207,7 +208,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
 async function generateLetterPdf(browser, slug, urlPath, outputPath) {
   const page = await browser.newPage();
   try {
-    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'load', timeout: 30000 });
+    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle', timeout: 30000 });
 
     // Check if the page has a cover letter section
     const hasLetter = await page.$('.resume-letter') !== null;
@@ -281,7 +282,7 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
 async function main() {
   const args = process.argv.slice(2);
   const includeGeneral = args.includes('--all');
-  const targetSlug = args.find((a) => !a.startsWith('--'));
+  const targetSlugs = args.filter((a) => !a.startsWith('--'));
 
   // Build site
   await buildSite();
@@ -302,13 +303,15 @@ async function main() {
       // Collect targets
       const targets = [];
 
-      if (targetSlug) {
-        // Specific slug
-        targets.push({
-          slug: targetSlug,
-          url: `/apply/${targetSlug}/`,
-          output: resolve(OUTPUT_DIR, `${targetSlug}.pdf`),
-        });
+      if (targetSlugs.length > 0) {
+        // Specific slug(s)
+        for (const slug of targetSlugs) {
+          targets.push({
+            slug,
+            url: `/apply/${slug}/`,
+            output: resolve(OUTPUT_DIR, `${slug}.pdf`),
+          });
+        }
       } else {
         // All slug-based applications
         const files = await readdir(APPLY_DIR);
