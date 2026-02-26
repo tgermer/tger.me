@@ -23,8 +23,9 @@ npm run build            # Build for production
 npm run preview          # Preview production build
 
 npm run new-apply        # Create new application (interactive)
-npm run pdf              # Generate all PDFs
-npm run pdf <slug>       # Generate specific PDF
+npm run pdf              # Generate all PDFs (skips finalized)
+npm run pdf <slug>       # Generate specific PDF (skips if finalized)
+npm run pdf --force      # Generate all PDFs (including finalized)
 npm run pdf:install      # Install Playwright Chromium (one-time setup)
 ```
 
@@ -100,6 +101,9 @@ Then:
 PDFs are generated locally with Playwright and committed to git.
 Netlify serves them as static files – no Playwright needed in production build.
 
+**Finalized applications** with a terminal status (`zusage`, `absage`, `zurückgezogen`)
+are automatically skipped during PDF generation. Use `--force` to override.
+
 **Local workflow:**
 1. `npm run dev` → preview in browser
 2. `npm run pdf <slug>` → generate CV PDF + cover letter PDF (if body exists)
@@ -109,6 +113,7 @@ Netlify serves them as static files – no Playwright needed in production build
 When application source files are pushed without updated PDFs, the GitHub Action
 automatically generates PDFs and commits them back to the repo.
 The workflow skips generation if source files haven't changed since the last PDF commit.
+Finalized applications are also skipped (no `--force` in CI).
 Can also be triggered manually via `gh workflow run generate-pdfs.yml` or the GitHub UI.
 
 ## Content Collections

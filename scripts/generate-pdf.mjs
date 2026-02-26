@@ -3,10 +3,15 @@
  * Generate PDF files for application pages using Playwright (headless Chromium).
  *
  * Usage:
- *   node scripts/generate-pdf.mjs              # all applications
- *   node scripts/generate-pdf.mjs a1b2c3       # specific slug
- *   node scripts/generate-pdf.mjs a1b2c3 x4y5z # multiple slugs
+ *   node scripts/generate-pdf.mjs              # all applications (skips finalized)
+ *   node scripts/generate-pdf.mjs a1b2c3       # specific slug (skips if finalized)
+ *   node scripts/generate-pdf.mjs a1b2c3 x4y5z # multiple slugs (skips if finalized)
  *   node scripts/generate-pdf.mjs --all        # all applications + general cv-de/cv-en
+ *   node scripts/generate-pdf.mjs --force       # all applications (including finalized)
+ *   node scripts/generate-pdf.mjs --force a1b2c3 # specific slug (even if finalized)
+ *
+ * Finalized applications (last status: zusage/absage/zurückgezogen) are skipped
+ * unless --force is specified.
  *
  * Prerequisites:
  *   npm install -D playwright
@@ -26,6 +31,18 @@ const APPLY_DIR = resolve(ROOT, 'src/content/apply');
 const OUTPUT_DIR = resolve(ROOT, 'public/apply');
 const PORT = 4322;
 const BASE_URL = `http://localhost:${PORT}`;
+
+const TERMINAL_STATUSES = ['zusage', 'absage', 'zurückgezogen'];
+
+async function isFinalized(slug) {
+  const mdPath = resolve(APPLY_DIR, `${slug}.md`);
+  const content = await readFile(mdPath, 'utf8');
+  const frontmatter = content.split('---')[1] || '';
+  const statusMatches = [...frontmatter.matchAll(/status:\s*"?([^"\n]+)"?/g)];
+  if (statusMatches.length === 0) return false;
+  const lastStatus = statusMatches[statusMatches.length - 1][1].trim();
+  return TERMINAL_STATUSES.includes(lastStatus);
+}
 
 async function waitForServer(url, maxAttempts = 30) {
   for (let i = 0; i < maxAttempts; i++) {
@@ -282,6 +299,7 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
 async function main() {
   const args = process.argv.slice(2);
   const includeGeneral = args.includes('--all');
+  const force = args.includes('--force');
   const targetSlugs = args.filter((a) => !a.startsWith('--'));
 
   // Build site
@@ -334,8 +352,25 @@ async function main() {
         );
       }
 
+      // Filter out finalized applications (unless --force)
+      if (!force) {
+        const filtered = [];
+        for (const target of targets) {
+          if (target.slug.startsWith('cv-') && target.slug.endsWith('-print')) {
+            filtered.push(target);
+            continue;
+          }
+          if (await isFinalized(target.slug)) {
+            console.log(`  SKIP: ${target.slug} (finalized)`);
+          } else {
+            filtered.push(target);
+          }
+        }
+        targets.splice(0, targets.length, ...filtered);
+      }
+
       if (targets.length === 0) {
-        console.log('No application files found.');
+        console.log('No application files found (or all finalized).');
         return;
       }
 
