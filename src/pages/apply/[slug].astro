@@ -467,11 +467,12 @@ const headerTitle = `${p.name} | ${displayPosition}`;
     </div>
 
     <script>
-        // Show "back to overview" link unless navigated from tger.me main pages
+        // Show "back to overview" link only when coming from /apply overview or in dev mode
         try {
             const ref = document.referrer ? new URL(document.referrer) : null;
-            const isFromMainSite = ref && ref.hostname === "tger.me" && !ref.pathname.startsWith("/apply");
-            if (!isFromMainSite) {
+            const isFromOverview = ref && ref.pathname === "/apply" || ref?.pathname === "/apply/";
+            const isDevMode = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+            if (isFromOverview || isDevMode) {
                 const el = document.getElementById("back-to-overview");
                 el?.classList.remove("hidden");
                 el?.classList.add("inline-flex");
