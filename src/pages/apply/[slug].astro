@@ -286,11 +286,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                 {job.position && job.position.length > 0 ? (
                                     <>
                                         <p class="resume-entry-title">{job.position.join(", ")}</p>
-                                        <p class="resume-entry-sub">
-                                            {job.company}
-                                            {job.location && `, ${job.location}`}
-                                            <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
-                                        </p>
+                                        <p class="resume-entry-sub">{job.company}{job.location && `, ${job.location}`}<span class="resume-employment-type"> · {job.typeOfEmployment}</span></p>
                                     </>
                                 ) : (
                                     <>

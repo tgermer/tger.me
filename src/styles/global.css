@@ -323,6 +323,8 @@ h1, h2, h3, h4, h5, h6 {
 .resume-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.3;
 }
 
 .resume-entry-border td {
@@ -331,7 +333,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .resume-date {
   width: 3.5rem;
-  font-size: 0.8125rem;
   color: #6b7280;
   padding: 0.5rem 1rem 0.5rem 0;
   vertical-align: top;
@@ -357,12 +358,10 @@ h1, h2, h3, h4, h5, h6 {
 /* Entry text styles */
 .resume-entry-title {
   font-weight: 600;
-  font-size: 0.875rem;
   color: #111827;
 }
 
 .resume-entry-sub {
-  font-size: 0.8125rem;
   color: #374151;
 }
 
@@ -371,7 +370,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .resume-entry-meta {
-  font-size: 0.75rem;
   color: #6b7280;
   margin-top: 0.0625rem;
 }
@@ -380,9 +378,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.25rem;
   padding-left: 1.125rem;
   list-style-type: disc;
-  font-size: 0.8125rem;
   color: #374151;
-  line-height: 1.3;
   hyphens: auto;
 }
 
