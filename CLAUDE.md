@@ -106,8 +106,10 @@ Netlify serves them as static files – no Playwright needed in production build
 3. Commit and push (PDFs included)
 
 **Remote fallback (GitHub Action):**
-When application files are pushed without a PDF, the GitHub Action automatically
-generates PDFs and commits them back to the repo.
+When application source files are pushed without updated PDFs, the GitHub Action
+automatically generates PDFs and commits them back to the repo.
+The workflow skips generation if source files haven't changed since the last PDF commit.
+Can also be triggered manually via `gh workflow run generate-pdfs.yml` or the GitHub UI.
 
 ## Content Collections
 
