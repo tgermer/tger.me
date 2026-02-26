@@ -1,9 +1,16 @@
 ---
-import { navigation } from "../data/navigation";
+import { getNavigation } from "../data/navigation";
 import { site } from "../data/site";
 import { Icon } from "astro-icon/components";
+import type { Lang } from "../data/i18n";
 
+interface Props {
+    lang?: string;
+}
+
+const { lang = "de" } = Astro.props;
 const year = new Date().getFullYear();
+const navItems = getNavigation(lang as Lang);
 ---
 
 <footer class="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-16">
@@ -20,9 +27,9 @@ const year = new Date().getFullYear();
                 <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Navigation</h3>
                 <ul>
                     {
-                        navigation.map((item) => (
+                        navItems.filter((item) => !item.devOnly).map((item) => (
                             <li>
-                                <a href={item.link} class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                <a href={item.link} {...(item.link.match(/^\/(de|en)\//) ? { "data-lang-link": "" } : {})} class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                     {item.name}
                                 </a>
                             </li>

@@ -1,6 +1,7 @@
 ---
-import { navigation } from "../data/navigation";
+import { getNavigation } from "../data/navigation";
 import { Icon } from "astro-icon/components";
+import type { Lang } from "../data/i18n";
 
 interface Props {
     lang?: string;
@@ -10,7 +11,7 @@ interface Props {
 const { lang = "de", alternates } = Astro.props;
 const currentPath = Astro.url.pathname;
 const isDev = import.meta.env.DEV;
-const visibleNav = navigation.filter((item) => !item.devOnly || isDev);
+const visibleNav = getNavigation(lang as Lang).filter((item) => !item.devOnly || isDev);
 
 // Language switcher data
 const hasTranslation = alternates && alternates.length > 0;
