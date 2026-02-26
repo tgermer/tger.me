@@ -1,6 +1,7 @@
 name: Generate Application PDFs
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'src/content/apply/**'
@@ -13,26 +14,63 @@ on:
 jobs:
   generate-pdfs:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if PDFs need regeneration
+        id: check
+        run: |
+          # Find the last commit that touched any PDF
+          LAST_PDF_COMMIT=$(git log -1 --format=%H -- 'public/apply/*.pdf' 2>/dev/null || echo "")
+
+          if [ -z "$LAST_PDF_COMMIT" ]; then
+            echo "No PDF commits found — generating all."
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+          else
+            # Check if source files changed since that PDF commit
+            CHANGED=$(git diff --name-only "$LAST_PDF_COMMIT"..HEAD -- \
+              'src/content/apply/' \
+              'src/data/cv_*.ts' \
+              'src/pages/apply/' \
+              'src/pages/cv-*-print.astro' \
+              'src/layouts/ResumeLayout.astro' \
+              'src/styles/global.css')
+
+            if [ -n "$CHANGED" ]; then
+              echo "Source files changed since last PDF generation:"
+              echo "$CHANGED"
+              echo "needed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "PDFs are up to date — skipping."
+              echo "needed=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
 
       - uses: actions/setup-node@v4
+        if: steps.check.outputs.needed == 'true'
         with:
           node-version: 20
           cache: npm
 
       - run: npm ci
+        if: steps.check.outputs.needed == 'true'
 
       - name: Install Playwright Chromium
+        if: steps.check.outputs.needed == 'true'
         run: npx playwright install --with-deps chromium
 
       - name: Generate PDFs
+        if: steps.check.outputs.needed == 'true'
         run: node scripts/generate-pdf.mjs --all
 
       - name: Commit PDFs
+        if: steps.check.outputs.needed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'chore: auto-generate application PDFs'

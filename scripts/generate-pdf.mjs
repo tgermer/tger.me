@@ -52,6 +52,7 @@ function startPreviewServer() {
   const proc = spawn('npx', ['astro', 'preview', '--port', String(PORT)], {
     cwd: ROOT,
     stdio: 'pipe',
+    detached: true,
   });
   proc.stderr?.on('data', (d) => {
     const msg = d.toString();
@@ -147,7 +148,7 @@ async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl, startPage = 1)
 async function generatePdf(browser, slug, urlPath, outputPath) {
   const page = await browser.newPage();
   try {
-    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'load', timeout: 30000 });
 
     // Extract data from the rendered page
     const headerTitle = await page
@@ -206,7 +207,7 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
 async function generateLetterPdf(browser, slug, urlPath, outputPath) {
   const page = await browser.newPage();
   try {
-    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE_URL}${urlPath}`, { waitUntil: 'load', timeout: 30000 });
 
     // Check if the page has a cover letter section
     const hasLetter = await page.$('.resume-letter') !== null;
@@ -352,11 +353,18 @@ async function main() {
       await browser.close();
     }
   } finally {
-    server.kill();
+    // Kill the entire process group (npx + astro preview child process)
+    try {
+      process.kill(-server.pid, 'SIGTERM');
+    } catch {
+      server.kill();
+    }
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
