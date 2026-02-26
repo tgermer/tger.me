@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Deno lock file (Netlify Edge Functions)
+deno.lock
+
+# Claude Code local settings
+.claude/settings.local.json
