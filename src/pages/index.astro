@@ -4,7 +4,7 @@ import PortfolioCard from "../components/PortfolioCard.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import portrait from "../assets/2026-09-02-portrait.jpg";
+import portrait from "../assets/apply/2025-09-02-portrait.jpg";
 
 const allProjects = await getCollection("portfolio");
 const featured = allProjects.filter((p) => p.data.featured).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

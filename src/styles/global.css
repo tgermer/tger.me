@@ -174,10 +174,11 @@ html {
 
 .cover-photo {
   display: block;
-  max-width: 75%;
+  width: auto;
   height: auto;
+  max-width: 75%;
   max-height: 100mm;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 4px;
 }
 

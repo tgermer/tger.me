@@ -3,7 +3,7 @@ import type { ExperienceItem, EducationItem, FurtherEducationItem, SkillCategory
 export const personal: PersonalData = {
     name: "Tristan Germer",
     tagline: "Digitalization & Automation | System & Process Control",
-    photo: "/assets/2025-09-02 Foto Landscape.JPG",
+    photo: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     address: "Petrarcastraße 32, 80933 München",
     phone: "+49 151 22651857",

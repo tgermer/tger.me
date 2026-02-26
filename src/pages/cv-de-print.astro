@@ -1,7 +1,14 @@
 ---
+import { Image } from "astro:assets";
 import ResumeLayout from "../layouts/ResumeLayout.astro";
 import { Icon } from "astro-icon/components";
 import { personal, experience, education, furtherEducation, skills, projects } from "../data/cv_de";
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
+const photoKey = `../assets/apply/${personal.photo}`;
+const photoModule = imageModules[photoKey];
+if (!photoModule) throw new Error(`Photo not found: src/assets/${personal.photo}`);
+const photoImage = photoModule.default;
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -36,7 +43,7 @@ const today = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "l
         </div>
 
         <div class="cover-bottom">
-            <img src={personal.photo} alt={personal.name} class="cover-photo" />
+            <Image src={photoImage} alt={personal.name} class="cover-photo" />
             <h2 class="cover-name">{personal.name}</h2>
             <p class="cover-tagline">{personal.tagline}</p>
 

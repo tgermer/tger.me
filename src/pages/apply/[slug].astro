@@ -1,10 +1,13 @@
 ---
+import { Image } from "astro:assets";
 import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
 import signatureSvg from "../../assets/signature.svg?raw";
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>("../../assets/apply/*.{jpg,jpeg,png}", { eager: true });
 
 // Eagerly import all CV data files so custom ones can be resolved at build time
 const cvModules = import.meta.glob("../../data/cv_*.ts", { eager: true }) as Record<string, any>;
@@ -39,6 +42,12 @@ if (cvData) {
 }
 
 const p = cv.personal;
+
+// Resolve photo from src/assets/
+const photoKey = `../../assets/apply/${p.photo}`;
+const photoModule = imageModules[photoKey];
+if (!photoModule) throw new Error(`Photo not found: src/assets/${p.photo}`);
+const photoImage = photoModule.default;
 
 const l = isDE
     ? {
@@ -138,7 +147,7 @@ const headerTitle = `${p.name} | ${position}`;
 
         <!-- Photo, name, tagline, data – anchored to bottom -->
         <div class="cover-bottom">
-            <img src={p.photo} alt={p.name} class="cover-photo" />
+            <Image src={photoImage} alt={p.name} class="cover-photo" />
             <h2 class="cover-name">{p.name}</h2>
             <p class="cover-tagline">{p.tagline}</p>
 
