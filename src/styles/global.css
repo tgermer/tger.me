@@ -146,6 +146,30 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
+/* Mobile: tighter layout for small screens */
+@media screen and (max-width: 640px) {
+  :root {
+    --din-page-padding-x: 6mm;
+    --din-cover-padding-top: 16mm;
+    --din-page-padding-bottom: 12mm;
+    --din-address-field-left: 0;
+    --din-address-field-padding-left: 6mm;
+  }
+
+  .resume-body {
+    background: white;
+  }
+
+  .resume-page {
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+
+  .cover-data-label {
+    width: 7rem;
+  }
+}
+
 /* ---- Cover page ---- */
 
 .resume-cover {
@@ -283,6 +307,16 @@ h1, h2, h3, h4, h5, h6 {
   /* padding-bottom: 0.15rem; */
   /* border-bottom: 1.5px solid hsl(219, 86%, 41%); */
   margin-bottom: 0.15rem;
+}
+
+/* Scrollable wrapper for wide (3-column) tables on mobile */
+.resume-table-scroll {
+  overflow-x: auto;
+}
+
+.resume-table-scroll .resume-table,
+.resume-table-scroll .cover-data-table {
+  min-width: 31rem;
 }
 
 /* Semantic table layout for resume entries */
