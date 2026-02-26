@@ -23,6 +23,7 @@ npm run build            # Build for production
 npm run preview          # Preview production build
 
 npm run new-apply        # Create new application (interactive)
+npm run delete-apply     # Delete application (interactive selection)
 npm run pdf              # Generate all PDFs (skips finalized)
 npm run pdf <slug>       # Generate specific PDF (skips if finalized)
 npm run pdf --force      # Generate all PDFs (including finalized)
@@ -147,6 +148,7 @@ src/
 │   └── global.css             ← All styles incl. print CSS (@media print)
 scripts/
 ├── new-apply.sh               ← Creates new application (MD + TS snapshot)
+├── delete-apply.sh            ← Deletes application and all associated files
 └── generate-pdf.mjs           ← Generates PDFs via Playwright
 public/
 └── apply/
