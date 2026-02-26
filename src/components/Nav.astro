@@ -3,6 +3,8 @@ import { navigation } from '../data/navigation';
 import { Icon } from 'astro-icon/components';
 
 const currentPath = Astro.url.pathname;
+const isDev = import.meta.env.DEV;
+const visibleNav = navigation.filter((item) => !item.devOnly || isDev);
 ---
 
 <header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-800/60">
@@ -15,7 +17,7 @@ const currentPath = Astro.url.pathname;
 
       <!-- Desktop Navigation -->
       <ul class="hidden md:flex items-center gap-1">
-        {navigation.map((item) => {
+        {visibleNav.map((item) => {
           const isActive = currentPath.startsWith(item.link);
           return (
             <li>
@@ -54,7 +56,7 @@ const currentPath = Astro.url.pathname;
       class="hidden md:hidden pb-4"
     >
       <ul class="flex flex-col gap-1">
-        {navigation.map((item) => {
+        {visibleNav.map((item) => {
           const isActive = currentPath.startsWith(item.link);
           return (
             <li>

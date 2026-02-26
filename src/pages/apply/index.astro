@@ -124,7 +124,9 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
     <div id="content" class="hidden min-h-screen bg-gray-100">
         <div class="max-w-7xl mx-auto px-6 py-10">
             <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1>
+                <div class="flex items-center gap-4">
+                    <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors"><Icon name="tabler:chevron-left" class="h-6 w-6" /><h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1></a>
+                </div>
                 <div class="flex items-center gap-3">
                     <a href="/cv-de-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. DE</a>
                     <a href="/cv-en-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
@@ -427,7 +429,8 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
                 margin: 10mm 12mm;
             }
 
-            html, body {
+            html,
+            body {
                 background: white !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -526,7 +529,8 @@ function buildMailtoUrl(position: string, company: string, slug: string, lang: s
             }
 
             /* Remove shadows, borders, rounded corners */
-            .shadow-sm, .shadow-md {
+            .shadow-sm,
+            .shadow-md {
                 box-shadow: none !important;
             }
 
