@@ -193,7 +193,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                 p.url && <a href={`https://${p.url}`} target="_blank" rel="noopener noreferrer">{p.url}</a>,
                                 p.linkedinUrl && <a href={`https://${p.linkedinUrl}`} target="_blank" rel="noopener noreferrer">{p.linkedinUrl}</a>,
                                 p.githubUrl && <a href={`https://${p.githubUrl}`} target="_blank" rel="noopener noreferrer">{p.githubUrl}</a>,
-                            ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' · ', el], [])}
+                            ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' | ', el], [])}
                         </td>
                     </tr>
                 )}
@@ -373,8 +373,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                             </td>
                             <td class="resume-detail-mid">
                                 <p class="resume-entry-title">
-                                    {edu.fieldOfStudy}
-                                    {edu.degree && `, ${edu.degree}`}
+                                    {edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}
                                 </p>
                             </td>
                             <td class="resume-detail-right">
