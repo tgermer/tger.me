@@ -1,12 +1,18 @@
 ---
-import PageLayout from "../layouts/PageLayout.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
 import { Icon } from "astro-icon/components";
 import { Image } from "astro:assets";
-import { site } from "../data/site";
-import portrait from "../assets/apply/2025-09-02-portrait.jpg";
+import { site } from "../../data/site";
+import portrait from "../../assets/apply/2025-09-02-portrait.jpg";
 ---
 
-<PageLayout title="Über mich" description="Erfahre mehr über Tristan Germer – Digitalisierung, Prozessgestaltung und Technik-Enthusiast aus München.">
+<PageLayout title="Über mich" description="Erfahre mehr über Tristan Germer – Digitalisierung, Prozessgestaltung und Technik-Enthusiast aus München." alternates={[{hreflang: "de", href: "https://tger.me/de/about"}, {hreflang: "en", href: "https://tger.me/en/about"}]}>
+    <!-- Language switcher -->
+    <div class="flex gap-2 mb-8">
+        <span class="px-4 py-1.5 bg-blue-600 text-white text-sm font-medium rounded-full">Deutsch</span>
+        <a href="/en/about" class="px-4 py-1.5 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-full hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">English</a>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         <!-- Sidebar with photo -->
         <div class="md:col-span-1">
@@ -119,7 +125,7 @@ import portrait from "../assets/apply/2025-09-02-portrait.jpg";
                     <Icon name="tabler:briefcase" class="h-4 w-4" />
                     Meine Projekte ansehen
                 </a>
-                <a href="/cv-de" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+                <a href="/de/cv" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
                     <Icon name="tabler:file-text" class="h-4 w-4" />
                     Lebenslauf
                 </a>
