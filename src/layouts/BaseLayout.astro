@@ -104,6 +104,28 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
         <!-- Plausible Analytics (production only) -->
         {import.meta.env.PROD && <script defer data-domain="tger.me" src="https://analytics.thebunnyhill.de/js/script.js" />}
 
+        <!-- Cloudflare email obfuscation: re-decode after View Transitions -->
+        <script is:inline>
+          (function() {
+            function decodeCfEmails() {
+              document.querySelectorAll('a[href*="/cdn-cgi/l/email-protection"]').forEach(function(link) {
+                var el = link.querySelector('[data-cfemail]');
+                if (!el) return;
+                var enc = el.getAttribute('data-cfemail');
+                var key = parseInt(enc.substr(0, 2), 16);
+                var decoded = '';
+                for (var i = 2; i < enc.length; i += 2) {
+                  decoded += String.fromCharCode(parseInt(enc.substr(i, 2), 16) ^ key);
+                }
+                el.textContent = decoded;
+                el.removeAttribute('data-cfemail');
+                link.href = 'mailto:' + decoded;
+              });
+            }
+            document.addEventListener('astro:after-swap', decodeCfEmails);
+          })();
+        </script>
+
         <title>{fullTitle}</title>
     </head>
     <body class="bg-white text-gray-900 font-sans antialiased dark:bg-gray-950 dark:text-gray-100">
