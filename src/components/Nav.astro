@@ -61,11 +61,17 @@ const langLinks = hasTranslation
                                 <span class="px-1 py-0.5 font-bold text-blue-700 dark:text-blue-300">EN</span>
                             </>
                         )
+                    ) : lang === "de" ? (
+                        <>
+                            <span class="px-1 py-0.5 font-bold text-blue-700 dark:text-blue-300">DE</span>
+                            <span class="text-gray-300 dark:text-gray-600 mx-0.5">|</span>
+                            <span class="px-1 py-0.5 text-gray-300 dark:text-gray-700 cursor-not-allowed" title="Not available in English">EN</span>
+                        </>
                     ) : (
                         <>
-                            <span class="px-1 py-0.5 text-gray-300 dark:text-gray-700">DE</span>
-                            <span class="text-gray-200 dark:text-gray-700 mx-0.5">|</span>
-                            <span class="px-1 py-0.5 text-gray-300 dark:text-gray-700">EN</span>
+                            <span class="px-1 py-0.5 text-gray-300 dark:text-gray-700 cursor-not-allowed" title="Nicht auf Deutsch verfügbar">DE</span>
+                            <span class="text-gray-300 dark:text-gray-600 mx-0.5">|</span>
+                            <span class="px-1 py-0.5 font-bold text-blue-700 dark:text-blue-300">EN</span>
                         </>
                     )}
                 </div>
