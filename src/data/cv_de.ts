@@ -1,8 +1,12 @@
 import type { ExperienceItem, EducationItem, FurtherEducationItem, SkillCategory, Reference, ProjectItem, PersonalData } from "./cv_types";
 
+// IMPORTANT: This file contains intentional non-breaking spaces (U+00A0) for typographic correctness.
+// They prevent line breaks at "&", "z. B.", "30 %", "PSM I", etc.
+// Do NOT replace them with regular spaces. Verify with: grep -n $'\xc2\xa0' src/data/cv_de.ts
+
 export const personal: PersonalData = {
     name: "Tristan Germer",
-    tagline: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
+    tagline: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
     photo: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     address: "Petrarcastraße 32, 80933 München",
@@ -32,7 +36,7 @@ export const experience: ExperienceItem[] = [
         typeOfEmployment: "Angestellter",
         position: ["Senior Softwareberater DMS"],
         description: {
-            list: ["Projektleitung DMS-Einführung", "Anforderungsanalyse & Prozessberatung", "Kundenschulungen & Workshops", "Systemkonfiguration & Berechtigungskonzepte", "Release- und Update-Management"],
+            list: ["Projektleitung DMS-Einführung", "Anforderungsanalyse & Prozessberatung", "Kundenschulungen & Workshops", "Systemkonfiguration & Berechtigungskonzepte", "Release- und Update-Management"],
         },
         startDate: "2025-03-01",
         endDate: "2025-09-30",
@@ -44,7 +48,7 @@ export const experience: ExperienceItem[] = [
         typeOfEmployment: "Angestellter",
         position: ["Referent Qualitätsmanagement, Controlling und zentrale Steuerungsunterstützung"],
         description: {
-            list: ["Weiterentwicklung des zentralen Controllings.", "Überarbeitung des Evaluationssystems, inklusive Integration von Automatisierungen und Effizienzsteigerung des Feedbackprozesses.", "Entwicklung, didaktische Aufbereitung und Durchführung von Schulungsprogrammen (z. B. Confluence, MS Office, evasys)."],
+            list: ["Weiterentwicklung des zentralen Controllings.", "Überarbeitung des Evaluationssystems, inklusive Integration von Automatisierungen und Effizienzsteigerung des Feedbackprozesses.", "Entwicklung, didaktische Aufbereitung und Durchführung von Schulungsprogrammen (z. B. Confluence, MS Office, evasys)."],
         },
         startDate: "2022-10-01",
         endDate: "2024-12-31",
@@ -56,7 +60,7 @@ export const experience: ExperienceItem[] = [
         typeOfEmployment: "Angestellter",
         position: ["Projektleiter und Produktmanager"],
         description: {
-            list: ["Leitung und erfolgreiche Einführung eines DMS (d.velop d3) zur Digitalisierung von Bewerbungs- und Verwaltungsprozessen.", "Gestaltung und Implementierung organisationsweiter Workflows für 14 Fakultäten (>200.000 Dokumente/Jahr) mit Reduktion der Bearbeitungszeit um ca. 30 %.", "Sicherstellung von Compliance durch revisionssichere Archivierung sowie Integration angrenzender Fachverfahren.", "Konzeption von Schulungen, Nutzerunterstützung und Entwicklung von KPI-Dashboards für Steuerung und Transparenz."],
+            list: ["Leitung und erfolgreiche Einführung eines DMS (d.velop d3) zur Digitalisierung von Bewerbungs- und Verwaltungsprozessen.", "Gestaltung und Implementierung organisationsweiter Workflows für 14 Fakultäten (>200.000 Dokumente/Jahr) mit Reduktion der Bearbeitungszeit um ca. 30 %.", "Sicherstellung von Compliance durch revisionssichere Archivierung sowie Integration angrenzender Fachverfahren.", "Konzeption von Schulungen, Nutzerunterstützung und Entwicklung von KPI-Dashboards für Steuerung und Transparenz."],
         },
         startDate: "2013-09-15",
         endDate: "2022-09-30",
@@ -136,7 +140,7 @@ export const furtherEducation: FurtherEducationItem[] = [
         location: "Online",
         startDate: "2024-08-03",
         endDate: "2024-08-03",
-        fieldOfStudy: "Professioneller Scrum Product Owner (PSPO I)",
+        fieldOfStudy: "Professioneller Scrum Product Owner (PSPO I)",
         certificateUrl: "https://www.scrum.org/certificates/1127252",
     },
     {
@@ -145,7 +149,7 @@ export const furtherEducation: FurtherEducationItem[] = [
         location: "Online",
         startDate: "2024-07-07",
         endDate: "2024-07-07",
-        fieldOfStudy: "Professioneller Scrum Master (PSM I)",
+        fieldOfStudy: "Professioneller Scrum Master (PSM I)",
         certificateUrl: "https://www.scrum.org/certificates/1118704",
     },
     {
@@ -168,10 +172,10 @@ export const skills: SkillCategory[] = [
     { catagorie: "Office", items: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
     { catagorie: "Programmierung", items: ["Swift", "JavaScript", "TypeScript"] },
     { catagorie: "Datenanalyse", items: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
-    { catagorie: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { catagorie: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
+    { catagorie: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
+    { catagorie: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
     { catagorie: "Sprachen", items: ["Deutsch (Muttersprache)", "Englisch (fließend)"] },
-    { catagorie: "Interessen", items: ["CODING Analytisch & Detailorientiert", "TECHNOLOGIE Innovativ & Lernbereit", "FITNESS Teamfähigkeit & Ehrgeiz", "REISEN Flexibilität & Neugier"] },
+    { catagorie: "Interessen", items: ["CODING Analytisch & Detailorientiert", "TECHNOLOGIE Innovativ & Lernbereit", "FITNESS Teamfähigkeit & Ehrgeiz", "REISEN Flexibilität & Neugier"] },
 ];
 
 export const projects: ProjectItem[] = [

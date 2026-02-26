@@ -1,8 +1,12 @@
 import type { ExperienceItem, EducationItem, FurtherEducationItem, SkillCategory, Reference, ProjectItem, PersonalData } from "./cv_de";
 
+// IMPORTANT: This file contains intentional non-breaking spaces (U+00A0) for typographic correctness.
+// They prevent line breaks at "&", "PSPO I", "PSM I", etc.
+// Do NOT replace them with regular spaces. Verify with: grep -n $'\xc2\xa0' src/data/cv_en.ts
+
 export const personal: PersonalData = {
     name: "Tristan Germer",
-    tagline: "Digitalization & Automation | System & Process Control",
+    tagline: "Digitalization & Automation | System & Process Control",
     photo: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     address: "Petrarcastraße 32, 80933 München",
@@ -17,7 +21,7 @@ export const personal: PersonalData = {
 
 export const experience: ExperienceItem[] = [
     {
-        company: "Career Transition – Digitalization & System Control",
+        company: "Career Transition – Digitalization & System Control",
         location: "",
         typeOfEmployment: "Career Reorientation",
         description: {
@@ -32,7 +36,7 @@ export const experience: ExperienceItem[] = [
         typeOfEmployment: "Employee",
         position: ["Senior Software Consultant DMS"],
         description: {
-            list: ["Project management for DMS implementation", "Requirements analysis & process consulting", "Customer training & workshops", "System configuration & authorization concepts", "Release and update management"],
+            list: ["Project management for DMS implementation", "Requirements analysis & process consulting", "Customer training & workshops", "System configuration & authorization concepts", "Release and update management"],
         },
         startDate: "2025-03-01",
         endDate: "2025-09-30",
@@ -136,7 +140,7 @@ export const furtherEducation: FurtherEducationItem[] = [
         location: "Online",
         startDate: "2024-08-03",
         endDate: "2024-08-03",
-        fieldOfStudy: "Professional Scrum Product Owner (PSPO I)",
+        fieldOfStudy: "Professional Scrum Product Owner (PSPO I)",
         certificateUrl: "https://www.scrum.org/certificates/1127252",
     },
     {
@@ -145,7 +149,7 @@ export const furtherEducation: FurtherEducationItem[] = [
         location: "Online",
         startDate: "2024-07-07",
         endDate: "2024-07-07",
-        fieldOfStudy: "Professional Scrum Master (PSM I)",
+        fieldOfStudy: "Professional Scrum Master (PSM I)",
         certificateUrl: "https://www.scrum.org/certificates/1118704",
     },
     {
@@ -171,7 +175,7 @@ export const skills: SkillCategory[] = [
     { catagorie: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
     { catagorie: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
     { catagorie: "Languages", items: ["German (Native)", "English (Fluent)"] },
-    { catagorie: "Interests", items: ["CODING Analytical & Detail-Oriented", "TECHNOLOGY Innovative & Eager to Learn", "FITNESS Team Player & Ambitious", "TRAVEL Flexible & Curious"] },
+    { catagorie: "Interests", items: ["CODING Analytical & Detail-Oriented", "TECHNOLOGY Innovative & Eager to Learn", "FITNESS Team Player & Ambitious", "TRAVEL Flexible & Curious"] },
 ];
 
 export const projects: ProjectItem[] = [

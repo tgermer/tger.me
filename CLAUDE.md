@@ -123,6 +123,19 @@ Can also be triggered manually via `gh workflow run generate-pdfs.yml` or the Gi
 - `blog` – Blog posts
 - `apply` – Application-specific resumes + cover letters (schema in `src/content/config.ts`)
 
+## Non-Breaking Spaces in CV Data Files
+
+CV data files (`cv_de.ts`, `cv_en.ts`, `cv_<slug>.ts`) contain intentional **non-breaking spaces** (U+00A0, `\xC2\xA0`) for typographic correctness. These MUST be preserved when editing.
+
+Common patterns:
+- `&` + NBSP before the next word (prevents `&` from being orphaned at line end)
+- `z.` + NBSP + `B.` (German abbreviation "z. B." must not break)
+- Number + NBSP + `%` (e.g. `30 %` — number and unit stay together)
+- Acronym + NBSP + numeral (e.g. `PSM I`, `PSPO I`)
+
+**When editing these files, never replace non-breaking spaces with regular spaces.**
+NBSPs are invisible in most editors — if in doubt, verify with `grep -n $'\xc2\xa0' <file>`.
+
 ## File Structure (Application-related)
 
 ```
