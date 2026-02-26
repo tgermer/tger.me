@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-sans/700.css";
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
     title?: string;
@@ -14,12 +15,14 @@ interface Props {
     ogImage?: string;
     ogType?: string;
     lang?: string;
+    alternates?: { hreflang: string; href: string }[];
 }
 
-const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/me-removebg.png", ogType = "website", lang = "de" } = Astro.props;
+const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/me-removebg.png", ogType = "website", lang = "de", alternates } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
 const fullTitle = title === "Tristan Germer" ? title : `${title} | Tristan Germer`;
+const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflang, new URL(a.href).pathname])) : null;
 ---
 
 <!doctype html>
@@ -36,6 +39,14 @@ const fullTitle = title === "Tristan Germer" ? title : `${title} | Tristan Germe
         <!-- Canonical URL -->
         <link rel="canonical" href={canonicalUrl.toString()} />
 
+        <!-- hreflang: alternate language versions -->
+        {alternates?.map((alt) => (
+            <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+        ))}
+
+        <!-- Language persistence: pass alternate paths to client -->
+        {langPaths && <meta name="lang-alternates" content={JSON.stringify(langPaths)} />}
+
         <!-- Open Graph -->
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
@@ -46,6 +57,40 @@ const fullTitle = title === "Tristan Germer" ? title : `${title} | Tristan Germe
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+        <!-- Theme: apply before render to prevent FOUC -->
+        <!-- Language persistence: redirect to preferred language on direct page load -->
+        <script is:inline>
+          (function() {
+            function applyTheme() {
+              var theme = localStorage.getItem('theme');
+              if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            }
+            applyTheme();
+            document.addEventListener('astro:after-swap', applyTheme);
+
+            // Language redirect: only on initial page load (not View Transitions)
+            if (!window.__siteLoaded) {
+              window.__siteLoaded = true;
+              var altMeta = document.querySelector('meta[name="lang-alternates"]');
+              if (altMeta) {
+                var langPaths = JSON.parse(altMeta.content);
+                var preferredLang = localStorage.getItem('preferredLang');
+                var currentLang = document.documentElement.lang;
+                if (preferredLang && preferredLang !== currentLang && langPaths[preferredLang]) {
+                  window.location.replace(langPaths[preferredLang]);
+                }
+              }
+            }
+          })();
+        </script>
+
+        <!-- View Transitions -->
+        <ViewTransitions />
+
         <!-- Plausible Analytics (production only) -->
         {import.meta.env.PROD && <script defer data-domain="tger.me" src="https://analytics.thebunnyhill.de/js/script.js" />}
 
@@ -53,10 +98,11 @@ const fullTitle = title === "Tristan Germer" ? title : `${title} | Tristan Germe
     </head>
     <body class="bg-white text-gray-900 font-sans antialiased dark:bg-gray-950 dark:text-gray-100">
         <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-blue-700 focus:rounded-lg focus:shadow-lg">Zum Inhalt springen</a>
-        <Nav />
+        <Nav lang={lang} alternates={alternates} />
         <main id="main-content">
             <slot />
         </main>
         <Footer />
+
     </body>
 </html>

@@ -1,2 +1,11 @@
 # Redirect old /resume/ URLs to /apply/
 /resume/*  /apply/:splat  301
+
+# Redirect old CV URLs to new i18n structure
+/cv-de       /de/cv        301
+/cv-en       /en/cv        301
+/cv-de-print /de/cv-print  301
+/cv-en-print /en/cv-print  301
+
+# Redirect old about URL to new i18n structure
+/about       /de/about     301

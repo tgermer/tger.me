@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-brand-dark: hsl(219, 86%, 41%);
   --color-brand-mid: hsl(207, 91%, 55%);
