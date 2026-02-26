@@ -105,6 +105,21 @@ html {
    Resume / Print Styles
    ============================================================ */
 
+/* DIN 5008 Form A: Letter layout measurements */
+:root {
+  --din-header-bar-height: 12mm;
+  --din-letterhead-height: 30mm;
+  --din-address-field-height: 45mm;
+  --din-address-field-width: 85mm;
+  --din-address-field-left: 20mm;
+  --din-address-field-padding-left: 5mm;
+  --din-page-padding-x: 25mm;
+  --din-page-padding-bottom: 20mm;
+  --din-cover-padding-top: 30mm;
+  --din-page-width: 210mm;
+  --din-page-height: 297mm;
+}
+
 /* --- Screen: page container --- */
 
 .resume-body {
@@ -120,7 +135,7 @@ html {
 }
 
 .resume-page {
-  max-width: 210mm;
+  max-width: var(--din-page-width);
   margin: 0 auto 2rem;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -129,21 +144,21 @@ html {
 /* ---- Cover page ---- */
 
 .resume-cover {
-  min-height: 297mm;
+  min-height: var(--din-page-height);
   padding: 0;
   display: flex;
   flex-direction: column;
 }
 
 .cover-header-bar {
-  height: 12mm;
+  height: var(--din-header-bar-height);
   background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%));
   flex-shrink: 0;
 }
 
 .cover-application {
   text-align: left;
-  padding: 30mm 25mm 8mm;
+  padding: var(--din-cover-padding-top) var(--din-page-padding-x) 8mm;
 }
 
 .cover-application-label {
@@ -171,7 +186,7 @@ html {
 /* Bottom section: photo, name, tagline, table – pushed to page bottom */
 .cover-bottom {
   margin-top: auto;
-  padding: 0 25mm 20mm;
+  padding: 0 var(--din-page-padding-x) var(--din-page-padding-bottom);
 }
 
 .cover-photo {
@@ -237,7 +252,7 @@ html {
 /* ---- CV content pages ---- */
 
 .resume-cv-content {
-  padding: 0 25mm 15mm;
+  padding: 0 var(--din-page-padding-x) 15mm;
 }
 
 .cv-page-header {
@@ -417,14 +432,14 @@ html {
 
 /* 0–12 mm: blue gradient bar */
 .letter-header-bar {
-  height: 12mm;
+  height: var(--din-header-bar-height);
   background: linear-gradient(135deg, hsl(219, 86%, 41%), hsl(207, 91%, 55%));
 }
 
 /* 12–27 mm: sender name (letterhead zone) */
 .letter-head {
-  height: 30mm;
-  padding: 0 25mm;
+  height: var(--din-letterhead-height);
+  padding: 0 var(--din-page-padding-x);
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -439,10 +454,10 @@ html {
 
 /* 27–72 mm: address field (DIN 5008 Form A – 20 mm left, 85 mm wide, 45 mm tall) */
 .letter-address-field {
-  height: 45mm;
-  width: 85mm;
-  margin-left: 20mm;
-  padding-left: 5mm;
+  height: var(--din-address-field-height);
+  width: var(--din-address-field-width);
+  margin-left: var(--din-address-field-left);
+  padding-left: var(--din-address-field-padding-left);
   display: flex;
   flex-direction: column;
 }
@@ -470,7 +485,7 @@ html {
 
 /* 72 mm +: content area (date · subject · body · closing) */
 .letter-content {
-  padding: 0 25mm 25mm;
+  padding: 0 var(--din-page-padding-x) var(--din-page-padding-x);
 }
 
 .letter-date {
