@@ -17,11 +17,11 @@ interface Props {
     alternates?: { hreflang: string; href: string }[];
 }
 
-const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/me-removebg.png", ogType = "website", lang = "de", alternates } = Astro.props;
+const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/og-image.jpg", ogType = "website", lang = "de", alternates } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
 const fullTitle = title === "Tristan Germer" ? title : `${title} | Tristan Germer`;
-const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflang, new URL(a.href).pathname])) : null;
+const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hreflang, new URL(a.href).pathname])) : null;
 ---
 
 <!doctype html>
@@ -39,9 +39,7 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
         <link rel="canonical" href={canonicalUrl.toString()} />
 
         <!-- hreflang: alternate language versions -->
-        {alternates?.map((alt) => (
-            <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
-        ))}
+        {alternates?.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
 
         <!-- Language persistence: pass alternate paths to client -->
         {langPaths && <meta name="lang-alternates" content={JSON.stringify(langPaths)} />}
@@ -57,45 +55,49 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
         <!-- Structured Data: Person -->
-        <script is:inline type="application/ld+json" set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Tristan Germer",
-            "url": "https://tger.me",
-            "jobTitle": "Digitalization & Automation Specialist",
-            "sameAs": ["https://www.linkedin.com/in/tgermer/"],
-            "email": "mailto:hello@tger.me",
-        })} />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Person",
+                name: "Tristan Germer",
+                url: "https://tger.me",
+                jobTitle: "Digitalization & Automation Specialist",
+                sameAs: ["https://www.linkedin.com/in/tgermer/"],
+                email: "mailto:hello@tger.me",
+            })}
+        />
 
         <!-- Theme: apply before render to prevent FOUC -->
         <!-- Language persistence: redirect to preferred language on direct page load -->
         <script is:inline>
-          (function() {
-            function applyTheme() {
-              var theme = localStorage.getItem('theme');
-              if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-              } else {
-                document.documentElement.classList.remove('dark');
-              }
-            }
-            applyTheme();
-            document.addEventListener('astro:after-swap', applyTheme);
-
-            // Language redirect: only on initial page load (not View Transitions)
-            if (!window.__siteLoaded) {
-              window.__siteLoaded = true;
-              var altMeta = document.querySelector('meta[name="lang-alternates"]');
-              if (altMeta) {
-                var langPaths = JSON.parse(altMeta.content);
-                var preferredLang = localStorage.getItem('preferredLang');
-                var currentLang = document.documentElement.lang;
-                if (preferredLang && preferredLang !== currentLang && langPaths[preferredLang]) {
-                  window.location.replace(langPaths[preferredLang]);
+            (function () {
+                function applyTheme() {
+                    var theme = localStorage.getItem("theme");
+                    if (theme === "dark" || (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                        document.documentElement.classList.add("dark");
+                    } else {
+                        document.documentElement.classList.remove("dark");
+                    }
                 }
-              }
-            }
-          })();
+                applyTheme();
+                document.addEventListener("astro:after-swap", applyTheme);
+
+                // Language redirect: only on initial page load (not View Transitions)
+                if (!window.__siteLoaded) {
+                    window.__siteLoaded = true;
+                    var altMeta = document.querySelector('meta[name="lang-alternates"]');
+                    if (altMeta) {
+                        var langPaths = JSON.parse(altMeta.content);
+                        var preferredLang = localStorage.getItem("preferredLang");
+                        var currentLang = document.documentElement.lang;
+                        if (preferredLang && preferredLang !== currentLang && langPaths[preferredLang]) {
+                            window.location.replace(langPaths[preferredLang]);
+                        }
+                    }
+                }
+            })();
         </script>
 
         <!-- View Transitions -->
@@ -106,24 +108,24 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
 
         <!-- Cloudflare email obfuscation: re-decode after View Transitions -->
         <script is:inline>
-          (function() {
-            function decodeCfEmails() {
-              document.querySelectorAll('a[href*="/cdn-cgi/l/email-protection"]').forEach(function(link) {
-                var el = link.querySelector('[data-cfemail]');
-                if (!el) return;
-                var enc = el.getAttribute('data-cfemail');
-                var key = parseInt(enc.substr(0, 2), 16);
-                var decoded = '';
-                for (var i = 2; i < enc.length; i += 2) {
-                  decoded += String.fromCharCode(parseInt(enc.substr(i, 2), 16) ^ key);
+            (function () {
+                function decodeCfEmails() {
+                    document.querySelectorAll('a[href*="/cdn-cgi/l/email-protection"]').forEach(function (link) {
+                        var el = link.querySelector("[data-cfemail]");
+                        if (!el) return;
+                        var enc = el.getAttribute("data-cfemail");
+                        var key = parseInt(enc.substr(0, 2), 16);
+                        var decoded = "";
+                        for (var i = 2; i < enc.length; i += 2) {
+                            decoded += String.fromCharCode(parseInt(enc.substr(i, 2), 16) ^ key);
+                        }
+                        el.textContent = decoded;
+                        el.removeAttribute("data-cfemail");
+                        link.href = "mailto:" + decoded;
+                    });
                 }
-                el.textContent = decoded;
-                el.removeAttribute('data-cfemail');
-                link.href = 'mailto:' + decoded;
-              });
-            }
-            document.addEventListener('astro:after-swap', decodeCfEmails);
-          })();
+                document.addEventListener("astro:after-swap", decodeCfEmails);
+            })();
         </script>
 
         <title>{fullTitle}</title>
@@ -135,6 +137,5 @@ const langPaths = alternates ? Object.fromEntries(alternates.map(a => [a.hreflan
             <slot />
         </main>
         <Footer lang={lang} />
-
     </body>
 </html>
