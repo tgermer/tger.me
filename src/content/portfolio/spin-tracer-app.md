@@ -1,9 +1,10 @@
 ---
 title: Spin Tracer
-description: All rides at your fingertip!
+description: Fahrrad-Tracking-App für iOS – GPS-Tracking in Echtzeit, interaktive Statistiken und iCloud-Synchronisation.
 featured: false
 technologies: SwiftUI, SwiftData, CoreLocation, iCloud
 date: 2024-12-01
+icon: /assets/spin-tracer-app-icon.svg
 image: ../../assets/portfolio/spin-tracer-app-icon.svg
 imageBg: "#ff00ff"
 type: iOS App

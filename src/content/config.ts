@@ -31,7 +31,7 @@ const blog = defineCollection({
   schema: ({ image }) => z.object({
     title: z.string(),
     date: z.date(),
-    excerpt: z.string().optional(),
+    description: z.string().optional(),
     image: image().optional(),
     showContact: z.boolean().default(true),
   }),

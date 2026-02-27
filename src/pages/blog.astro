@@ -3,12 +3,13 @@ import PageLayout from '../layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import { pages } from '../data/pages';
 
 const posts = await getCollection('blog');
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<PageLayout title="Blog" description="Artikel und Neuigkeiten von Tristan Germer." subtitle="Artikel und Neuigkeiten">
+<PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg">
   <div class="space-y-4">
     {sorted.map((post) => {
       const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -30,8 +31,8 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
                   {dateStr}
                 </time>
               </div>
-              {post.data.excerpt && (
-                <p class="mt-2 text-gray-600 dark:text-gray-400">{post.data.excerpt}</p>
+              {post.data.description && (
+                <p class="mt-2 text-gray-600 dark:text-gray-400">{post.data.description}</p>
               )}
               <a href={`/blog/${post.slug}`} class="inline-flex items-center gap-1 mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
                 Weiterlesen

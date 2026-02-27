@@ -1,9 +1,10 @@
 ---
 title: Joke Fetcher
-description: Jokes at your fingertips.
+description: iOS-App zum Abrufen zufälliger Witze – entwickelt mit Swift und SwiftUI, mit Kategorien, Übersetzung und Apple-TV-Support.
 featured: false
 technologies: Swift, SwiftUI
 date: 2024-12-01
+icon: /assets/joke-fetcher-app-icon.svg
 image: ../../assets/portfolio/joke-fetcher-app-icon.svg
 linkGithub: https://github.com/tgermer/RandomJokesApp
 type: iOS App

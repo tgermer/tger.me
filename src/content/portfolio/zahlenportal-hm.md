@@ -1,6 +1,6 @@
 ---
 title: Zahlenportal der Hochschule München
-description: Ein datengetriebenes Portal zur effizienten Verwaltung und Analyse von Studierendenzahlen.
+description: Zentrale Plattform der Hochschule München zur Verwaltung und Visualisierung von Studierendenkennzahlen mit interaktiven Dashboards.
 featured: true
 technologies: Angular, JavaScript, Bootstrap, SQL, REST, D3.js
 date: 2018-03-15

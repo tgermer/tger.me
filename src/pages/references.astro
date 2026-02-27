@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { Icon } from "astro-icon/components";
 import { references } from "../data/cv_de";
+import { pages } from "../data/pages";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/references/*.{jpg,jpeg,png,webp}", { eager: true });
 
@@ -35,7 +36,7 @@ const withText = references.filter((r) => r.reference);
 const withoutText = references.filter((r) => !r.reference);
 ---
 
-<PageLayout title="Referenzen" description="Stimmen aus der Praxis: Referenzen und Empfehlungen von Führungskräften und Teamkollegen über Tristan Germer.">
+<PageLayout title="Referenzen" description={pages.references.description} ogImage="/og/references.jpg">
     {/* Testimonials with reference text */}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {

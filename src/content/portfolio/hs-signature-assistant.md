@@ -1,6 +1,6 @@
 ---
 title: HS-Signature-Assistant.
-description: Schluss mit InDesign & Kommandozeile – digitale Unterschriften in Minuten statt Stunden.
+description: Digitale Unterschriften für Hochschulen – direkt im Browser statt mit InDesign und Kommandozeile. In Minuten statt Stunden.
 featured: true
 technologies: HTML, CSS, TS, React
 date: 2026-02-24

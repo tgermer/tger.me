@@ -1,9 +1,10 @@
 ---
 title: Teamclusion
-description: Website, Logo und Grafiken
+description: Corporate Identity für das Teamclusion-Projekt – von Logodesign über Grafiken bis zur responsiven Website.
 featured: false
 technologies: HTML, CSS, Bootstrap, Jekyll
 date: 2024-12-01
+icon: /assets/teamclusion-logo-white.svg
 image: ../../assets/portfolio/teamclusion-logo-white.svg
 imageBg: "#1B57A6"
 linkWebsite: https://www.teamclusion.de

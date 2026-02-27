@@ -2,6 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import PortfolioCard from '../components/PortfolioCard.astro';
 import { getCollection } from 'astro:content';
+import { pages } from '../data/pages';
 
 const projects = await getCollection('portfolio');
 const sorted = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -9,8 +10,9 @@ const sorted = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 
 <PageLayout
   title="Portfolio"
-  description="Eine Auswahl meiner Projekte – von iOS Apps bis hin zu Web-Anwendungen und Daten-Visualisierungen."
+  description={pages.portfolio.description}
   subtitle="Eine Auswahl meiner Projekte"
+  ogImage="/og/portfolio.jpg"
 >
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {sorted.map((project) => (

@@ -1,6 +1,6 @@
 ---
 title: Website des Studieninformationstags der Hochschule München
-description: Zielgruppengerechte Informationen auf einer mobilen Website.
+description: Mobile-first Informationsplattform für den Studieninformationstag der Hochschule München – Programm, Raumplan und Anmeldung.
 featured: false
 technologies: HTML, CSS, JavaScript, Bootstrap, Jekyll
 date: 2024-12-01

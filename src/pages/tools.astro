@@ -1,8 +1,9 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { pages } from '../data/pages';
 ---
 
-<PageLayout title="Tools" description="Tools und Ressourcen, die ich regelmäßig für die Entwicklung verwende." subtitle="Tools I regularly use for development">
+<PageLayout title="Tools" description={pages.tools.description} subtitle="Tools I regularly use for development" ogImage="/og/tools.jpg">
   <div class="prose max-w-none text-gray-700 dark:text-gray-300">
     <h2>Laptop script from Moncef Belyamani</h2>
     <p>

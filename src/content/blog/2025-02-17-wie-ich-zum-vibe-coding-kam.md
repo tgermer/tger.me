@@ -1,7 +1,7 @@
 ---
 title: Wie ich zum Vibe-Coding kam
 date: 2025-02-17
-excerpt: Vom Nicht-Programmierer zum Vibe-Coder – wie ein YouTube-Interview alles verändert hat.
+description: Vom Nicht-Programmierer zum Vibe-Coder – wie ein YouTube-Interview den Startschuss gab, ClearControl entstand und Claude Code alles veränderte.
 showContact: false
 ---
 

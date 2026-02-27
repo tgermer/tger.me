@@ -1,7 +1,7 @@
 ---
 title: "Vibe Coding: Wie ich meinen Bewerbungsprozess in ein automatisiertes Astro-System verwandelt habe"
 date: 2025-02-25
-excerpt: "Vom statischen PDF zum automatisierten Job-Hub: Wie ich dank Astro und „Vibe Coding“ ein System gebaut habe, das personalisierte Lebensläufe und Anschreiben per CLI erstellt, PDFs im Build-Prozess bändigt und mir fertige Bewerbungs-E-Mails auf Knopfdruck generiert."
+description: "Vom statischen PDF zum automatisierten System: Personalisierte Lebensläufe und Anschreiben per CLI, PDFs im Build-Prozess und Bewerbungs-E-Mails auf Knopfdruck."
 image: ../../assets/bewerbungsprozess-02.png
 ---
 

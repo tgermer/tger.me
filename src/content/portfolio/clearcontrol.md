@@ -1,6 +1,6 @@
 ---
 title: ClearControl.
-description: Klarheit für Smart-Home-Steuerungen.
+description: Webbasiertes Design-Tool für konsistente Beschriftungen von Smart-Home-Fernbedienungen – visuell und direkt im Browser.
 featured: true
 technologies: Vue.js, TypeScript, Vite, CSS
 date: 2026-02-01
