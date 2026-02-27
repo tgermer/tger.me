@@ -3,8 +3,18 @@ import ResumeLayout from "../../layouts/ResumeLayout.astro";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import { site } from "../../data/site";
+import { toJsonResume, type CvExports } from "../../data/json-resume";
 
 const resumes = await getCollection("apply");
+
+// Pre-compute JSON Resume data for each application (at build time)
+const cvModules = import.meta.glob<Record<string, any>>("../../data/cv_*.ts", { eager: true });
+function getJsonResume(slug: string): string | null {
+    const key = `../../data/cv_${slug}.ts`;
+    const mod = cvModules[key];
+    if (!mod?.basics) return null;
+    return JSON.stringify(toJsonResume(mod as CvExports), null, 2);
+}
 
 // Sort by date descending (newest first)
 const sorted = resumes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
@@ -153,6 +163,8 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                     <a href="/en/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
                     <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download DE</a>
                     <a href="/apply/cv-en.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download EN</a>
+                    <button data-json-resume={getJsonResume("de")} class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors cursor-pointer" title="JSON Resume DE kopieren"><Icon name="tabler:braces" class="h-4 w-4" />JSON DE</button>
+                    <button data-json-resume={getJsonResume("en")} class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors cursor-pointer" title="JSON Resume EN kopieren"><Icon name="tabler:braces" class="h-4 w-4" />JSON EN</button>
                     <button id="lockout-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-red-300 text-red-600 rounded-full hover:bg-red-50 transition-colors cursor-pointer" title="Sitzung sperren"><Icon name="tabler:lock" class="h-4 w-4" /></button>
                 </div>
             </div>
@@ -297,6 +309,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                     <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
                                         <Icon name="tabler:mail" class="h-4 w-4" />
                                     </a>
+                                    <button data-json-resume={getJsonResume(r.slug)} class="text-gray-400 hover:text-gray-600 cursor-pointer" title="JSON Resume kopieren">
+                                        <Icon name="tabler:braces" class="h-4 w-4" />
+                                    </button>
                                 </div>
                             </div>
                         );
@@ -404,6 +419,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
                                                         <Icon name="tabler:mail" class="h-4 w-4" />
                                                     </a>
+                                                    <button data-json-resume={getJsonResume(r.slug)} class="text-gray-400 hover:text-gray-600 cursor-pointer" title="JSON Resume kopieren">
+                                                        <Icon name="tabler:braces" class="h-4 w-4" />
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -767,6 +785,30 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
         window.addEventListener("afterprint", () => {
             document.querySelectorAll("tr[data-detail]").forEach((el) => el.classList.add("hidden"));
             document.querySelectorAll(".expand-icon").forEach((el) => el.classList.remove("rotate-180"));
+        });
+
+        // --- JSON Resume copy to clipboard ---
+        document.querySelectorAll<HTMLButtonElement>("[data-json-resume]").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                const json = btn.getAttribute("data-json-resume");
+                if (!json) return;
+                try {
+                    await navigator.clipboard.writeText(json);
+                    const svg = btn.querySelector("svg");
+                    if (svg) {
+                        svg.style.color = "#16a34a";
+                        setTimeout(() => (svg.style.color = ""), 1500);
+                    }
+                } catch {
+                    // Fallback: open in new window
+                    const w = window.open("", "_blank");
+                    if (w) {
+                        w.document.write(`<pre>${json.replace(/</g, "&lt;")}</pre>`);
+                        w.document.close();
+                    }
+                }
+            });
         });
 
         // --- Password gate ---

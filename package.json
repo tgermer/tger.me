@@ -10,7 +10,8 @@
     "pdf": "node scripts/generate-pdf.mjs",
     "pdf:install": "npx playwright install chromium",
     "new-apply": "bash scripts/new-apply.sh",
-    "delete-apply": "bash scripts/delete-apply.sh"
+    "delete-apply": "bash scripts/delete-apply.sh",
+    "json-resume": "node scripts/export-json-resume.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
