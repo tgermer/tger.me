@@ -445,18 +445,11 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             cv.references?.length > 0 && (
                 <section class="resume-section">
                     <h2 class="resume-heading">{l.referencesHeading}</h2>
-                    <dl class="resume-references">
+                    <div class="resume-references-list">
                         {cv.references.map((ref) => (
-                            <div class="resume-reference">
-                                <dt class="resume-entry-title">{ref.name}</dt>
-                                <dd class="resume-entry-sub">
-                                    {ref.position}, {ref.company}
-                                </dd>
-                                {ref.department && <dd class="resume-entry-meta">{ref.department}</dd>}
-                                <dd class="resume-entry-meta">{ref.email}</dd>
-                            </div>
+                            <p><strong>{ref.name}</strong>, {ref.position}{ref.company && `, ${ref.company}`}</p>
                         ))}
-                    </dl>
+                    </div>
                 </section>
             )
         }

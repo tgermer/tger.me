@@ -145,7 +145,11 @@ const alternates = [
                                     )}
                                     {edu.location && `, ${edu.location}`}
                                 </p>
-                                {edu.majorFieldOfStudy && <p class="text-gray-900 dark:text-white">{l.cvMajorLabel} {edu.majorFieldOfStudy}</p>}
+                                {edu.majorFieldOfStudy && (
+                                    <p class="text-gray-900 dark:text-white">
+                                        {l.cvMajorLabel} {edu.majorFieldOfStudy}
+                                    </p>
+                                )}
                                 {edu.thesis?.title && (
                                     <p class="text-gray-900 dark:text-white mt-1">
                                         Thesis:{" "}
@@ -263,27 +267,6 @@ const alternates = [
                                 <span class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-sm px-3 py-1 rounded-full">{item}</span>
                             ))}
                         </div>
-                    </div>
-                ))
-            }
-        </div>
-    </section>
-
-    <!-- Referenzen -->
-    <section>
-        <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:users" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvReferencesHeading}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {
-                references.map((ref) => (
-                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
-                        <p class="font-semibold text-gray-900 dark:text-white">{ref.name}</p>
-                        <p class="text-gray-900 dark:text-white">{ref.position}</p>
-                        <p class="text-gray-900 dark:text-white">{ref.company}</p>
-                        {ref.department && <p class="text-gray-900 dark:text-white">{ref.department}</p>}
-                        <a href={`mailto:${ref.email}`} class="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline mt-1">
-                            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
-                            {ref.email}
-                        </a>
                     </div>
                 ))
             }

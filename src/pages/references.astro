@@ -1,153 +1,146 @@
 ---
-import PageLayout from '../layouts/PageLayout.astro';
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import { Icon } from 'astro-icon/components';
-import { references } from '../data/cv_de';
+import PageLayout from "../layouts/PageLayout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { Icon } from "astro-icon/components";
+import { references } from "../data/cv_de";
 
-const imageModules = import.meta.glob<{ default: ImageMetadata }>(
-  "../assets/references/*.{jpg,jpeg,png,webp}",
-  { eager: true },
-);
+const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/references/*.{jpg,jpeg,png,webp}", { eager: true });
 
-function getImage(ref: typeof references[number]) {
-  if (!ref.image) return null;
-  const mod = imageModules[`../assets/references/${ref.image}`];
-  return mod?.default ?? null;
+function getImage(ref: (typeof references)[number]) {
+    if (!ref.image) return null;
+    const mod = imageModules[`../assets/references/${ref.image}`];
+    return mod?.default ?? null;
 }
 
 function getInitials(name: string): string {
-  return name.split(' ').filter(p => !['Dr.', 'Prof.'].includes(p)).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+    return name
+        .split(" ")
+        .filter((p) => !["Dr.", "Prof."].includes(p))
+        .map((p) => p[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
 }
 
-function getLinkedIn(ref: typeof references[number]) {
-  return ref.profiles?.find(p => p.network === 'LinkedIn');
+function getLinkedIn(ref: (typeof references)[number]) {
+    return ref.profiles?.find((p) => p.network === "LinkedIn");
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+    return new Date(iso).toLocaleDateString("de-DE", { month: "long", year: "numeric" });
 }
 
-const withText = references.filter(r => r.reference);
-const withoutText = references.filter(r => !r.reference);
+const withText = references.filter((r) => r.reference);
+const withoutText = references.filter((r) => !r.reference);
 ---
 
 <PageLayout title="Referenzen" description="Berufliche Referenzen von Tristan Germer.">
+    {/* Testimonials with reference text */}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {
+            withText.map((ref) => {
+                const linkedin = getLinkedIn(ref);
+                const image = getImage(ref);
+                return (
+                    <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col" data-testimonial>
+                        {/* Accent top bar */}
+                        <div class="h-1 gradient-brand" />
 
-  {/* Testimonials with reference text */}
-  <div class="space-y-10">
-    {withText.map((ref) => {
-      const linkedin = getLinkedIn(ref);
-      const image = getImage(ref);
-      return (
-        <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
-          {/* Accent top bar */}
-          <div class="h-1 gradient-brand" />
+                        <div class="p-6 sm:p-8 flex flex-col flex-1">
+                            {/* Quote icon */}
+                            <Icon name="tabler:quote" class="h-8 w-8 text-blue-200 dark:text-blue-900 mb-3" />
 
-          <div class="p-6 sm:p-8 lg:p-10">
-            {/* Quote icon */}
-            <Icon name="tabler:quote" class="h-10 w-10 text-blue-200 dark:text-blue-900 mb-4" />
+                            {/* Reference text – truncated by default */}
+                            <blockquote class="text-gray-700 dark:text-gray-300 text-[0.95rem] leading-relaxed whitespace-pre-line line-clamp-5" data-quote>
+                                {ref.reference}
+                            </blockquote>
 
-            {/* Reference text */}
-            <blockquote class="text-gray-700 dark:text-gray-300 text-[0.95rem] sm:text-base leading-relaxed whitespace-pre-line mb-8">
-              {ref.reference}
-            </blockquote>
+                            {/* Expand/collapse button – hidden by default, shown via JS if text overflows */}
+                            <button class="hidden mt-2 mb-4 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors cursor-pointer self-start" data-expand-btn>
+                                Mehr lesen
+                            </button>
 
-            {/* Author */}
-            <div class="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-800">
-              <div class="shrink-0">
-                {image ? (
-                  <Image
-                    src={image}
-                    alt={ref.name}
-                    width={48}
-                    height={48}
-                    class="w-12 h-12 rounded-full object-cover ring-2 ring-blue-100 dark:ring-blue-900"
-                  />
-                ) : (
-                  <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold ring-2 ring-blue-50 dark:ring-blue-950">
-                    {getInitials(ref.name)}
-                  </div>
-                )}
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-900 dark:text-white">{ref.name}</span>
-                  {linkedin && (
-                    <a
-                      href={linkedin.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                      aria-label={`${ref.name} auf LinkedIn`}
-                    >
-                      <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                  {ref.position}{ref.company && ` · ${ref.company}`}
-                </p>
-                {ref.date && (
-                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{formatDate(ref.date)}</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </article>
-      );
-    })}
-  </div>
-
-  {/* References without text – compact cards */}
-  {withoutText.length > 0 && (
-    <div class="mt-12">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Weitere Referenzen</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {withoutText.map((ref) => {
-          const linkedin = getLinkedIn(ref);
-          const image = getImage(ref);
-          return (
-            <div class="flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-              <div class="shrink-0">
-                {image ? (
-                  <Image
-                    src={image}
-                    alt={ref.name}
-                    width={44}
-                    height={44}
-                    class="w-11 h-11 rounded-full object-cover"
-                  />
-                ) : (
-                  <div class="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
-                    {getInitials(ref.name)}
-                  </div>
-                )}
-              </div>
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-900 dark:text-white text-sm">{ref.name}</span>
-                  {linkedin && (
-                    <a
-                      href={linkedin.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                      aria-label={`${ref.name} auf LinkedIn`}
-                    >
-                      <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                  {ref.position}{ref.company && ` · ${ref.company}`}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                            {/* Author – pushed to bottom */}
+                            <div class="flex items-center gap-4 pt-5 mt-auto border-t border-gray-100 dark:border-gray-800">
+                                <div class="shrink-0">{image ? <Image src={image} alt={ref.name} width={64} height={64} class="w-16 h-16 rounded-full object-cover ring-2 ring-blue-100 dark:ring-blue-900" /> : <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold text-lg ring-2 ring-blue-50 dark:ring-blue-950">{getInitials(ref.name)}</div>}</div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-semibold text-gray-900 dark:text-white">{ref.name}</span>
+                                        {linkedin && (
+                                            <a href={linkedin.url} target="_blank" rel="noopener noreferrer" class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors" aria-label={`${ref.name} auf LinkedIn`}>
+                                                <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
+                                            </a>
+                                        )}
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        {ref.position}
+                                        {ref.company && ` · ${ref.company}`}
+                                    </p>
+                                    {ref.date && <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{formatDate(ref.date)}</p>}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                );
+            })
+        }
     </div>
-  )}
 
+    {/* References without text – compact cards */}
+    {
+        withoutText.length > 0 && (
+            <div class="mt-12">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Weitere Referenzen</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {withoutText.map((ref) => {
+                        const linkedin = getLinkedIn(ref);
+                        const image = getImage(ref);
+                        return (
+                            <div class="flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                                <div class="shrink-0">{image ? <Image src={image} alt={ref.name} width={44} height={44} class="w-11 h-11 rounded-full object-cover" /> : <div class="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">{getInitials(ref.name)}</div>}</div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-semibold text-gray-900 dark:text-white text-sm">{ref.name}</span>
+                                        {linkedin && (
+                                            <a href={linkedin.url} target="_blank" rel="noopener noreferrer" class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors" aria-label={`${ref.name} auf LinkedIn`}>
+                                                <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
+                                            </a>
+                                        )}
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                        {ref.position}
+                                        {ref.company && ` · ${ref.company}`}
+                                    </p>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        )
+    }
 </PageLayout>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll<HTMLElement>("[data-testimonial]").forEach((card) => {
+            const quote = card.querySelector<HTMLElement>("[data-quote]");
+            const btn = card.querySelector<HTMLButtonElement>("[data-expand-btn]");
+            if (!quote || !btn) return;
+
+            // Check if text is actually clamped (overflows 5 lines)
+            const isClamped = quote.scrollHeight > quote.clientHeight + 1;
+            if (!isClamped) return;
+
+            btn.classList.remove("hidden");
+
+            btn.addEventListener("click", () => {
+                const expanded = quote.classList.toggle("line-clamp-none");
+                quote.classList.toggle("line-clamp-5", !expanded);
+                card.classList.toggle("lg:col-span-2", expanded);
+                btn.textContent = expanded ? "Weniger" : "Mehr lesen";
+            });
+        });
+    });
+</script>
