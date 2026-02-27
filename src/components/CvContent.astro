@@ -64,12 +64,12 @@ const alternates = [
                                     <>
                                         <p class="font-semibold text-gray-900 dark:text-white">{job.position.join(", ")}</p>
                                         <p class="text-gray-900 dark:text-white">
-                                            {job.companyUrl ? (
-                                                <a href={`https://${job.companyUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                    {job.company}
+                                            {job.url ? (
+                                                <a href={`https://${job.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    {job.name}
                                                 </a>
                                             ) : (
-                                                job.company
+                                                job.name
                                             )}
                                             {job.location && `, ${job.location}`}
                                         </p>
@@ -78,30 +78,30 @@ const alternates = [
                                     <>
                                         <p class="font-semibold text-gray-900 dark:text-white">{job.typeOfEmployment}</p>
                                         <p class="text-gray-900 dark:text-white">
-                                            {job.companyUrl ? (
-                                                <a href={`https://${job.companyUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                    {job.company}
+                                            {job.url ? (
+                                                <a href={`https://${job.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                    {job.name}
                                                 </a>
                                             ) : (
-                                                job.company
+                                                job.name
                                             )}
                                             , {job.location}
                                         </p>
                                     </>
                                 ) : (
                                     <p class="font-semibold text-gray-900 dark:text-white">
-                                        {job.companyUrl ? (
-                                            <a href={`https://${job.companyUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                                {job.company}
+                                        {job.url ? (
+                                            <a href={`https://${job.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                                {job.name}
                                             </a>
                                         ) : (
-                                            job.company
+                                            job.name
                                         )}
                                     </p>
                                 )}
-                                {job.description?.list && job.description.list.length > 0 && (
+                                {job.highlights && job.highlights.length > 0 && (
                                     <ul class="mt-2 text-gray-900 dark:text-white space-y-1 list-disc pl-4">
-                                        {job.description.list.map((item) => (
+                                        {job.highlights.map((item) => (
                                             <li>{item}</li>
                                         ))}
                                     </ul>
@@ -136,12 +136,12 @@ const alternates = [
                                     {edu.fieldOfStudy}, {edu.degree}
                                 </p>
                                 <p class="text-gray-900 dark:text-white">
-                                    {edu.schoolUrl ? (
-                                        <a href={`https://${edu.schoolUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                            {edu.school}
+                                    {edu.url ? (
+                                        <a href={`https://${edu.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            {edu.institution}
                                         </a>
                                     ) : (
-                                        edu.school
+                                        edu.institution
                                     )}
                                     {edu.location && `, ${edu.location}`}
                                 </p>
@@ -195,12 +195,12 @@ const alternates = [
                                     {edu.degree && `, ${edu.degree}`}
                                 </p>
                                 <p class="text-gray-900 dark:text-white">
-                                    {edu.schoolUrl ? (
-                                        <a href={`https://${edu.schoolUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                            {edu.school}
+                                    {edu.url ? (
+                                        <a href={`https://${edu.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            {edu.institution}
                                         </a>
                                     ) : (
-                                        edu.school
+                                        edu.institution
                                     )}
                                     {edu.location && `, ${edu.location}`}
                                 </p>
@@ -228,10 +228,10 @@ const alternates = [
                         <div class="flex flex-col md:flex-row md:gap-8">
                             <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.date)}</div>
                             <div class="flex-1 min-w-0">
-                                <p class="font-semibold text-gray-900 dark:text-white">{project.title}</p>
-                                {project.description?.list && project.description.list.length > 0 && (
+                                <p class="font-semibold text-gray-900 dark:text-white">{project.name}</p>
+                                {project.highlights && project.highlights.length > 0 && (
                                     <ul class="mt-2 text-gray-900 dark:text-white space-y-1 list-disc pl-4">
-                                        {project.description.list.map((item) => (
+                                        {project.highlights.map((item) => (
                                             <li>{item}</li>
                                         ))}
                                     </ul>
@@ -257,7 +257,7 @@ const alternates = [
             {
                 skills.map((cat) => (
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-2">{cat.catagorie}</h3>
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-2">{cat.category}</h3>
                         <div class="flex flex-wrap gap-2">
                             {cat.items.map((item) => (
                                 <span class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-sm px-3 py-1 rounded-full">{item}</span>

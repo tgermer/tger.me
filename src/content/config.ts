@@ -72,6 +72,8 @@ const apply = defineCollection({
     cvData: z.string().optional(),
     // Show handwritten signature below date footer (print/PDF only).
     signature: z.boolean().default(false),
+    // Show photo on cover page. Set to false for photo-free CVs.
+    photo: z.boolean().default(true),
     // Cover letter salutation (e.g. "Sehr geehrter Herr Eger,")
     salutation: optionalString,
     // Application tracking fields (empty strings are treated as unset)

@@ -77,11 +77,35 @@ public/apply/<slug>-letter.pdf ← Cover letter PDF (only if body exists)
 
 ### Personal data
 
-All personal data (name, address, phone, email, birthdate, photo, tagline) lives in the
-`personal` export of each CV data file. This means:
+All personal data (name, address, phone, email, birthdate, photo, tagline, profiles) lives in the
+`personal` export of each CV data file. Social profiles use a generic `profiles[]` array
+with `{network, url}` objects (e.g. LinkedIn, GitHub). Languages and interests are separate
+top-level exports (`languages`, `interests`), not part of `personal` or `skills`.
+
+This means:
 - General resume pages use `personal` from `cv_de.ts` / `cv_en.ts`
 - Application snapshots use `personal` from `cv_<slug>.ts`
 - The `site.ts` file is for website-level config only (not resume data)
+
+### CV data schema (aligned with JSON Resume where practical)
+
+Each CV data file exports: `personal`, `experience`, `education`, `furtherEducation`,
+`skills`, `languages`, `interests`, `projects`, `references`.
+
+Key field names (JSON Resume–aligned):
+- `experience[].name` (company name), `.url`, `.highlights[]`, `.position[]`, `.typeOfEmployment`
+- `education[].institution`, `.url`, `.fieldOfStudy`, `.degree`, `.grade`, `.thesis`
+- `furtherEducation[].institution`, `.url`, `.fieldOfStudy`, `.degree`, `.certificateUrl`
+- `skills[].category`, `.items[]`
+- `languages[].language`, `.fluency`
+- `projects[].name`, `.url`, `.githubUrl`, `.highlights[]`, `.date`
+- `references[].name`, `.company`, `.department`, `.position`, `.email`
+
+### Frontmatter overrides
+
+The `<slug>.md` frontmatter supports per-application overrides:
+- `signature: true/false` – show/hide handwritten signature (default: false)
+- `photo: true/false` – show/hide photo on cover page (default: true)
 
 ### Creating a new application
 

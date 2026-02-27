@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { initiative, position, company, lang, date, cvData, signature, salutation, companyAddress } = resume.data;
+const { initiative, position, company, lang, date, cvData, signature, photo: showPhoto, salutation, companyAddress } = resume.data;
 
 // Render markdown body (cover letter)
 const { Content } = await resume.render();
@@ -53,11 +53,14 @@ if (cvData) {
 
 const p = cv.personal;
 
-// Resolve photo from src/assets/
-const photoKey = `../../assets/apply/${p.photo}`;
-const photoModule = imageModules[photoKey];
-if (!photoModule) throw new Error(`Photo not found: src/assets/${p.photo}`);
-const photoImage = photoModule.default;
+// Resolve photo from src/assets/ (skip if photo disabled via frontmatter)
+let photoImage: ImageMetadata | undefined;
+if (showPhoto !== false) {
+    const photoKey = `../../assets/apply/${p.photo}`;
+    const photoModule = imageModules[photoKey];
+    if (!photoModule) throw new Error(`Photo not found: src/assets/${p.photo}`);
+    photoImage = photoModule.default;
+}
 
 const l = isDE
     ? {
@@ -163,7 +166,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
 
         <!-- Photo, name, tagline, data – anchored to bottom -->
         <div class="cover-bottom">
-            <Image src={photoImage} alt={p.name} class="cover-photo" />
+            {photoImage && <Image src={photoImage} alt={p.name} class="cover-photo" />}
             <h2 class="cover-name">{p.name}</h2>
             <p class="cover-tagline">{p.tagline}</p>
 
@@ -175,7 +178,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.languages}</td>
-                    <td class="cover-data-value">{p.languageValues}</td>
+                    <td class="cover-data-value">{cv.languages.map(lang => `${lang.language} (${lang.fluency})`).join(", ")}</td>
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.residence}</td>
@@ -185,14 +188,15 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                     <td class="cover-data-label">{l.contact}</td>
                     <td class="cover-data-value"><a href={`tel:${p.phone}`} target="_blank" rel="noopener noreferrer">{p.phone}</a> | <a href={`mailto:${p.email}`} target="_blank" rel="noopener noreferrer">{p.email}</a></td>
                 </tr>
-                {(p.url || p.linkedinUrl || p.githubUrl) && (
+                {(p.url || p.profiles?.length) && (
                     <tr>
                         <td class="cover-data-label">{l.online}</td>
                         <td class="cover-data-value">
                             {[
                                 p.url && <a href={`https://${p.url}`} target="_blank" rel="noopener noreferrer">{p.url}</a>,
-                                p.linkedinUrl && <a href={`https://${p.linkedinUrl}`} target="_blank" rel="noopener noreferrer">{p.linkedinUrl}</a>,
-                                p.githubUrl && <a href={`https://${p.githubUrl}`} target="_blank" rel="noopener noreferrer">{p.githubUrl}</a>,
+                                ...(p.profiles?.map((prof) => (
+                                    <a href={`https://${prof.url}`} target="_blank" rel="noopener noreferrer">{prof.url}</a>
+                                )) || []),
                             ].filter(Boolean).reduce((acc, el, i) => i === 0 ? [el] : [...acc, ' | ', el], [])}
                         </td>
                     </tr>
@@ -286,11 +290,11 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                 {job.position && job.position.length > 0 ? (
                                     <>
                                         <p class="resume-entry-title">{job.position.join(", ")}</p>
-                                        <p class="resume-entry-sub">{job.company}{job.location && `, ${job.location}`}<span class="resume-employment-type"> · {job.typeOfEmployment}</span></p>
+                                        <p class="resume-entry-sub">{job.name}{job.location && `, ${job.location}`}<span class="resume-employment-type"> · {job.typeOfEmployment}</span></p>
                                     </>
                                 ) : (
                                     <>
-                                        <p class="resume-entry-title">{job.company}</p>
+                                        <p class="resume-entry-title">{job.name}</p>
                                         {job.location && (
                                             <p class="resume-entry-sub">
                                                 {job.location} · {job.typeOfEmployment}
@@ -299,9 +303,9 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                         {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
                                     </>
                                 )}
-                                {job.description?.list && job.description.list.length > 0 && (
+                                {job.highlights && job.highlights.length > 0 && (
                                     <ul class="resume-list">
-                                        {job.description.list.map((item) => (
+                                        {job.highlights.map((item) => (
                                             <li>{item}</li>
                                         ))}
                                     </ul>
@@ -342,7 +346,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                 )}
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.school}</p>
+                                <p class="resume-entry-sub">{edu.institution}</p>
                                 {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
                             </td>
                         </tr>
@@ -377,7 +381,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                                 </p>
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.school}</p>
+                                <p class="resume-entry-sub">{edu.institution}</p>
                                 {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
                             </td>
                         </tr>
@@ -397,10 +401,10 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                             <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                                 <td class="resume-date">{formatDate(project.date)}</td>
                                 <td class="resume-detail">
-                                    <p class="resume-entry-title">{project.title}</p>
-                                    {project.description?.list && project.description.list.length > 0 && (
+                                    <p class="resume-entry-title">{project.name}</p>
+                                    {project.highlights && project.highlights.length > 0 && (
                                         <ul class="resume-list">
-                                            {project.description.list.map((item) => (
+                                            {project.highlights.map((item) => (
                                                 <li>{item}</li>
                                             ))}
                                         </ul>
@@ -421,7 +425,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                     <div class="resume-skills-grid">
                         {cv.skills.map((cat) => (
                             <div class="resume-skill-group">
-                                <h3 class="resume-skill-label">{cat.catagorie}</h3>
+                                <h3 class="resume-skill-label">{cat.category}</h3>
                                 <ul class="resume-skill-items">
                                     {cat.items.map((item) => (
                                         <li>{item}</li>

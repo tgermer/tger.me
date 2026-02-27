@@ -13,7 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const l = t(lang);
 const cv = lang === "de" ? cvDe : cvEn;
-const { personal, experience, education, furtherEducation, skills, projects } = cv;
+const { personal, experience, education, furtherEducation, skills, languages, projects } = cv;
 const otherLang = lang === "de" ? "en" : "de";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
@@ -66,7 +66,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.cvPrintLanguagesLabel}</td>
-                    <td class="cover-data-value">{personal.languageValues}</td>
+                    <td class="cover-data-value">{languages.map(l => `${l.language} (${l.fluency})`).join(", ")}</td>
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.cvPrintResidenceLabel}</td>
@@ -77,7 +77,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                     <td class="cover-data-value"><a href={`tel:${personal.phone}`} target="_blank" rel="noopener noreferrer">{personal.phone}</a> | <a href={`mailto:${personal.email}`} target="_blank" rel="noopener noreferrer">{personal.email}</a></td>
                 </tr>
                 {
-                    (personal.url || personal.linkedinUrl || personal.githubUrl) && (
+                    (personal.url || personal.profiles?.length) && (
                         <tr>
                             <td class="cover-data-label">{l.cvPrintOnlineLabel}</td>
                             <td class="cover-data-value">
@@ -87,16 +87,11 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                             {personal.url}
                                         </a>
                                     ),
-                                    personal.linkedinUrl && (
-                                        <a href={`https://${personal.linkedinUrl}`} target="_blank" rel="noopener noreferrer">
-                                            {personal.linkedinUrl}
+                                    ...(personal.profiles?.map((prof) => (
+                                        <a href={`https://${prof.url}`} target="_blank" rel="noopener noreferrer">
+                                            {prof.url}
                                         </a>
-                                    ),
-                                    personal.githubUrl && (
-                                        <a href={`https://${personal.githubUrl}`} target="_blank" rel="noopener noreferrer">
-                                            {personal.githubUrl}
-                                        </a>
-                                    ),
+                                    )) || []),
                                 ]
                                     .filter(Boolean)
                                     .reduce((acc, el, i) => (i === 0 ? [el] : [...acc, " · ", el]), [] as any[])}
@@ -136,14 +131,14 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                     <>
                                         <p class="resume-entry-title">{job.position.join(", ")}</p>
                                         <p class="resume-entry-sub">
-                                            {job.company}
+                                            {job.name}
                                             {job.location && `, ${job.location}`}
                                             <span class="resume-employment-type"> · {job.typeOfEmployment}</span>
                                         </p>
                                     </>
                                 ) : (
                                     <>
-                                        <p class="resume-entry-title">{job.company}</p>
+                                        <p class="resume-entry-title">{job.name}</p>
                                         {job.location && (
                                             <p class="resume-entry-sub">
                                                 {job.location} · {job.typeOfEmployment}
@@ -152,9 +147,9 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                         {!job.location && <p class="resume-entry-sub">{job.typeOfEmployment}</p>}
                                     </>
                                 )}
-                                {job.description?.list && job.description.list.length > 0 && (
+                                {job.highlights && job.highlights.length > 0 && (
                                     <ul class="resume-list">
-                                        {job.description.list.map((item) => (
+                                        {job.highlights.map((item) => (
                                             <li>{item}</li>
                                         ))}
                                     </ul>
@@ -185,7 +180,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                 {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.school}</p>
+                                <p class="resume-entry-sub">{edu.institution}</p>
                                 {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
                             </td>
                         </tr>
@@ -218,7 +213,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                 </p>
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.school}</p>
+                                <p class="resume-entry-sub">{edu.institution}</p>
                                 {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
                             </td>
                         </tr>
@@ -236,10 +231,10 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                             <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                                 <td class="resume-date">{formatDate(project.date)}</td>
                                 <td class="resume-detail">
-                                    <p class="resume-entry-title">{project.title}</p>
-                                    {project.description?.list && project.description.list.length > 0 && (
+                                    <p class="resume-entry-title">{project.name}</p>
+                                    {project.highlights && project.highlights.length > 0 && (
                                         <ul class="resume-list">
-                                            {project.description.list.map((item) => (
+                                            {project.highlights.map((item) => (
                                                 <li>{item}</li>
                                             ))}
                                         </ul>
@@ -259,7 +254,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                     <div class="resume-skills-grid">
                         {skills.map((cat) => (
                             <div class="resume-skill-group">
-                                <h3 class="resume-skill-label">{cat.catagorie}</h3>
+                                <h3 class="resume-skill-label">{cat.category}</h3>
                                 <ul class="resume-skill-items">
                                     {cat.items.map((item) => (
                                         <li>{item}</li>

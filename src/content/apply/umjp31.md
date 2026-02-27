@@ -9,6 +9,7 @@ lang: "de"
 date: 2026-02-26
 cvData: "cv_umjp31"
 signature: true
+photo: true
 jobUrl: ""
 contact: "Rüdiger Neuer"
 salutation: "Sehr geehrter Herr Neuer,"

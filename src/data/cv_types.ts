@@ -1,17 +1,27 @@
+export interface Profile {
+  network: string;
+  url: string;
+}
+
+export interface Language {
+  language: string;
+  fluency: string;
+}
+
 export interface ExperienceItem {
-  company: string;
-  companyUrl?: string;
+  name: string;
+  url?: string;
   location: string;
   typeOfEmployment: string;
   position?: string[];
-  description?: { list?: string[] };
+  highlights?: string[];
   startDate: string;
   endDate: string;
 }
 
 export interface EducationItem {
-  school: string;
-  schoolUrl?: string;
+  institution: string;
+  url?: string;
   location: string;
   startDate: string;
   endDate: string;
@@ -24,8 +34,8 @@ export interface EducationItem {
 }
 
 export interface FurtherEducationItem {
-  school: string;
-  schoolUrl?: string;
+  institution: string;
+  url?: string;
   location: string;
   startDate: string;
   endDate: string;
@@ -35,7 +45,7 @@ export interface FurtherEducationItem {
 }
 
 export interface SkillCategory {
-  catagorie: string;
+  category: string;
   items: string[];
 }
 
@@ -48,10 +58,10 @@ export interface Reference {
 }
 
 export interface ProjectItem {
-  title: string;
+  name: string;
   url?: string;
   githubUrl?: string;
-  description?: { list?: string[] };
+  highlights?: string[];
   date: string;
 }
 
@@ -64,8 +74,6 @@ export interface PersonalData {
   phone: string;
   email: string;
   location: string;
-  languageValues: string;
   url?: string;
-  linkedinUrl?: string;
-  githubUrl?: string;
+  profiles?: Profile[];
 }
