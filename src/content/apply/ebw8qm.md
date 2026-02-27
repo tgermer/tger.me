@@ -21,4 +21,6 @@ statusHistory:
     - status: "vorstellungsgespräch"
       date: 2026-02-23
       info: "Teams-Call mit Katharina Honsek, Verena Sparla, Katharina Widemann. Ich habe das Gefühl, dass sie überhaupt nicht wissen was sie suchen. Auf der einen Seite wollen sie einen mir frischer herangehensweise ohne eingefahrene Abläufe in dem Bereich, auf der anderen Seite habe ich kein Branchenwissen, und sie meinen dass das das Onboarding 12–24 Monate dauern könnte. Jetzt müssen sie überlegen, ob ihnen das nicht zu lang ist. :-/"
+    - status: "absage"
+      date: 2026-02-27
 ---
