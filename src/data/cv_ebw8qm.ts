@@ -1,14 +1,17 @@
-import type { ExperienceItem, EducationItem, FurtherEducationItem, SkillCategory, Reference, ProjectItem, PersonalData, Language } from "./cv_types";
+import type { Work, Education, Certificate, Skill, Reference, Project, Basics, Language, Interest } from "./cv_types";
 
-export const personal: PersonalData = {
+export const basics: Basics = {
     name: "Tristan Germer",
-    tagline: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
-    photo: "2025-09-02-portrait.jpg",
+    label: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
+    image: "2025-09-02-portrait.jpg",
     birthdate: "19.10.1981",
-    address: "Petrarcastraße 32, 80933 München",
+    location: {
+        address: "Petrarcastraße 32",
+        postalCode: "80933",
+        city: "München",
+    },
     phone: "+49 151 22651857",
     email: "hello@tger.me",
-    location: "München",
     url: "tger.me",
     profiles: [
         { network: "LinkedIn", url: "linkedin.com/in/tgermer" },
@@ -16,7 +19,7 @@ export const personal: PersonalData = {
     ],
 };
 
-export const experience: ExperienceItem[] = [
+export const work: Work[] = [
     {
         name: "Karriereübergang – Digitalisierung & Systemsteuerung",
         location: "",
@@ -81,15 +84,15 @@ export const experience: ExperienceItem[] = [
     }
 ];
 
-export const education: EducationItem[] = [
+export const education: Education[] = [
     {
         institution: "Donau-Universität Krems",
         url: "www.donau-uni.ac.at",
         location: "Krems, Österreich",
         startDate: "2016-05-01",
         endDate: "2018-04-30",
-        fieldOfStudy: "Technische Kommunikation",
-        degree: "Master of Science (MSc)",
+        area: "Technische Kommunikation",
+        studyType: "Master of Science (MSc)",
         thesis: {
             title: "Methoden der Technischen Dokumentation, angewendet in der Verwaltung von Hochschulen für angewandte Wissenschaften",
             fullTextUrl: "https://permalink.obvsg.at/duk/YC00347036",
@@ -101,10 +104,10 @@ export const education: EducationItem[] = [
         location: "München, Deutschland",
         startDate: "2009-03-01",
         endDate: "2013-08-31",
-        fieldOfStudy: "Betriebswirtschaft",
+        area: "Betriebswirtschaft",
         majorFieldOfStudy: "Projektberatung und Projektmanagement",
-        degree: "Bachelor of Arts (BA)",
-        grade: 2.6,
+        studyType: "Bachelor of Arts (BA)",
+        score: 2.6,
         thesis: {
             title: "BLENDED LEARNING MIT DEM APPLE IPAD. Einsatzmöglichkeiten und einfache Umsetzungen am Beispiel eines Präsentationstrainings",
             grade: 1.7,
@@ -112,57 +115,57 @@ export const education: EducationItem[] = [
     }
 ];
 
-export const furtherEducation: FurtherEducationItem[] = [
+export const certificates: Certificate[] = [
     {
-        institution: "UDACITY",
-        url: "www.udacity.com",
+        issuer: "UDACITY",
+        issuerUrl: "www.udacity.com",
         location: "Online",
         startDate: "2024-10-01",
         endDate: "2024-12-04",
-        fieldOfStudy: "iOS Development with SwiftUI and SwiftData",
+        name: "iOS Development with SwiftUI and SwiftData",
         degree: "Nanodegree",
-        certificateUrl: "https://www.udacity.com/certificate/e/50931af6-7ccf-11ef-9b58-8fbb3f4ca5b3",
+        url: "https://www.udacity.com/certificate/e/50931af6-7ccf-11ef-9b58-8fbb3f4ca5b3",
     },
     {
-        institution: "Scrum.org",
-        url: "www.scrum.org",
+        issuer: "Scrum.org",
+        issuerUrl: "www.scrum.org",
         location: "Online",
         startDate: "2024-08-03",
         endDate: "2024-08-03",
-        fieldOfStudy: "Professioneller Scrum Product Owner (PSPO I)",
-        certificateUrl: "https://www.scrum.org/certificates/1127252",
+        name: "Professioneller Scrum Product Owner (PSPO I)",
+        url: "https://www.scrum.org/certificates/1127252",
     },
     {
-        institution: "Scrum.org",
-        url: "www.scrum.org",
+        issuer: "Scrum.org",
+        issuerUrl: "www.scrum.org",
         location: "Online",
         startDate: "2024-07-07",
         endDate: "2024-07-07",
-        fieldOfStudy: "Professioneller Scrum Master (PSM I)",
-        certificateUrl: "https://www.scrum.org/certificates/1118704",
+        name: "Professioneller Scrum Master (PSM I)",
+        url: "https://www.scrum.org/certificates/1118704",
     },
     {
-        institution: "B-SCT",
+        issuer: "B-SCT",
         location: "",
         startDate: "2015-07-01",
         endDate: "2015-07-31",
-        fieldOfStudy: "Projekte leiten",
+        name: "Projekte leiten",
     },
     {
-        institution: "B-SCT",
+        issuer: "B-SCT",
         location: "",
         startDate: "2015-06-01",
         endDate: "2015-06-30",
-        fieldOfStudy: "Projekte managen",
+        name: "Projekte managen",
     }
 ];
 
-export const skills: SkillCategory[] = [
-    { category: "Office", items: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
-    { category: "Programmierung", items: ["Swift", "JavaScript", "TypeScript"] },
-    { category: "Datenanalyse", items: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
-    { category: "Design", items: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { category: "AI & Tools", items: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] }
+export const skills: Skill[] = [
+    { name: "Office", keywords: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
+    { name: "Programmierung", keywords: ["Swift", "JavaScript", "TypeScript"] },
+    { name: "Datenanalyse", keywords: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
+    { name: "Design", keywords: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
+    { name: "AI & Tools", keywords: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] }
 ];
 
 export const languages: Language[] = [
@@ -170,20 +173,22 @@ export const languages: Language[] = [
     { language: "Englisch", fluency: "fließend" },
 ];
 
-export const interests: string[] = [
-    "CODING Analytisch & Detailorientiert",
-    "TECHNOLOGIE Innovativ & Lernbereit",
-    "FITNESS Teamfähigkeit & Ehrgeiz",
-    "REISEN Flexibilität & Neugier",
+export const interests: Interest[] = [
+    { name: "Coding", keywords: ["Analytisch", "Detailorientiert"] },
+    { name: "Technologie", keywords: ["Innovativ", "Lernbereit"] },
+    { name: "Fitness", keywords: ["Teamfähigkeit", "Ehrgeiz"] },
+    { name: "Reisen", keywords: ["Flexibilität", "Neugier"] },
 ];
 
-export const projects: ProjectItem[] = [
+export const projects: Project[] = [
     {
         name: "ClearControl.de – Klarheit für Smart-Home-Steuerungen",
-        url: "clearcontrol.de",
-        githubUrl: "github.com/tgermer/ha-remote-designer",
+        urls: [
+            { network: "Website", url: "clearcontrol.de" },
+            { network: "GitHub", url: "github.com/tgermer/ha-remote-designer" },
+        ],
         highlights: ["Web-App zum Erstellen professioneller Beschriftungen für Schalter und Fernbedienungen von Smart-Home-Systemen.", "Eigenständige Konzeption und Umsetzung eines produktiven Web-Tools zur Lösung eines konkreten Anwenderproblems.", "Fokus auf UX, Systemlogik, Automatisierung und funktionierende End-to-End-Lösung."],
-        date: "2026-01-01",
+        startDate: "2026-01-01",
     }
 ];
 

@@ -51,14 +51,16 @@ if (cvData) {
     cv = isDE ? cvDe : cvEn;
 }
 
-const p = cv.personal;
+const p = cv.basics;
+
+const fmtAddr = (loc: any) => `${loc.address}, ${loc.postalCode} ${loc.city}`;
 
 // Resolve photo from src/assets/ (skip if photo disabled via frontmatter)
 let photoImage: ImageMetadata | undefined;
 if (showPhoto !== false) {
-    const photoKey = `../../assets/apply/${p.photo}`;
+    const photoKey = `../../assets/apply/${p.image}`;
     const photoModule = imageModules[photoKey];
-    if (!photoModule) throw new Error(`Photo not found: src/assets/${p.photo}`);
+    if (!photoModule) throw new Error(`Photo not found: src/assets/${p.image}`);
     photoImage = photoModule.default;
 }
 
@@ -168,7 +170,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
         <div class="cover-bottom">
             {photoImage && <Image src={photoImage} alt={p.name} class="cover-photo" />}
             <h2 class="cover-name">{p.name}</h2>
-            <p class="cover-tagline">{p.tagline}</p>
+            <p class="cover-tagline">{p.label}</p>
 
             <div class="resume-table-scroll">
             <table class="cover-data-table">
@@ -182,7 +184,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.residence}</td>
-                    <td class="cover-data-value">{p.address}</td>
+                    <td class="cover-data-value">{fmtAddr(p.location)}</td>
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.contact}</td>
@@ -221,7 +223,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             <div class="letter-address-field">
                 <!-- Rücksenderangabe (return address, small) -->
                 <div class="letter-return-address">
-                    {p.name} · {p.address}
+                    {p.name} · {fmtAddr(p.location)}
                 </div>
                 <!-- Recipient address (Anschriftenzone) -->
                 <div class="letter-recipient">
@@ -236,7 +238,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             <!-- Letter content area -->
             <div class="letter-content">
                 <div class="letter-date">
-                    {p.location}, {formattedResumeDate}
+                    {p.location.city}, {formattedResumeDate}
                 </div>
 
                 <div class="letter-subject">
@@ -273,7 +275,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             <h2 class="resume-heading">{l.experienceHeading}</h2>
             <table class="resume-table">
                 {
-                    cv.experience.map((job, i) => (
+                    cv.work.map((job, i) => (
                         <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                             <td class="resume-date">
                                 {job.endDate ? (
@@ -332,7 +334,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                             </td>
                             <td class="resume-detail-mid">
                                 <p class="resume-entry-title">
-                                    {edu.fieldOfStudy}, {edu.degree}
+                                    {edu.area}, {edu.studyType}
                                 </p>
                                 {edu.majorFieldOfStudy && (
                                     <p class="resume-entry-meta">
@@ -362,27 +364,27 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             <div class="resume-table-scroll">
             <table class="resume-table">
                 {
-                    cv.furtherEducation.map((edu, i) => (
+                    cv.certificates.map((cert, i) => (
                         <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                             <td class="resume-date">
-                                {formatDate(edu.startDate) === formatDate(edu.endDate) ? (
-                                    formatDate(edu.startDate)
+                                {formatDate(cert.startDate) === formatDate(cert.endDate) ? (
+                                    formatDate(cert.startDate)
                                 ) : (
                                     <>
-                                        {formatDate(edu.startDate)}
+                                        {formatDate(cert.startDate)}
                                         <br />
-                                        {formatDate(edu.endDate)}
+                                        {formatDate(cert.endDate)}
                                     </>
                                 )}
                             </td>
                             <td class="resume-detail-mid">
                                 <p class="resume-entry-title">
-                                    {edu.fieldOfStudy}{edu.degree && `, ${edu.degree}`}
+                                    {cert.name}{cert.degree && `, ${cert.degree}`}
                                 </p>
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.institution}</p>
-                                {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                                <p class="resume-entry-sub">{cert.issuer}</p>
+                                {cert.location && <p class="resume-entry-meta">{cert.location}</p>}
                             </td>
                         </tr>
                     ))
@@ -399,7 +401,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                     <table class="resume-table">
                         {cv.projects.map((project, i) => (
                             <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                                <td class="resume-date">{formatDate(project.date)}</td>
+                                <td class="resume-date">{formatDate(project.startDate)}</td>
                                 <td class="resume-detail">
                                     <p class="resume-entry-title">{project.name}</p>
                                     {project.highlights && project.highlights.length > 0 && (
@@ -423,11 +425,11 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                 <section class="resume-section">
                     <h2 class="resume-heading">{l.skillsHeading}</h2>
                     <div class="resume-skills-grid">
-                        {cv.skills.map((cat) => (
+                        {cv.skills.map((skill) => (
                             <div class="resume-skill-group">
-                                <h3 class="resume-skill-label">{cat.category}</h3>
+                                <h3 class="resume-skill-label">{skill.name}</h3>
                                 <ul class="resume-skill-items">
-                                    {cat.items.map((item) => (
+                                    {skill.keywords.map((item) => (
                                         <li>{item}</li>
                                     ))}
                                 </ul>
@@ -461,7 +463,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
 
         <!-- Date + Location footer -->
         <div class="resume-date-footer">
-            {p.location}, {formattedResumeDate}
+            {p.location.city}, {formattedResumeDate}
             {signature && (
                 <div class="resume-signature">
                     <Fragment set:html={signatureSvg} />

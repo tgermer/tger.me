@@ -13,14 +13,16 @@ interface Props {
 const { lang } = Astro.props;
 const l = t(lang);
 const cv = lang === "de" ? cvDe : cvEn;
-const { personal, experience, education, furtherEducation, skills, languages, projects } = cv;
+const { basics, work, education, certificates, skills, languages, projects } = cv;
 const otherLang = lang === "de" ? "en" : "de";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
-const photoKey = `../assets/apply/${personal.photo}`;
+const photoKey = `../assets/apply/${basics.image}`;
 const photoModule = imageModules[photoKey];
-if (!photoModule) throw new Error(`Photo not found: src/assets/apply/${personal.photo}`);
+if (!photoModule) throw new Error(`Photo not found: src/assets/apply/${basics.image}`);
 const photoImage = photoModule.default;
+
+const fmtAddr = (loc: typeof basics.location) => `${loc.address}, ${loc.postalCode} ${loc.city}`;
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -55,14 +57,14 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
         </div>
 
         <div class="cover-bottom">
-            <Image src={photoImage} alt={personal.name} class="cover-photo" />
-            <h2 class="cover-name">{personal.name}</h2>
-            <p class="cover-tagline">{personal.tagline}</p>
+            <Image src={photoImage} alt={basics.name} class="cover-photo" />
+            <h2 class="cover-name">{basics.name}</h2>
+            <p class="cover-tagline">{basics.label}</p>
 
             <table class="cover-data-table">
                 <tr>
                     <td class="cover-data-label">{l.cvPrintBirthdayLabel}</td>
-                    <td class="cover-data-value">{personal.birthdate}</td>
+                    <td class="cover-data-value">{basics.birthdate}</td>
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.cvPrintLanguagesLabel}</td>
@@ -70,24 +72,24 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.cvPrintResidenceLabel}</td>
-                    <td class="cover-data-value">{personal.address}</td>
+                    <td class="cover-data-value">{fmtAddr(basics.location)}</td>
                 </tr>
                 <tr>
                     <td class="cover-data-label">{l.cvPrintContactLabel}</td>
-                    <td class="cover-data-value"><a href={`tel:${personal.phone}`} target="_blank" rel="noopener noreferrer">{personal.phone}</a> | <a href={`mailto:${personal.email}`} target="_blank" rel="noopener noreferrer">{personal.email}</a></td>
+                    <td class="cover-data-value"><a href={`tel:${basics.phone}`} target="_blank" rel="noopener noreferrer">{basics.phone}</a> | <a href={`mailto:${basics.email}`} target="_blank" rel="noopener noreferrer">{basics.email}</a></td>
                 </tr>
                 {
-                    (personal.url || personal.profiles?.length) && (
+                    (basics.url || basics.profiles?.length) && (
                         <tr>
                             <td class="cover-data-label">{l.cvPrintOnlineLabel}</td>
                             <td class="cover-data-value">
                                 {[
-                                    personal.url && (
-                                        <a href={`https://${personal.url}`} target="_blank" rel="noopener noreferrer">
-                                            {personal.url}
+                                    basics.url && (
+                                        <a href={`https://${basics.url}`} target="_blank" rel="noopener noreferrer">
+                                            {basics.url}
                                         </a>
                                     ),
-                                    ...(personal.profiles?.map((prof) => (
+                                    ...(basics.profiles?.map((prof) => (
                                         <a href={`https://${prof.url}`} target="_blank" rel="noopener noreferrer">
                                             {prof.url}
                                         </a>
@@ -113,7 +115,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
             <h2 class="resume-heading">{l.cvPrintExperienceHeading}</h2>
             <table class="resume-table">
                 {
-                    experience.map((job, i) => (
+                    work.map((job, i) => (
                         <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                             <td class="resume-date">
                                 {job.endDate ? (
@@ -174,7 +176,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                             </td>
                             <td class="resume-detail-mid">
                                 <p class="resume-entry-title">
-                                    {edu.fieldOfStudy}, {edu.degree}
+                                    {edu.area}, {edu.studyType}
                                 </p>
                                 {edu.majorFieldOfStudy && <p class="resume-entry-meta">{l.cvPrintMajorLabel} {edu.majorFieldOfStudy}</p>}
                                 {edu.thesis?.title && <p class="resume-entry-meta">Thesis: {edu.thesis.title}</p>}
@@ -193,28 +195,28 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
             <h2 class="resume-heading">{l.cvPrintFurtherEducationHeading}</h2>
             <table class="resume-table">
                 {
-                    furtherEducation.map((edu, i) => (
+                    certificates.map((cert, i) => (
                         <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
                             <td class="resume-date">
-                                {formatDate(edu.startDate) === formatDate(edu.endDate) ? (
-                                    formatDate(edu.startDate)
+                                {formatDate(cert.startDate) === formatDate(cert.endDate) ? (
+                                    formatDate(cert.startDate)
                                 ) : (
                                     <>
-                                        {formatDate(edu.startDate)}
+                                        {formatDate(cert.startDate)}
                                         <br />
-                                        {formatDate(edu.endDate)}
+                                        {formatDate(cert.endDate)}
                                     </>
                                 )}
                             </td>
                             <td class="resume-detail-mid">
                                 <p class="resume-entry-title">
-                                    {edu.fieldOfStudy}
-                                    {edu.degree && `, ${edu.degree}`}
+                                    {cert.name}
+                                    {cert.degree && `, ${cert.degree}`}
                                 </p>
                             </td>
                             <td class="resume-detail-right">
-                                <p class="resume-entry-sub">{edu.institution}</p>
-                                {edu.location && <p class="resume-entry-meta">{edu.location}</p>}
+                                <p class="resume-entry-sub">{cert.issuer}</p>
+                                {cert.location && <p class="resume-entry-meta">{cert.location}</p>}
                             </td>
                         </tr>
                     ))
@@ -229,7 +231,7 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                     <table class="resume-table">
                         {projects.map((project, i) => (
                             <tr class:list={["resume-entry", { "resume-entry-border": i > 0 }]}>
-                                <td class="resume-date">{formatDate(project.date)}</td>
+                                <td class="resume-date">{formatDate(project.startDate)}</td>
                                 <td class="resume-detail">
                                     <p class="resume-entry-title">{project.name}</p>
                                     {project.highlights && project.highlights.length > 0 && (
@@ -252,11 +254,11 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                 <section class="resume-section">
                     <h2 class="resume-heading">{l.cvPrintSkillsHeading}</h2>
                     <div class="resume-skills-grid">
-                        {skills.map((cat) => (
+                        {skills.map((skill) => (
                             <div class="resume-skill-group">
-                                <h3 class="resume-skill-label">{cat.category}</h3>
+                                <h3 class="resume-skill-label">{skill.name}</h3>
                                 <ul class="resume-skill-items">
-                                    {cat.items.map((item) => (
+                                    {skill.keywords.map((item) => (
                                         <li>{item}</li>
                                     ))}
                                 </ul>

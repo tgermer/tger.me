@@ -52,7 +52,7 @@ If the body is non-empty, the cover letter is displayed between the cover page a
 and a separate PDF (`<slug>-letter.pdf`) is generated.
 
 The letter layout is auto-generated:
-- **Sender**: name, address, phone, email from `cv_<slug>.ts` personal data
+- **Sender**: name, location, phone, email from `cv_<slug>.ts` basics data
 - **Recipient**: contact name + company from frontmatter
 - **Date**: location + application date
 - **Subject**: "Bewerbung als {position}" / "Application for {position}"
@@ -75,31 +75,36 @@ public/apply/<slug>.pdf       ← CV PDF (cover + CV only)
 public/apply/<slug>-letter.pdf ← Cover letter PDF (only if body exists)
 ```
 
-### Personal data
+### Personal data (basics)
 
-All personal data (name, address, phone, email, birthdate, photo, tagline, profiles) lives in the
-`personal` export of each CV data file. Social profiles use a generic `profiles[]` array
-with `{network, url}` objects (e.g. LinkedIn, GitHub). Languages and interests are separate
-top-level exports (`languages`, `interests`), not part of `personal` or `skills`.
+All personal data lives in the `basics` export of each CV data file.
+It includes `name`, `label` (tagline), `image` (photo), `birthdate`, `location` (object with
+`address`, `postalCode`, `city`), `phone`, `email`, `url`, `profiles[]`.
+Social profiles use `{network, url}` objects. Languages and interests are separate
+top-level exports (`languages`, `interests`), not part of `basics` or `skills`.
 
 This means:
-- General resume pages use `personal` from `cv_de.ts` / `cv_en.ts`
-- Application snapshots use `personal` from `cv_<slug>.ts`
+- General resume pages use `basics` from `cv_de.ts` / `cv_en.ts`
+- Application snapshots use `basics` from `cv_<slug>.ts`
 - The `site.ts` file is for website-level config only (not resume data)
 
-### CV data schema (aligned with JSON Resume where practical)
+### CV data schema (aligned with JSON Resume)
 
-Each CV data file exports: `personal`, `experience`, `education`, `furtherEducation`,
+Each CV data file exports: `basics`, `work`, `education`, `certificates`,
 `skills`, `languages`, `interests`, `projects`, `references`.
 
-Key field names (JSON Resume–aligned):
-- `experience[].name` (company name), `.url`, `.highlights[]`, `.position[]`, `.typeOfEmployment`
-- `education[].institution`, `.url`, `.fieldOfStudy`, `.degree`, `.grade`, `.thesis`
-- `furtherEducation[].institution`, `.url`, `.fieldOfStudy`, `.degree`, `.certificateUrl`
-- `skills[].category`, `.items[]`
+Fields are marked [JR] (JSON Resume standard) or [Custom] in `cv_types.ts`.
+
+Key field names:
+- `basics.name`, `.label`, `.image`, `.birthdate` [Custom], `.location` (Location object), `.phone`, `.email`, `.url`, `.profiles[]`
+- `work[].name` (company), `.url`, `.location`, `.typeOfEmployment` [Custom], `.position[]`, `.highlights[]`
+- `education[].institution`, `.url`, `.area`, `.studyType`, `.score`, `.majorFieldOfStudy` [Custom], `.thesis` [Custom]
+- `certificates[].name`, `.issuer`, `.issuerUrl` [Custom], `.url` (cert link), `.degree` [Custom], `.location` [Custom]
+- `skills[].name`, `.keywords[]`
 - `languages[].language`, `.fluency`
-- `projects[].name`, `.url`, `.githubUrl`, `.highlights[]`, `.date`
-- `references[].name`, `.company`, `.department`, `.position`, `.email`
+- `interests[].name`, `.keywords[]`
+- `projects[].name`, `.urls[]` (Profile[]), `.highlights[]`, `.startDate`
+- `references[].name`, `.company` [Custom], `.department` [Custom], `.position` [Custom], `.email` [Custom]
 
 ### Frontmatter overrides
 

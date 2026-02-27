@@ -12,7 +12,7 @@ interface Props {
 const { lang } = Astro.props;
 const l = t(lang);
 const cv = lang === "de" ? cvDe : cvEn;
-const { experience, education, furtherEducation, skills, projects, references } = cv;
+const { work, education, certificates, skills, projects, references } = cv;
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -40,7 +40,7 @@ const alternates = [
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:briefcase" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvExperienceHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
-                experience.map((job) => (
+                work.map((job) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
                             <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
@@ -133,7 +133,7 @@ const alternates = [
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="font-semibold text-gray-900 dark:text-white">
-                                    {edu.fieldOfStudy}, {edu.degree}
+                                    {edu.area}, {edu.studyType}
                                 </p>
                                 <p class="text-gray-900 dark:text-white">
                                     {edu.url ? (
@@ -171,41 +171,41 @@ const alternates = [
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:certificate" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvFurtherEducationHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
-                furtherEducation.map((edu) => (
+                certificates.map((cert) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
                             <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">
-                                {formatDate(edu.startDate) === formatDate(edu.endDate) ? (
-                                    <span>{formatDate(edu.startDate)}</span>
+                                {formatDate(cert.startDate) === formatDate(cert.endDate) ? (
+                                    <span>{formatDate(cert.startDate)}</span>
                                 ) : (
                                     <>
                                         <span class="md:hidden">
-                                            {formatDate(edu.startDate)} – {formatDate(edu.endDate)}
+                                            {formatDate(cert.startDate)} – {formatDate(cert.endDate)}
                                         </span>
                                         <div class="hidden md:block">
-                                            <div>{formatDate(edu.startDate)}</div>
-                                            <div>{formatDate(edu.endDate)}</div>
+                                            <div>{formatDate(cert.startDate)}</div>
+                                            <div>{formatDate(cert.endDate)}</div>
                                         </div>
                                     </>
                                 )}
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="font-medium text-gray-900 dark:text-white">
-                                    {edu.fieldOfStudy}
-                                    {edu.degree && `, ${edu.degree}`}
+                                    {cert.name}
+                                    {cert.degree && `, ${cert.degree}`}
                                 </p>
                                 <p class="text-gray-900 dark:text-white">
-                                    {edu.url ? (
-                                        <a href={`https://${edu.url}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                            {edu.institution}
+                                    {cert.issuerUrl ? (
+                                        <a href={`https://${cert.issuerUrl}`} target="_blank" rel="noopener noreferrer" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                            {cert.issuer}
                                         </a>
                                     ) : (
-                                        edu.institution
+                                        cert.issuer
                                     )}
-                                    {edu.location && `, ${edu.location}`}
+                                    {cert.location && `, ${cert.location}`}
                                 </p>
-                                {edu.certificateUrl && (
-                                    <a href={edu.certificateUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+                                {cert.url && (
+                                    <a href={cert.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-1 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
                                         <Icon name="tabler:certificate" class="h-3.5 w-3.5" />
                                         {l.cvViewCertificate}
                                     </a>
@@ -226,7 +226,7 @@ const alternates = [
                 projects.map((project) => (
                     <div class="py-4 first:pt-0">
                         <div class="flex flex-col md:flex-row md:gap-8">
-                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.date)}</div>
+                            <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.startDate)}</div>
                             <div class="flex-1 min-w-0">
                                 <p class="font-semibold text-gray-900 dark:text-white">{project.name}</p>
                                 {project.highlights && project.highlights.length > 0 && (
@@ -236,12 +236,12 @@ const alternates = [
                                         ))}
                                     </ul>
                                 )}
-                                {project.githubUrl && (
-                                    <a href={`https://${project.githubUrl}`} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-2 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
-                                        <Icon name="tabler:brand-github" class="h-3.5 w-3.5" />
-                                        GitHub
+                                {project.urls?.map((link) => (
+                                    <a href={`https://${link.url}`} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-2 text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors">
+                                        <Icon name={link.network === "GitHub" ? "tabler:brand-github" : "tabler:link"} class="h-3.5 w-3.5" />
+                                        {link.network}
                                     </a>
-                                )}
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -255,11 +255,11 @@ const alternates = [
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:brain" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvSkillsHeading}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {
-                skills.map((cat) => (
+                skills.map((skill) => (
                     <div>
-                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-2">{cat.category}</h3>
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide mb-2">{skill.name}</h3>
                         <div class="flex flex-wrap gap-2">
-                            {cat.items.map((item) => (
+                            {skill.keywords.map((item) => (
                                 <span class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white text-sm px-3 py-1 rounded-full">{item}</span>
                             ))}
                         </div>
