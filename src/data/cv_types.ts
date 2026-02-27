@@ -84,11 +84,15 @@ export interface Skill {
 }
 
 export interface Reference {
-  name: string;       // [JR] Name der Referenzperson
-  company: string;    // [Custom] Unternehmen (JR hat nur "reference" als Freitext)
-  department?: string; // [Custom] Abteilung
-  position: string;   // [Custom] Position
-  email: string;      // [Custom] E-Mail-Adresse
+  name: string;         // [JR] Name der Referenzperson
+  reference?: string;   // [JR] Referenztext / Empfehlung (Freitext)
+  company: string;      // [Custom] Unternehmen
+  department?: string;  // [Custom] Abteilung
+  position: string;     // [Custom] Position
+  date?: string;        // [Custom] Datum der Empfehlung (ISO 8601)
+  email?: string;       // [Custom] E-Mail-Adresse
+  profiles?: Profile[]; // [Custom] Links (z. B. LinkedIn, Website – nutzt Profile-Interface)
+  image?: string;       // [Custom] Dateiname des Profilbilds in src/assets/references/ (z. B. "name.jpg")
 }
 
 export interface Project {

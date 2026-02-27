@@ -1,31 +1,153 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { Icon } from 'astro-icon/components';
 import { references } from '../data/cv_de';
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/references/*.{jpg,jpeg,png,webp}",
+  { eager: true },
+);
+
+function getImage(ref: typeof references[number]) {
+  if (!ref.image) return null;
+  const mod = imageModules[`../assets/references/${ref.image}`];
+  return mod?.default ?? null;
+}
+
+function getInitials(name: string): string {
+  return name.split(' ').filter(p => !['Dr.', 'Prof.'].includes(p)).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function getLinkedIn(ref: typeof references[number]) {
+  return ref.profiles?.find(p => p.network === 'LinkedIn');
+}
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+}
+
+const withText = references.filter(r => r.reference);
+const withoutText = references.filter(r => !r.reference);
 ---
 
 <PageLayout title="Referenzen" description="Berufliche Referenzen von Tristan Germer.">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {references.map((ref) => (
-      <div class="p-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-shadow">
-        <div class="mb-3">
-          <h3 class="font-semibold text-gray-900 dark:text-white text-lg">{ref.name}</h3>
-          <p class="text-blue-600 dark:text-blue-400 font-medium">{ref.position}</p>
-        </div>
-        <div class="space-y-1 text-gray-600 dark:text-gray-400">
-          <p>{ref.company}</p>
-          {ref.department && <p>{ref.department}</p>}
-        </div>
-        <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-          <a
-            href={`mailto:${ref.email}`}
-            class="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline break-all"
-          >
-            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
-            {ref.email}
-          </a>
-        </div>
-      </div>
-    ))}
+
+  {/* Testimonials with reference text */}
+  <div class="space-y-10">
+    {withText.map((ref) => {
+      const linkedin = getLinkedIn(ref);
+      const image = getImage(ref);
+      return (
+        <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+          {/* Accent top bar */}
+          <div class="h-1 gradient-brand" />
+
+          <div class="p-6 sm:p-8 lg:p-10">
+            {/* Quote icon */}
+            <Icon name="tabler:quote" class="h-10 w-10 text-blue-200 dark:text-blue-900 mb-4" />
+
+            {/* Reference text */}
+            <blockquote class="text-gray-700 dark:text-gray-300 text-[0.95rem] sm:text-base leading-relaxed whitespace-pre-line mb-8">
+              {ref.reference}
+            </blockquote>
+
+            {/* Author */}
+            <div class="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-gray-800">
+              <div class="shrink-0">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={ref.name}
+                    width={48}
+                    height={48}
+                    class="w-12 h-12 rounded-full object-cover ring-2 ring-blue-100 dark:ring-blue-900"
+                  />
+                ) : (
+                  <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold ring-2 ring-blue-50 dark:ring-blue-950">
+                    {getInitials(ref.name)}
+                  </div>
+                )}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-900 dark:text-white">{ref.name}</span>
+                  {linkedin && (
+                    <a
+                      href={linkedin.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                      aria-label={`${ref.name} auf LinkedIn`}
+                    >
+                      <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {ref.position}{ref.company && ` · ${ref.company}`}
+                </p>
+                {ref.date && (
+                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{formatDate(ref.date)}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      );
+    })}
   </div>
+
+  {/* References without text – compact cards */}
+  {withoutText.length > 0 && (
+    <div class="mt-12">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Weitere Referenzen</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {withoutText.map((ref) => {
+          const linkedin = getLinkedIn(ref);
+          const image = getImage(ref);
+          return (
+            <div class="flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+              <div class="shrink-0">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={ref.name}
+                    width={44}
+                    height={44}
+                    class="w-11 h-11 rounded-full object-cover"
+                  />
+                ) : (
+                  <div class="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
+                    {getInitials(ref.name)}
+                  </div>
+                )}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-900 dark:text-white text-sm">{ref.name}</span>
+                  {linkedin && (
+                    <a
+                      href={linkedin.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[#0A66C2] hover:text-[#004182] dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                      aria-label={`${ref.name} auf LinkedIn`}
+                    >
+                      <Icon name="tabler:brand-linkedin" class="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                  {ref.position}{ref.company && ` · ${ref.company}`}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
 </PageLayout>

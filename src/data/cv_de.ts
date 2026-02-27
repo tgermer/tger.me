@@ -197,7 +197,53 @@ export const projects: Project[] = [
 ];
 
 export const references: Reference[] = [
+    {
+        name: "Oliver Holan",
+        company: "Bayerische Verwaltungsschule",
+        department: "Fachbereich IT",
+        position: "Leiter",
+        date: "2025-01-21",
+        profiles: [{ network: "LinkedIn", url: "https://www.linkedin.com/in/holan-oliver-b89014a6/" }],
+        reference:
+            "Ich durfte von 2022 – 2024 mit Tristan zusammenarbeiten und habe während dieser Zeit seine fachlichen und persönlichen Qualitäten schätzen gelernt.\n\nTristan zeichnet sich durch einen von Respekt geprägten Umgang mit Kollegen und Kolleginnen aus. Sein empathischer und kommunikativer Stil trägt maßgeblich zu einem positiven Arbeitsklima bei und fördert ein produktives Teamwork. Besonders beeindruckt hat mich sein Engagement, Menschen mit unterschiedlichen Hintergründen zu integrieren und gemeinsame Ziele erfolgreich zu erreichen.\n\nEin weiterer Aspekt, der ihn hervorhebt, ist sein großes Interesse daran, Dinge zu gestalten und aktiv zu verbessern. Mit einem ausgeprägten Sinn für Innovation und Optimierung widmet er sich stets der Umsetzung neuer Ideen, die Prozesse vereinfachen und verbessern. Diese Eigenschaft macht ihn zu einer wertvollen Kraft, die nicht nur ad hoc Probleme löst, sondern auch langfristige Verbesserungen initiiert.\n\nDarüber hinaus verfügt Tristan über die Fähigkeit komplexe Sachverhalte schnell zu erfassen und passende Lösungen vorzuschlagen. Seine analytischen und strategischen Fähigkeiten haben entscheidend dazu beigetragen, Herausforderungen effizient zu bewältigen. Dabei hilft ihm sein breites Wissen, das weit über den direkten Arbeitsalltag hinausgeht.\n\nIn seinen Projekten hat Tristan immer einen starken Fokus auf den User, insbesondere in den Bereichen UI und UX. Mit einer klaren Anwenderperspektive gelingt es ihm, intuitive und ansprechende Lösungen zu entwickeln, die nicht nur funktional, sondern auch benutzerfreundlich und innovativ sind.\n\nVielen Dank für die schöne Zeit und die gute Zusammenarbeit.\nDer gemeinsame Weg war mir eine Freude.\nOliver Holan",
+    },
+    {
+        name: "Dr. Kathrin Müller",
+        company: "Bayerische Verwaltungsschule",
+        position: "Dialoggestalterin und Markenstimme",
+        date: "2025-01-17",
+        profiles: [{ network: "LinkedIn", url: "https://www.linkedin.com/in/dr-kathrin-müller-24b73b35/" }],
+        reference:
+            'Es gibt Menschen, die eine Bereicherung für jedes Team und jedes Projekt sind – Tristan Germer gehört definitiv dazu!\n\nSeine außergewöhnliche Kreativität kombiniert er mit einem tiefen technischen Verständnis und der bemerkenswerten Fähigkeit, sich blitzschnell und eigenständig in völlig neue Themenfelder einzuarbeiten. Unbekanntes Terrain? Für Tristan kein Problem, sondern eine willkommene Herausforderung, die er mit Neugier, Mut und einem "Hands-on"-Ansatz angeht.\n\nWas Tristan Germer besonders auszeichnet, ist nicht nur seine fachliche Kompetenz, sondern auch seine zwischenmenschliche Stärke. Er ist stets hilfsbereit, freundlich und gut gelaunt – seine positive Ausstrahlung wirkt ansteckend und motivierend. Gleichzeitig beeindruckt er durch seinen klugen Weitblick und seine visionäre Denkweise, die innovative Impulse liefert und Projekte auf ein neues Niveau hebt.\n\nEs war mir eine große Freude und eine Bereicherung mit Tristan Germer zusammenzuarbeiten – ein Kollege, der nicht nur Ergebnisse liefert, sondern dabei auch das Umfeld positiv prägt.',
+    },
+    {
+        name: "Caroline Bluhm",
+        company: "Hochschule München",
+        department: "Zentrale IT",
+        position: "Stellvertretende Abteilungsleiterin",
+        date: "2022-06-27",
+        profiles: [{ network: "LinkedIn", url: "https://www.linkedin.com/in/caroline-bluhm/" }],
+        reference: "Tristan ist im Bereich Web ein kreativer und innovativer Kopf, in technischer Sicht immer up to date und dabei sehr strukturiert. Die Zusammenarbeit ist immer äußerst konstruktiv und dabei respekt- und humorvoll. Einer meiner Lieblingskollegen, denn man kommt inhaltlich voran, hat stets das gemeinsames Ziel vor Augen und kann sich auf ihn verlassen - so kommt der Spaß an der Arbeit dabei nicht zu kurz.",
+    },
+    {
+        name: "Aria Djamschidi",
+        company: "Apple",
+        position: "Senior Distribution Manager",
+        date: "2022-06-05",
+        email: "djamschidi.a@euro.apple.com",
+        profiles: [{ network: "LinkedIn", url: "https://www.linkedin.com/in/ariadjamschidi/" }],
+        reference: "Tristan verfügt über Fähigkeiten und Talente, die stets sein Gegenüber verblüfft bzw. in Erstaunen versetzt.\n\n– Tristan verfügt über eine außergewöhnliche Empathiefähigkeit, die dazu führt, dass stets in seiner Gegenwart eine einladende Atmosphäre vorherrscht.\n– Eine weitere Fähigkeit ist seine Kreativität gepaart mit seinem tiefen Wissen. Ein Wissen, dass er sich – auch notfalls in kürzeste Zeit – in einer imponierenden Tiefe aneignet.\n– Eine Eigenschaft, die ich ebenfalls hervorheben möchte, ist Tristans nachhaltige wie auch ehrgeizige, fleißige Art, ein Projekt zielführend zum Abschluss zu bringen.\n\nTristan wäre ein Gewinn für jedes Unternehmen oder Projekt.\nViel Erfolg und Freude wünsche ich Dir für Deine Zukunft.",
+    },
+    {
+        name: "Steffen Steinicke",
+        company: "Hochschule München",
+        department: "Fakultät für Betriebswirtschaft",
+        position: "Professor",
+        date: "2022-06-04",
+        profiles: [{ network: "LinkedIn", url: "https://www.linkedin.com/in/steffen-steinicke-42239b54/" }],
+        reference:
+            "Ich habe Tristan als Student in meinen Lehrveranstaltungen kennengelernt, ihn im Rahmen seiner Bachelorarbeit betreut und später als Mitarbeiter an der Hochschule München sehr schätzen gelernt.\n\nVon der ersten Minute an, fiel mir seine professionelle Haltung auf. Schon in meinen Lehrveranstaltungen zeigte er ein überdurchschnittliches Verständnis für Kunden und eine starke Lösungsorientierung, wovon ich erst vor kurzem im Rahmen seiner Tätigkeit an der Hochschule in eigener Sache als \u201Einterner Kunde\u201C profitieren konnte.\n\nIm Rahmen seiner Bachelorarbeit, die er bereits im Jahr 2012 über \u201EBlended Learning mit dem Apple iPad\u201C schrieb, zeigte er eindrucksvoll seine Liebe zu digitalen Lösungen, seine Kreativität und Umsetzungsstärke, da er nicht nur ein theoretisches Konzept beschrieb, sondern dies auch praktisch realisierte.\n\nDarüber hinaus genießt Tristan ein hohes Ansehen an unserer Fakultät, weil er zum Beispiel bei der Einführung der E-Akte stets darauf achtete, dass die User auch wirklich einen Nutzen aus dem neuen IT-System ziehen. Darüber hinaus schätze ich seine Initiativen. So kann ich dank ihm als Leiter eines berufsbegleitenden Studiengangs die aktuellen Bewerberzahlen online einsehen und darauf unsere Social Media Aktivitäten anpassen.",
+    },
     { name: "Pia Hetzel", company: "Hochschule München", department: "Beratung und Immatrikulation", position: "Leitung", email: "pia.hetzel@hm.edu" },
     { name: "Prof. Dr. Angela Poech", company: "Hochschule München", department: "Fakultät für Betriebswirtschaft", position: "Professor für Entrepreneurship", email: "poech@hm.edu" },
-    { name: "Aria Djamschidi", company: "Apple", position: "Senior Distribution Manager", email: "djamschidi.a@euro.apple.com" },
 ];

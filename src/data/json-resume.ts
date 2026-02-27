@@ -95,7 +95,7 @@ export function toJsonResume(cv: CvExports): Record<string, unknown> {
         })),
         references: (cv.references || []).map((r) => ({
             name: r.name,
-            reference: [r.position, r.department, r.company].filter(Boolean).join(", "),
+            reference: r.reference || [r.position, r.department, r.company].filter(Boolean).join(", "),
         })),
     };
 
