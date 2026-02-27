@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await project.render();
 const { title, description, type, technologies, image, imageBg, icon, iconBg, linkGithub, linkWebsite, screenshotsAvailable, screenshotsPath, screenshotsFiles } = project.data;
+const ogImage = `/og/portfolio/${project.slug}.jpg`;
 ---
 
 <PortfolioLayout
@@ -26,6 +27,7 @@ const { title, description, type, technologies, image, imageBg, icon, iconBg, li
   iconBg={iconBg}
   linkGithub={linkGithub}
   linkWebsite={linkWebsite}
+  ogImage={ogImage}
   screenshotsAvailable={screenshotsAvailable}
   screenshotsPath={screenshotsPath}
   screenshotsFiles={screenshotsFiles}

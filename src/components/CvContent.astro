@@ -26,7 +26,7 @@ const alternates = [
 ];
 ---
 
-<PageLayout title={l.cvPageTitle} description={l.cvPageDescription} lang={lang} alternates={alternates}>
+<PageLayout title={l.cvPageTitle} description={l.cvPageDescription} ogImage={`/og/${lang}/cv.jpg`} lang={lang} alternates={alternates}>
     <!-- Download -->
     <div class="flex items-center justify-end mb-8">
         <a href={l.cvPdfHref} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">

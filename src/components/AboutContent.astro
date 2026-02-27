@@ -21,7 +21,7 @@ const alternates = [
 const mottoText = lang === "de" ? site.sloganDe : site.slogan;
 ---
 
-<PageLayout title={l.aboutPageTitle} description={l.aboutPageDescription} lang={lang} alternates={alternates}>
+<PageLayout title={l.aboutPageTitle} description={l.aboutPageDescription} ogImage={`/og/${lang}/about.jpg`} lang={lang} alternates={alternates}>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
         <!-- Sidebar with photo -->
         <div class="md:col-span-1">

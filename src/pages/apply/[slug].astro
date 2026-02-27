@@ -129,7 +129,7 @@ const pageTitle = isDE ? `Lebenslauf – ${p.name} – ${displayPosition}` : `CV
 const headerTitle = `${p.name} | ${displayPosition}`;
 ---
 
-<ResumeLayout title={pageTitle} description={`${displayPosition} – ${company}`} lang={lang}>
+<ResumeLayout title={pageTitle} description={`${displayPosition} – ${company}`} ogImage={`/og/apply/${resume.slug}.jpg`} lang={lang}>
     <!-- Print toolbar (hidden in print) -->
     <div class="resume-toolbar">
         <div class="max-w-[210mm] mx-auto px-1 py-3 flex items-center justify-between">

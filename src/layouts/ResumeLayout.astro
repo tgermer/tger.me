@@ -8,10 +8,12 @@ import "../styles/global.css";
 interface Props {
     title?: string;
     description?: string;
+    ogImage?: string;
     lang?: string;
 }
 
-const { title = "Lebenslauf – Tristan Germer", description = "Lebenslauf von Tristan Germer", lang = "de" } = Astro.props;
+const { title = "Lebenslauf – Tristan Germer", description = "Lebenslauf von Tristan Germer", ogImage, lang = "de" } = Astro.props;
+const ogImageUrl = ogImage ? (ogImage.startsWith("http") ? ogImage : new URL(ogImage, Astro.site).toString()) : undefined;
 ---
 
 <!doctype html>
@@ -22,6 +24,7 @@ const { title = "Lebenslauf – Tristan Germer", description = "Lebenslauf von T
         <meta name="description" content={description} />
         <meta name="author" content="Tristan Germer" />
         <meta name="robots" content="noindex, nofollow, noai, noimageai" />
+        {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>{title}</title>
     </head>
