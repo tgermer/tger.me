@@ -52,6 +52,12 @@ const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hrefl
         <meta property="og:type" content={ogType} />
         <meta property="og:url" content={canonicalUrl.toString()} />
 
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImageUrl} />
+
         <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
