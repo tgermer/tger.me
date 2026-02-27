@@ -109,13 +109,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
     let intro: string;
     if (initiative) {
         if (lang === "de") {
-            intro = position
-                ? (source ? `über ${source} bin ich auf ${company} aufmerksam geworden und möchte mich initiativ als ${position} bewerben.` : `hiermit möchte ich mich initiativ als ${position} bei ${company} bewerben.`)
-                : (source ? `über ${source} bin ich auf ${company} aufmerksam geworden und möchte mich hiermit initiativ bewerben.` : `hiermit möchte ich mich initiativ bei ${company} bewerben.`);
+            intro = position ? (source ? `über ${source} bin ich auf ${company} aufmerksam geworden und möchte mich initiativ als ${position} bewerben.` : `hiermit möchte ich mich initiativ als ${position} bei ${company} bewerben.`) : source ? `über ${source} bin ich auf ${company} aufmerksam geworden und möchte mich hiermit initiativ bewerben.` : `hiermit möchte ich mich initiativ bei ${company} bewerben.`;
         } else {
-            intro = position
-                ? (source ? `I came across ${company} on ${source} and would like to submit a speculative application for the ${position} role.` : `I would like to submit a speculative application for the ${position} role at ${company}.`)
-                : (source ? `I came across ${company} on ${source} and would like to submit a speculative application.` : `I would like to submit a speculative application to ${company}.`);
+            intro = position ? (source ? `I came across ${company} on ${source} and would like to submit a speculative application for the ${position} role.` : `I would like to submit a speculative application for the ${position} role at ${company}.`) : source ? `I came across ${company} on ${source} and would like to submit a speculative application.` : `I would like to submit a speculative application to ${company}.`;
         }
     } else {
         if (lang === "de") {
@@ -153,7 +149,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 
     <!-- Protected content -->
     <div id="content" class="hidden min-h-screen bg-gray-100">
-        <div class="max-w-7xl mx-auto px-6 py-10">
+        <div class="max-w-max mx-auto px-6 py-10">
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center gap-4">
                     <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors"><Icon name="tabler:chevron-left" class="h-6 w-6" /><h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1></a>
