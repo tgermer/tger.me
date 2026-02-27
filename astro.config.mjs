@@ -16,7 +16,7 @@ export default defineConfig({
 
   integrations: [
     sitemap({
-      filter: (page) => !page.includes("/apply/"),
+      filter: (page) => !page.includes("/apply/") && !page.includes("/cv-print/"),
     }),
     icon(),
   ],
