@@ -24,6 +24,8 @@ const ogImageUrl = ogImage ? (ogImage.startsWith("http") ? ogImage : new URL(ogI
         <meta name="description" content={description} />
         <meta name="author" content="Tristan Germer" />
         <meta name="robots" content="noindex, nofollow, noai, noimageai" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
         {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
         {ogImageUrl && <meta name="twitter:card" content="summary_large_image" />}
         {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
