@@ -75,7 +75,7 @@ const featured = allProjects.filter((p) => p.data.featured).sort((a, b) => b.dat
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {featured.map((project) => (
-                            <PortfolioCard slug={project.slug} title={project.data.title} description={project.data.description} type={project.data.type} technologies={project.data.technologies} image={project.data.image} imageBackgroundColor={project.data.imageBackgroundColor} featured={project.data.featured} aiBuilt={project.data.aiBuilt} />
+                            <PortfolioCard slug={project.slug} title={project.data.title} description={project.data.description} type={project.data.type} technologies={project.data.technologies} date={project.data.date} updatedDate={project.data.updatedDate} image={project.data.image} imageBackgroundColor={project.data.imageBackgroundColor} featured={project.data.featured} aiBuilt={project.data.aiBuilt} />
                         ))}
                     </div>
                 </div>

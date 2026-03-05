@@ -13,6 +13,7 @@ const portfolio = defineCollection({
     featured: z.boolean().default(false),
     technologies: z.string(),
     date: z.date(),
+    updatedDate: z.date().optional(),
     image: image(),
     imageBackgroundColor: z.string().optional(),
     imageFit: z.enum(['contain', 'cover']).default('contain'),

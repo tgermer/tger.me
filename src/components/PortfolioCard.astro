@@ -9,15 +9,22 @@ interface Props {
   description: string;
   type: string;
   technologies: string;
+  date: Date;
+  updatedDate?: Date;
   image: ImageMetadata;
   imageBackgroundColor?: string;
   featured?: boolean;
   aiBuilt?: boolean;
 }
 
-const { slug, title, description, type, technologies, image, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
+const { slug, title, description, type, technologies, date, updatedDate, image, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
 const techList = technologies.split(',').map((t) => t.trim());
 const isSvg = image.format === 'svg';
+
+const formatDate = (d: Date) => d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+const dateLabel = updatedDate
+  ? `${formatDate(date)} · Aktualisiert ${formatDate(updatedDate)}`
+  : formatDate(date);
 ---
 
 <a
@@ -63,9 +70,12 @@ const isSvg = image.format === 'svg';
 
   <!-- Content -->
   <div class="p-5">
-    <span class="inline-block bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-1 rounded-full mb-2">
-      {type}
-    </span>
+    <div class="flex items-center justify-between gap-2 mb-2">
+      <span class="inline-block bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-1 rounded-full">
+        {type}
+      </span>
+      <span class="text-[0.65rem] text-gray-400 dark:text-gray-500">{dateLabel}</span>
+    </div>
     <h3 class="font-semibold text-gray-900 dark:text-white text-base leading-snug mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
       {title}
     </h3>
