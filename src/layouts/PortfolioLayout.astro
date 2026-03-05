@@ -23,6 +23,8 @@ interface Props {
   screenshotsPath?: string;
   screenshotsFiles?: string[];
   aiBuilt?: boolean;
+  olderProject?: { slug: string; title: string } | null;
+  newerProject?: { slug: string; title: string } | null;
 }
 
 const {
@@ -44,6 +46,8 @@ const {
   screenshotsPath,
   screenshotsFiles,
   aiBuilt = false,
+  olderProject = null,
+  newerProject = null,
 } = Astro.props;
 
 const techList = technologies.split(',').map((t) => t.trim());
@@ -92,13 +96,16 @@ const screenshotUrls = screenshots.map((s) => s.src);
               {aiBuilt && (
                 <span class="inline-flex items-center gap-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-medium px-2.5 py-1 rounded-full">
                   <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
-                  Built with AI
+                  Mit KI erstellt
                 </span>
               )}
             </div>
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
             <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">{description}</p>
-            <p class="mt-2 text-sm text-gray-400 dark:text-gray-500">{dateLabel}</p>
+            <p class="mt-2 inline-flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
+              <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
+              {dateLabel}
+            </p>
           </div>
           {icon && (
             <div class="shrink-0">
@@ -215,13 +222,29 @@ const screenshotUrls = screenshots.map((s) => s.src);
         <slot />
       </div>
 
-      <!-- Back button -->
-      <div class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
-        <a href="/portfolio" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-          <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
-          Alle Projekte ansehen
-        </a>
-      </div>
+      <!-- Navigation -->
+      <nav class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between mb-6">
+          {olderProject ? (
+            <a href={`/portfolio/${olderProject.slug}`} class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors max-w-[45%]">
+              <Icon name="tabler:arrow-left" class="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span class="truncate">{olderProject.title}</span>
+            </a>
+          ) : <div />}
+          {newerProject ? (
+            <a href={`/portfolio/${newerProject.slug}`} class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors max-w-[45%] ml-auto text-right">
+              <span class="truncate">{newerProject.title}</span>
+              <Icon name="tabler:arrow-right" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            </a>
+          ) : <div />}
+        </div>
+        <div class="text-center">
+          <a href="/portfolio" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+            <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
+            Alle Projekte
+          </a>
+        </div>
+      </nav>
       </article>
     </div>
   </div>

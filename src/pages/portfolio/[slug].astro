@@ -4,13 +4,18 @@ import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const projects = await getCollection('portfolio');
-  return projects.map((project) => ({
+  const sorted = projects.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return sorted.map((project, i) => ({
     params: { slug: project.slug },
-    props: { project },
+    props: {
+      project,
+      olderProject: sorted[i + 1] ? { slug: sorted[i + 1].slug, title: sorted[i + 1].data.title } : null,
+      newerProject: sorted[i - 1] ? { slug: sorted[i - 1].slug, title: sorted[i - 1].data.title } : null,
+    },
   }));
 }
 
-const { project } = Astro.props;
+const { project, olderProject, newerProject } = Astro.props;
 const { Content } = await project.render();
 const { title, description, type, technologies, date, updatedDate, image, imageBackgroundColor, imageFit, icon, iconBackgroundColor, linkGithub, linkWebsite, screenshotsAvailable, screenshotsPath, screenshotsFiles, aiBuilt } = project.data;
 const ogImage = `/og/portfolio/${project.slug}.jpg`;
@@ -35,6 +40,8 @@ const ogImage = `/og/portfolio/${project.slug}.jpg`;
   screenshotsPath={screenshotsPath}
   screenshotsFiles={screenshotsFiles}
   aiBuilt={aiBuilt}
+  olderProject={olderProject}
+  newerProject={newerProject}
 >
   <Content />
 </PortfolioLayout>
