@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   slug: string;
@@ -46,12 +47,14 @@ const isSvg = image.format === 'svg';
     )}
     <div class="absolute top-3 right-3 flex gap-1.5">
       {aiBuilt && (
-        <span class="bg-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+        <span class="inline-flex items-center gap-1 bg-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+          <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
           Built with AI
         </span>
       )}
       {featured && (
-        <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+        <span class="inline-flex items-center gap-1 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+          <Icon name="tabler:star-filled" class="h-3 w-3" aria-hidden="true" />
           Featured
         </span>
       )}
