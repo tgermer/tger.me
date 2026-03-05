@@ -67,9 +67,12 @@ const statusOrder: Record<string, number> = {
     zurückgezogen: 8,
 };
 
+// Collect which statuses actually exist in the data
+const activeStatuses = [...new Set(sorted.flatMap((r) => r.data.statusHistory.map((e) => e.status)))];
+const orderedActiveStatuses = activeStatuses.sort((a, b) => (statusOrder[a] ?? 99) - (statusOrder[b] ?? 99));
+
 function getCurrentStatus(history: Array<{ status: string; date: Date }>) {
     if (history.length === 0) return null;
-    // Sort by date ascending, take last
     const sorted = [...history].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     return sorted[sorted.length - 1];
 }
@@ -133,52 +136,124 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 ---
 
 <ResumeLayout title="Bewerbungen" description="Übersicht aller Bewerbungen" lang="de">
+    <!-- Toast notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 bg-gray-900 text-white text-sm rounded-lg shadow-lg transition-all duration-300 opacity-0 translate-y-2 pointer-events-none">
+        <span id="toast-msg"></span>
+    </div>
+
     <!-- Password gate -->
-    <div id="gate" class="min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="bg-white p-8 rounded-lg shadow-md max-w-sm w-full">
-            <h1 class="text-lg font-bold text-gray-900 mb-4">Bewerbungen</h1>
+    <div id="gate" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 gradient-brand-animated opacity-95"></div>
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/5 blur-3xl"></div>
+        <div class="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-white/5 blur-3xl"></div>
+
+        <div class="relative z-10 bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full mx-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                    <Icon name="tabler:lock" class="h-5 w-5 text-blue-600" />
+                </div>
+                <h1 class="text-lg font-bold text-gray-900">Bewerbungen</h1>
+            </div>
             <p class="text-sm text-gray-500 mb-4">Bitte Passwort eingeben, um die Übersicht anzuzeigen.</p>
             <form id="pw-form" class="flex gap-2">
                 <label for="pw-input" class="sr-only">Passwort</label>
-                <input id="pw-input" type="password" placeholder="Passwort" class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off" />
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition-colors cursor-pointer">Login</button>
+                <input id="pw-input" type="password" placeholder="Passwort" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off" />
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">Login</button>
             </form>
             <p id="pw-error" class="text-sm text-red-500 mt-2 hidden">Falsches Passwort.</p>
         </div>
     </div>
 
     <!-- Protected content -->
-    <div id="content" class="hidden min-h-screen bg-gray-100">
-        <div class="max-w-max mx-auto px-6 py-10">
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center gap-4">
-                    <a href="/" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition-colors"><Icon name="tabler:chevron-left" class="h-6 w-6" /><h1 class="text-2xl font-bold text-gray-900">Bewerbungen</h1></a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="/de/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. DE</a>
-                    <a href="/en/cv-print" class="text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">Allg. EN</a>
-                    <a href="/apply/cv-de.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download DE</a>
-                    <a href="/apply/cv-en.pdf" target="_blank" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors"><Icon name="tabler:file-type-pdf" class="h-4 w-4" />Download EN</a>
-                    <button data-json-resume={getJsonResume("de")} class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors cursor-pointer" title="JSON Resume DE kopieren"><Icon name="tabler:braces" class="h-4 w-4" />JSON DE</button>
-                    <button data-json-resume={getJsonResume("en")} class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors cursor-pointer" title="JSON Resume EN kopieren"><Icon name="tabler:braces" class="h-4 w-4" />JSON EN</button>
-                    <button id="lockout-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-red-300 text-red-600 rounded-full hover:bg-red-50 transition-colors cursor-pointer" title="Sitzung sperren"><Icon name="tabler:lock" class="h-4 w-4" /></button>
+    <div id="content" class="hidden min-h-screen bg-gray-50">
+        <div class="mx-auto px-4 sm:px-6 py-6">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-5">
+                <a href="/" class="inline-flex items-center gap-1 text-gray-500 hover:text-gray-900 transition-colors group">
+                    <Icon name="tabler:chevron-left" class="h-5 w-5" />
+                    <h1 class="text-xl font-bold text-gray-900 group-hover:text-gray-900">Bewerbungen</h1>
+                </a>
+                <div class="flex items-center gap-2">
+                    <!-- Primary actions visible -->
+                    <a href="/apply/cv-de.pdf" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                        <Icon name="tabler:file-type-pdf" class="h-4 w-4" />PDF DE
+                    </a>
+                    <a href="/apply/cv-en.pdf" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
+                        <Icon name="tabler:file-type-pdf" class="h-4 w-4" />PDF EN
+                    </a>
+
+                    <!-- Extras dropdown -->
+                    <div class="relative" id="extras-dropdown">
+                        <button id="extras-btn" class="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                            <Icon name="tabler:dots" class="h-4 w-4" />
+                            <span class="hidden sm:inline">Extras</span>
+                        </button>
+                        <div id="extras-menu" class="hidden absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                            <a href="/de/cv-print" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                <Icon name="tabler:file-text" class="h-4 w-4 text-gray-400" />Allg. Lebenslauf DE
+                            </a>
+                            <a href="/en/cv-print" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                <Icon name="tabler:file-text" class="h-4 w-4 text-gray-400" />Allg. Lebenslauf EN
+                            </a>
+                            <a href="/apply/cv-de.pdf" target="_blank" class="sm:hidden flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                <Icon name="tabler:file-type-pdf" class="h-4 w-4 text-gray-400" />PDF DE
+                            </a>
+                            <a href="/apply/cv-en.pdf" target="_blank" class="sm:hidden flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                <Icon name="tabler:file-type-pdf" class="h-4 w-4 text-gray-400" />PDF EN
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <button data-json-resume={getJsonResume("de")} class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+                                <Icon name="tabler:braces" class="h-4 w-4 text-gray-400" />JSON Resume DE
+                            </button>
+                            <button data-json-resume={getJsonResume("en")} class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
+                                <Icon name="tabler:braces" class="h-4 w-4 text-gray-400" />JSON Resume EN
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lock button -->
+                    <button id="lockout-btn" class="inline-flex items-center justify-center w-9 h-9 border border-red-200 text-red-500 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors cursor-pointer" title="Sitzung sperren">
+                        <Icon name="tabler:lock" class="h-4 w-4" />
+                    </button>
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mb-4">
-                <div class="relative flex-1 w-full sm:max-w-xs">
-                    <Icon name="tabler:search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-                    <input id="search-input" type="text" placeholder="Suchen…" class="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+            <!-- Search, Sort & Filter bar -->
+            <div class="flex flex-col gap-3 mb-4">
+                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                    <div class="relative flex-1 w-full sm:max-w-xs">
+                        <Icon name="tabler:search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                        <input id="search-input" type="text" placeholder="Suchen… (/ zum Fokussieren)" class="w-full pl-9 pr-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+                    </div>
+                    <div class="flex gap-1.5 flex-wrap text-xs">
+                        <button data-sort="date" data-dir="desc" class="sort-btn active border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer">Datum ↓</button>
+                        <button data-sort="update" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Update</button>
+                        <button data-sort="status" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Status</button>
+                        <button data-sort="company" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Firma</button>
+                    </div>
                 </div>
+
+                <!-- Status filter pills -->
                 <div class="flex gap-1.5 flex-wrap text-xs">
-                    <button data-sort="date" data-dir="desc" class="sort-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer">Datum ↓</button>
-                    <button data-sort="update" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Update</button>
-                    <button data-sort="status" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Status</button>
-                    <button data-sort="company" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Firma</button>
+                    <button data-status-filter="all" class="status-filter-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer">Alle</button>
+                    <button data-status-filter="active" class="status-filter-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Offen</button>
+                    {orderedActiveStatuses.map((status) => (
+                        <button data-status-filter={status} class:list={["status-filter-btn border px-2.5 py-1 rounded-full transition-colors cursor-pointer", "border-gray-300 text-gray-600 hover:bg-gray-50"]}>
+                            {statusLabels[status] || status}
+                        </button>
+                    ))}
                 </div>
             </div>
 
             <p id="result-count" class="text-sm text-gray-500 mb-4">{sorted.length} Bewerbung(en) gespeichert.</p>
+
+            <!-- Empty state -->
+            <div id="empty-state" class="hidden py-16 text-center">
+                <Icon name="tabler:search-off" class="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <p class="text-gray-500 font-medium">Keine Bewerbungen gefunden</p>
+                <p class="text-sm text-gray-400 mt-1">Versuch einen anderen Suchbegriff oder Filter.</p>
+            </div>
 
             <!-- Mobile: stacked cards -->
             <div id="card-container" class="md:hidden flex flex-col gap-3">
@@ -207,7 +282,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                             .join(" ")
                             .toLowerCase();
                         return (
-                            <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer">
+                            <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-status-key={statusKey || ""} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-gray-300 hover:shadow-md active:bg-gray-50 transition-all">
                                 <div class="flex items-start justify-between gap-2 mb-2">
                                     <div class="min-w-0">
                                         <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
@@ -285,28 +360,28 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         ))}
                                     </div>
                                 )}
-                                <div class="flex items-center gap-3 pt-2 border-t border-gray-100">
-                                    <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf">
-                                        <Icon name="tabler:file-text" class="h-4 w-4" />
+                                <div class="flex items-center gap-1 pt-2 border-t border-gray-100">
+                                    <a href={`/apply/${r.slug}/`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-blue-600 hover:bg-blue-50 hover:text-blue-800 transition-colors" title="Lebenslauf">
+                                        <Icon name="tabler:file-text" class="h-4.5 w-4.5" />
                                     </a>
-                                    <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF">
-                                        <Icon name="tabler:download" class="h-4 w-4" />
+                                    <a href={`/apply/${r.slug}.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="CV PDF">
+                                        <Icon name="tabler:download" class="h-4.5 w-4.5" />
                                     </a>
                                     {r.body && r.body.trim().length > 0 && (
-                                        <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF">
-                                            <Icon name="tabler:file-type-doc" class="h-4 w-4" />
+                                        <a href={`/apply/${r.slug}-letter.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Anschreiben PDF">
+                                            <Icon name="tabler:file-type-doc" class="h-4.5 w-4.5" />
                                         </a>
                                     )}
                                     {r.data.jobUrl && (
-                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">
-                                            <Icon name="tabler:external-link" class="h-4 w-4" />
+                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige">
+                                            <Icon name="tabler:external-link" class="h-4.5 w-4.5" />
                                         </a>
                                     )}
-                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
-                                        <Icon name="tabler:mail" class="h-4 w-4" />
+                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
+                                        <Icon name="tabler:mail" class="h-4.5 w-4.5" />
                                     </a>
-                                    <button data-json-resume={getJsonResume(r.slug)} class="text-gray-400 hover:text-gray-600 cursor-pointer" title="JSON Resume kopieren">
-                                        <Icon name="tabler:braces" class="h-4 w-4" />
+                                    <button data-json-resume={getJsonResume(r.slug)} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="JSON Resume kopieren">
+                                        <Icon name="tabler:braces" class="h-4.5 w-4.5" />
                                     </button>
                                 </div>
                             </div>
@@ -316,7 +391,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             </div>
 
             <!-- Desktop: table -->
-            <div class="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
+            <div id="table-wrapper" class="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
                 <table class="w-full text-sm text-left">
                     <thead class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
                         <tr>
@@ -357,7 +432,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                     .toLowerCase();
                                 return (
                                     <>
-                                        <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
+                                        <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-status-key={statusKey || ""} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <p class="text-gray-900">{formatDate(r.data.date)}</p>
                                                 <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
@@ -395,27 +470,27 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <td class="px-4 py-3 text-gray-600">{r.data.location || <span class="text-gray-300">–</span>}</td>
                                             <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{r.data.salary || <span class="text-gray-300">–</span>}</td>
                                             <td class="px-4 py-3 whitespace-nowrap">
-                                                <div class="flex items-center gap-2">
-                                                    <a href={`/apply/${r.slug}/`} class="text-blue-600 hover:text-blue-800" title="Lebenslauf">
+                                                <div class="flex items-center gap-1">
+                                                    <a href={`/apply/${r.slug}/`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-blue-600 hover:bg-blue-50 hover:text-blue-800 transition-colors" title="Lebenslauf">
                                                         <Icon name="tabler:file-text" class="h-4 w-4" />
                                                     </a>
-                                                    <a href={`/apply/${r.slug}.pdf`} class="text-gray-400 hover:text-gray-600" title="CV PDF">
+                                                    <a href={`/apply/${r.slug}.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="CV PDF">
                                                         <Icon name="tabler:download" class="h-4 w-4" />
                                                     </a>
                                                     {r.body && r.body.trim().length > 0 && (
-                                                        <a href={`/apply/${r.slug}-letter.pdf`} class="text-gray-400 hover:text-gray-600" title="Anschreiben PDF">
+                                                        <a href={`/apply/${r.slug}-letter.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Anschreiben PDF">
                                                             <Icon name="tabler:file-type-doc" class="h-4 w-4" />
                                                         </a>
                                                     )}
                                                     {r.data.jobUrl && (
-                                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600" title="Stellenanzeige">
+                                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige">
                                                             <Icon name="tabler:external-link" class="h-4 w-4" />
                                                         </a>
                                                     )}
-                                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="text-gray-400 hover:text-gray-600" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
+                                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
                                                         <Icon name="tabler:mail" class="h-4 w-4" />
                                                     </a>
-                                                    <button data-json-resume={getJsonResume(r.slug)} class="text-gray-400 hover:text-gray-600 cursor-pointer" title="JSON Resume kopieren">
+                                                    <button data-json-resume={getJsonResume(r.slug)} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="JSON Resume kopieren">
                                                         <Icon name="tabler:braces" class="h-4 w-4" />
                                                     </button>
                                                 </div>
@@ -475,25 +550,28 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 
             /* Hide UI chrome */
             #gate,
+            #toast,
             #search-input,
             .sort-btn,
+            .status-filter-btn,
             #lockout-btn,
+            #extras-dropdown,
             #result-count,
+            #empty-state,
             #card-container,
             .expand-icon,
-            a[href="/de/cv-print"],
-            a[href="/en/cv-print"],
             a[href$=".pdf"],
             a[href$="-letter.pdf"] {
                 display: none !important;
             }
 
-            /* Hide the entire toolbar row */
-            .flex.items-center.justify-between.mb-6 .flex.items-center.gap-3 {
+            /* Hide the entire header actions */
+            .flex.items-center.justify-between.mb-5 .flex.items-center.gap-2 {
                 display: none !important;
             }
 
-            .flex.flex-col.sm\:flex-row {
+            /* Hide filter/sort bar */
+            .flex.flex-col.gap-3.mb-4 {
                 display: none !important;
             }
 
@@ -514,12 +592,12 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 min-height: auto !important;
             }
 
-            .bg-gray-100 {
+            .bg-gray-50 {
                 background: white !important;
             }
 
             /* Force desktop table visible */
-            .hidden.md\:block {
+            #table-wrapper {
                 display: block !important;
             }
 
@@ -586,17 +664,12 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             }
 
             /* Compact spacing */
-            .max-w-7xl {
-                max-width: none !important;
-                padding: 0 !important;
-            }
-
-            .px-6 {
+            .px-4 {
                 padding-left: 0 !important;
                 padding-right: 0 !important;
             }
 
-            .py-10 {
+            .py-6 {
                 padding-top: 4mm !important;
                 padding-bottom: 0 !important;
             }
@@ -615,6 +688,19 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
     </style>
 
     <script>
+        // --- Toast helper ---
+        function showToast(msg: string, duration = 2000) {
+            const toast = document.getElementById("toast")!;
+            const msgEl = document.getElementById("toast-msg")!;
+            msgEl.textContent = msg;
+            toast.classList.remove("opacity-0", "translate-y-2", "pointer-events-none");
+            toast.classList.add("opacity-100", "translate-y-0");
+            setTimeout(() => {
+                toast.classList.add("opacity-0", "translate-y-2", "pointer-events-none");
+                toast.classList.remove("opacity-100", "translate-y-0");
+            }, duration);
+        }
+
         // Password gate – verified server-side via Netlify Function.
         // In dev mode, skip the gate entirely.
         const isDev = import.meta.env.DEV;
@@ -623,10 +709,19 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             document.getElementById("content")!.classList.remove("hidden");
         }
 
+        // --- Extras dropdown ---
+        const extrasBtn = document.getElementById("extras-btn")!;
+        const extrasMenu = document.getElementById("extras-menu")!;
+        extrasBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            extrasMenu.classList.toggle("hidden");
+        });
+        document.addEventListener("click", () => extrasMenu.classList.add("hidden"));
+
         // --- Expand/Collapse ---
         document.querySelectorAll("tr[data-expandable]").forEach((row) => {
             row.addEventListener("click", (e) => {
-                if ((e.target as HTMLElement).closest("a")) return;
+                if ((e.target as HTMLElement).closest("a, button")) return;
                 const detail = row.nextElementSibling;
                 if (detail?.hasAttribute("data-detail")) {
                     detail.classList.toggle("hidden");
@@ -637,7 +732,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 
         document.querySelectorAll("[data-expandable-card]").forEach((card) => {
             card.addEventListener("click", (e) => {
-                if ((e.target as HTMLElement).closest("a")) return;
+                if ((e.target as HTMLElement).closest("a, button")) return;
                 const detail = card.querySelector("[data-detail]");
                 if (detail) {
                     detail.classList.toggle("hidden");
@@ -646,10 +741,13 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             });
         });
 
-        // --- Sort & Search ---
+        // --- Sort & Search & Filter ---
         const sortLabels: Record<string, string> = { date: "Datum", update: "Update", status: "Status", company: "Firma" };
         const defaultDirs: Record<string, string> = { date: "desc", update: "desc", status: "desc", company: "asc" };
         let currentSort = { key: "date", dir: "desc" };
+        let currentStatusFilter = "all";
+
+        const terminalStatuses = new Set(["zusage", "absage", "zurückgezogen"]);
 
         function getVal(el: Element, key: string): string | number {
             switch (key) {
@@ -664,6 +762,13 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 default:
                     return "";
             }
+        }
+
+        function matchesStatusFilter(el: Element): boolean {
+            if (currentStatusFilter === "all") return true;
+            const key = el.getAttribute("data-status-key") || "";
+            if (currentStatusFilter === "active") return !terminalStatuses.has(key);
+            return key === currentStatusFilter;
         }
 
         function performSort() {
@@ -709,7 +814,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 const k = btn.getAttribute("data-sort")!;
                 const isActive = k === key;
                 if (isActive) {
-                    btn.className = "sort-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer";
+                    btn.className = "sort-btn active border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer";
                     btn.textContent = `${sortLabels[k]} ${dir === "desc" ? "↓" : "↑"}`;
                 } else {
                     btn.className = "sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer";
@@ -730,15 +835,18 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             });
         });
 
-        function performSearch(query: string) {
-            const q = query.toLowerCase().trim();
+        function applyFilters() {
+            const q = (document.getElementById("search-input") as HTMLInputElement)?.value.toLowerCase().trim() || "";
             let visibleCount = 0;
-            const total = document.querySelectorAll("tr[data-expandable]").length;
+            let totalCount = 0;
 
             // Desktop
             document.querySelectorAll("tr[data-expandable]").forEach((row) => {
+                totalCount++;
                 const text = row.getAttribute("data-search") || "";
-                const show = !q || text.includes(q);
+                const matchesSearch = !q || text.includes(q);
+                const matchesFilter = matchesStatusFilter(row);
+                const show = matchesSearch && matchesFilter;
                 row.classList.toggle("search-hidden", !show);
                 if (show) visibleCount++;
                 const detail = row.nextElementSibling;
@@ -751,19 +859,63 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             // Mobile
             document.querySelectorAll("[data-expandable-card]").forEach((card) => {
                 const text = card.getAttribute("data-search") || "";
-                const show = !q || text.includes(q);
+                const matchesSearch = !q || text.includes(q);
+                const matchesFilter = matchesStatusFilter(card);
+                const show = matchesSearch && matchesFilter;
                 card.classList.toggle("search-hidden", !show);
             });
 
-            // Update count
+            // Update count & empty state
             const countEl = document.getElementById("result-count");
+            const emptyEl = document.getElementById("empty-state");
+            const tableWrapper = document.getElementById("table-wrapper");
+            const cardContainer = document.getElementById("card-container");
+
             if (countEl) {
-                countEl.textContent = q ? `${visibleCount} von ${total} Bewerbung(en)` : `${total} Bewerbung(en) gespeichert.`;
+                const isFiltered = q || currentStatusFilter !== "all";
+                countEl.textContent = isFiltered ? `${visibleCount} von ${totalCount} Bewerbung(en)` : `${totalCount} Bewerbung(en) gespeichert.`;
+            }
+
+            if (emptyEl && tableWrapper && cardContainer) {
+                if (visibleCount === 0) {
+                    emptyEl.classList.remove("hidden");
+                    tableWrapper.classList.add("!hidden");
+                    cardContainer.classList.add("!hidden");
+                } else {
+                    emptyEl.classList.add("hidden");
+                    tableWrapper.classList.remove("!hidden");
+                    cardContainer.classList.remove("!hidden");
+                }
             }
         }
 
-        document.getElementById("search-input")?.addEventListener("input", (e) => {
-            performSearch((e.target as HTMLInputElement).value);
+        document.getElementById("search-input")?.addEventListener("input", () => applyFilters());
+
+        // --- Status filter ---
+        document.querySelectorAll(".status-filter-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                currentStatusFilter = btn.getAttribute("data-status-filter") || "all";
+
+                // Update button states
+                document.querySelectorAll(".status-filter-btn").forEach((b) => {
+                    const isActive = b.getAttribute("data-status-filter") === currentStatusFilter;
+                    if (isActive) {
+                        b.className = "status-filter-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer";
+                    } else {
+                        b.className = "status-filter-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer";
+                    }
+                });
+
+                applyFilters();
+            });
+        });
+
+        // --- Keyboard shortcut: / to focus search ---
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "/" && !(e.target as HTMLElement).matches("input, textarea, select")) {
+                e.preventDefault();
+                document.getElementById("search-input")?.focus();
+            }
         });
 
         // --- Lockout ---
@@ -791,11 +943,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 if (!json) return;
                 try {
                     await navigator.clipboard.writeText(json);
-                    const svg = btn.querySelector("svg");
-                    if (svg) {
-                        svg.style.color = "#16a34a";
-                        setTimeout(() => (svg.style.color = ""), 1500);
-                    }
+                    showToast("JSON Resume in die Zwischenablage kopiert");
                 } catch {
                     // Fallback: open in new window
                     const w = window.open("", "_blank");
