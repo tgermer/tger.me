@@ -8,19 +8,26 @@ interface Props {
   ogImage?: string;
   lang?: string;
   alternates?: { hreflang: string; href: string }[];
+  revealContent?: boolean;
 }
 
-const { title, description, subtitle, ogImage, lang, alternates } = Astro.props;
+const { title, description, subtitle, ogImage, lang, alternates, revealContent = true } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage} lang={lang} alternates={alternates}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-6">
+      <div class="reveal mb-10 border-b border-gray-200 dark:border-gray-800 pb-6">
         <h1 class="text-4xl font-bold text-gray-900 dark:text-white">{title}</h1>
         {subtitle && <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">{subtitle}</p>}
       </div>
-      <slot />
+      {revealContent ? (
+        <div class="reveal">
+          <slot />
+        </div>
+      ) : (
+        <slot />
+      )}
     </div>
   </div>
 </BaseLayout>

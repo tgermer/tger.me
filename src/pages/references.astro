@@ -36,7 +36,7 @@ const withText = references.filter((r) => r.reference);
 const withoutText = references.filter((r) => !r.reference);
 ---
 
-<PageLayout title="Referenzen" subtitle="Was andere über mich sagen" description={pages.references.description} ogImage="/og/references.jpg">
+<PageLayout title="Referenzen" subtitle="Was andere über mich sagen" description={pages.references.description} ogImage="/og/references.jpg" revealContent={false}>
     {/* Testimonials with reference text */}
     <div class="space-y-6">
         {
@@ -44,7 +44,7 @@ const withoutText = references.filter((r) => !r.reference);
                 const linkedin = getLinkedIn(ref);
                 const image = getImage(ref);
                 return (
-                    <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden" data-testimonial>
+                    <article class="reveal relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden" data-testimonial>
                         <div class="flex">
                         {/* Accent side bar */}
                         <div class="w-1.5 gradient-brand shrink-0" />
@@ -92,12 +92,12 @@ const withoutText = references.filter((r) => !r.reference);
         withoutText.length > 0 && (
             <div class="mt-12">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-6">Weitere Referenzen</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="reveal-stagger grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {withoutText.map((ref) => {
                         const linkedin = getLinkedIn(ref);
                         const image = getImage(ref);
                         return (
-                            <div class="flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+                            <div class="reveal flex items-center gap-4 p-5 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
                                 <div class="shrink-0">{image ? <Image src={image} alt={ref.name} width={44} height={44} class="w-11 h-11 rounded-full object-cover" /> : <div class="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">{getInitials(ref.name)}</div>}</div>
                                 <div class="min-w-0 flex-1">
                                     <div class="flex items-center gap-2">

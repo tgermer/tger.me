@@ -9,7 +9,7 @@ const posts = await getCollection('blog');
 const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg">
+<PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg" revealContent={false}>
   <div class="space-y-6">
     {sorted.map((post, index) => {
       const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -17,7 +17,7 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
 
       return isHero ? (
         /* Hero card – first post, full-width image */
-        <a href={`/blog/${post.slug}`} class="group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <a href={`/blog/${post.slug}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           {post.data.image ? (
             <div class="relative h-64 sm:h-72 overflow-hidden">
               <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[800, 1200]} sizes="(min-width: 1024px) 960px, 100vw" />
@@ -40,7 +40,7 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
         </a>
       ) : (
         /* Regular card – horizontal with side image on sm+ */
-        <a href={`/blog/${post.slug}`} class="group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <a href={`/blog/${post.slug}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <div class="sm:flex">
             {post.data.image ? (
               <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">

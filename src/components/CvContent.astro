@@ -26,9 +26,9 @@ const alternates = [
 ];
 ---
 
-<PageLayout title={l.cvPageTitle} subtitle={l.cvPageSubtitle} description={l.cvPageDescription} ogImage={`/og/${lang}/cv.jpg`} lang={lang} alternates={alternates}>
+<PageLayout title={l.cvPageTitle} subtitle={l.cvPageSubtitle} description={l.cvPageDescription} ogImage={`/og/${lang}/cv.jpg`} lang={lang} alternates={alternates} revealContent={false}>
     <!-- Download -->
-    <div class="flex items-center justify-end mb-8">
+    <div class="reveal flex items-center justify-end mb-8">
         <a href={l.cvPdfHref} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors">
             <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
             Download
@@ -36,7 +36,7 @@ const alternates = [
     </div>
 
     <!-- Berufserfahrung -->
-    <section class="mb-12">
+    <section class="reveal mb-12">
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:briefcase" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvExperienceHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
@@ -115,7 +115,7 @@ const alternates = [
     </section>
 
     <!-- Ausbildung -->
-    <section class="mb-12">
+    <section class="reveal mb-12">
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:school" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvEducationHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
@@ -171,7 +171,7 @@ const alternates = [
     </section>
 
     <!-- Weiterbildung -->
-    <section class="mb-12">
+    <section class="reveal mb-12">
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:certificate" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvFurtherEducationHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
@@ -223,7 +223,7 @@ const alternates = [
     </section>
 
     <!-- Projekte -->
-    <section class="mb-12">
+    <section class="reveal mb-12">
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:code" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvProjectsHeading}</h2>
         <div class="divide-y divide-gray-200 dark:divide-gray-800">
             {
@@ -255,7 +255,7 @@ const alternates = [
     </section>
 
     <!-- Kenntnisse -->
-    <section class="mb-12">
+    <section class="reveal mb-12">
         <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:brain" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvSkillsHeading}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {
