@@ -32,11 +32,6 @@ h1, h2, h3, h4, h5, h6 {
   );
 }
 
-/* Organic blob shape for profile image */
-.blob-shape {
-  border-radius: 30% 70% 70% 30% / 30% 22% 78% 70%;
-}
-
 /* Prose styles for Markdown content */
 .prose h2 {
   font-size: 1.5rem;
@@ -44,6 +39,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   color: var(--color-brand-dark);
+}
+
+:where(.dark, .dark *) .prose h2 {
+  color: var(--color-brand-light);
 }
 
 .prose h3 {
@@ -80,6 +79,10 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1.5rem 0;
 }
 
+:where(.dark, .dark *) .prose blockquote {
+  color: #9ca3af;
+}
+
 .prose a {
   color: var(--color-brand-mid);
   text-decoration: underline;
@@ -88,6 +91,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .prose a:hover {
   color: var(--color-brand-dark);
+}
+
+:where(.dark, .dark *) .prose a {
+  color: var(--color-brand-light);
+}
+
+:where(.dark, .dark *) .prose a:hover {
+  color: var(--color-brand-mid);
 }
 
 .prose a[href^="http"]::after {

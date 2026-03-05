@@ -56,13 +56,13 @@ const dateLabel = updatedDate
       {aiBuilt && (
         <span class="inline-flex items-center gap-1 bg-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full">
           <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
-          Built with AI
+          Mit KI erstellt
         </span>
       )}
       {featured && (
         <span class="inline-flex items-center gap-1 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full">
           <Icon name="tabler:star-filled" class="h-3 w-3" aria-hidden="true" />
-          Featured
+          Highlight
         </span>
       )}
     </div>
@@ -74,12 +74,15 @@ const dateLabel = updatedDate
       <span class="inline-block bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-medium px-2.5 py-1 rounded-full">
         {type}
       </span>
-      <span class="text-[0.65rem] text-gray-400 dark:text-gray-500">{dateLabel}</span>
+      <span class="inline-flex items-center gap-1 text-[0.65rem] text-gray-400 dark:text-gray-500">
+        <Icon name="tabler:calendar" class="h-3 w-3" aria-hidden="true" />
+        {dateLabel}
+      </span>
     </div>
     <h3 class="font-semibold text-gray-900 dark:text-white text-base leading-snug mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
       {title}
     </h3>
-    <p class="text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">{description}</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">{description}</p>
 
     <!-- Tech chips -->
     <div class="flex flex-wrap gap-1.5">
