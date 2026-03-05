@@ -7,7 +7,7 @@ export const pages: Record<string, PageMeta> = {
   index: {
     title: "Tristan Germer",
     description:
-      "Persönliche Website von Tristan Germer – Digitalisierung, Prozessgestaltung und Automatisierung. Projekte, Blog und Lebenslauf.",
+      "Digitalisierung, KI-gestützte Entwicklung und moderne Technologien. Projekte, Blog und Lebenslauf.",
   },
   portfolio: {
     title: "Portfolio",
