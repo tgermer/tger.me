@@ -38,6 +38,7 @@ const translations = {
   de: {
     // ── CV web page ──
     cvPageTitle: "Lebenslauf",
+    cvPageSubtitle: "Berufserfahrung, Ausbildung und Kenntnisse",
     cvPageDescription:
       "Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse.",
     cvPdfHref: "/apply/cv-de.pdf",
@@ -78,15 +79,17 @@ const translations = {
 
     // ── About page ──
     aboutPageTitle: "Über mich",
+    aboutPageSubtitle: "Digitalisierung, Prozesse und Technik",
     aboutPageDescription:
       "Erfahre mehr über Tristan Germer – Digitalisierung, Prozessgestaltung und Technik-Enthusiast aus München.",
-    aboutDegreeLabel: "M.Sc. Technische Kommunikation",
+    aboutDegreeLabel: "M.Sc. Technische Kommunikation\nB.A. Betriebswirtschaftslehre",
     aboutLocationLabel: "München, Deutschland",
     aboutWhoAmITitle: "Wer bin ich?",
     aboutWhoAmITexts: [
       "Technik hat mich schon immer fasziniert – von den ersten Gehversuchen am Computer bis heute. Was als kindliche Neugier begann, ist über die Jahre zu einer beruflichen Leidenschaft geworden: Ich begleite seit über zehn Jahren Digitalisierungs-, Organisations- und Automatisierungsvorhaben in Verwaltung und Bildung.",
       "Mein Schwerpunkt liegt auf Querschnitts- und Stabsfunktionen, in denen Gestaltung, Analyse und Umsetzung zusammenkommen. Mit einem Master of Science in Technischer Kommunikation und einem Background in Betriebswirtschaft bringe ich eine Kombination aus technischem Verständnis, analytischem Denken und strategischer Perspektive mit.",
-      "Abseits des Berufs experimentiere ich gerne mit neuen Technologien – ob Smart Home, Gebäudeautomation oder Vibe Coding. Gerade die Möglichkeit, durch KI-gestützte Entwicklung eigene Ideen umzusetzen, die zuvor schlicht nicht realisierbar waren, begeistert mich.",
+      "Ich bin ein leidenschaftlicher Problemlöser: Komplexe Herausforderungen systematisch zu durchdringen und pragmatische Lösungen zu finden, treibt mich an. Dabei denke ich immer von der Schnittstelle Produkt und Mensch her – Technik muss für Menschen funktionieren, nicht umgekehrt.",
+      "Abseits des Berufs experimentiere ich gerne mit neuen Technologien – ob Smart Home, Gebäudeautomation oder eigene Projekte. Dabei nutze ich KI-gestützte Entwicklung, um Ideen schnell greifbar zu machen und durch Prototypen zu validieren – nicht als Ersatz für Fachwissen, sondern als Werkzeug, das mir als Nicht-Programmierer ermöglicht, eigene Konzepte eigenständig umzusetzen.",
     ],
     aboutFocusAreasTitle: "Schwerpunkte",
     aboutFocusAreas: [
@@ -113,15 +116,16 @@ const translations = {
     ],
     aboutDrivesTitle: "Mein Antrieb",
     aboutDrivesText:
-      "Mich motivieren Gestaltungsfreiheit, systemisches Denken und das gezielte Ausprobieren neuer Lösungsansätze. Aktuell vertiefe ich insbesondere Themen rund um Automatisierung, Systemsteuerung und Gebäudeautomation – mit dem Ziel, technische Steuerungs- und Regelungslogiken auf organisatorische Kontexte zu übertragen.",
+      "Mich motivieren Gestaltungsfreiheit, systemisches Denken und der Impuls, Ideen schnell greifbar zu machen – durch Prototypen validieren statt endlos planen. Ich bin ein Impulsgeber, der andere gerne mit einbezieht und begeistert. Aktuell vertiefe ich Themen rund um Automatisierung, Systemsteuerung und Gebäudeautomation – mit dem Ziel, technische Steuerungs- und Regelungslogiken auf organisatorische Kontexte zu übertragen.",
     aboutDrivesQuote:
       "Wie lassen sich komplexe Systeme so strukturieren, dass sie verständlich, steuerbar und wirksam werden?",
     aboutWorkStyleTitle: "Arbeitsweise",
     aboutWorkStyleText:
-      "Analytisch, strukturiert und nutzerorientiert. Veränderungen begleite ich aktiv durch klare Kommunikation, Schulung und praxisnahe Umsetzung.",
+      "Analytisch, strukturiert und nutzerorientiert. Ich brauche den bewussten Wechsel zwischen kreativer Konzeptarbeit und strukturierter Umsetzung – beides braucht seinen Raum, damit gute Ergebnisse entstehen. Veränderungen begleite ich aktiv durch klare Kommunikation, Schulung und praxisnahe Umsetzung.",
     aboutToolsTitle: "Tools & Zertifizierungen",
     aboutCertificationsLabel: "Zertifizierungen",
-    aboutToolsLabel: "Tools & Technologien",
+    aboutToolsLabel: "Berufliche Tools",
+    aboutAiToolsLabel: "KI-gestützte Projektarbeit",
     aboutMottoTitle: "Motto",
     aboutCtaProjects: "Meine Projekte ansehen",
     aboutCtaCv: "Lebenslauf",
@@ -129,6 +133,7 @@ const translations = {
   en: {
     // ── CV web page ──
     cvPageTitle: "Curriculum Vitae",
+    cvPageSubtitle: "Work experience, education and skills",
     cvPageDescription:
       "CV of Tristan Germer – Work experience, education and skills.",
     cvPdfHref: "/apply/cv-en.pdf",
@@ -169,15 +174,17 @@ const translations = {
 
     // ── About page ──
     aboutPageTitle: "About me",
+    aboutPageSubtitle: "Digitalization, processes and technology",
     aboutPageDescription:
       "Learn more about Tristan Germer – digitalization, process design and tech enthusiast from Munich.",
-    aboutDegreeLabel: "M.Sc. Technical Communication",
+    aboutDegreeLabel: "M.Sc. Technical Communication\nB.A. Business Administration",
     aboutLocationLabel: "Munich, Germany",
     aboutWhoAmITitle: "Who am I?",
     aboutWhoAmITexts: [
       "Technology has always fascinated me — from my very first steps on a computer to this day. What began as childhood curiosity has grown into a professional passion over the years: for more than a decade, I have been driving digitalization, organizational development and automation initiatives in public administration and higher education.",
       "My focus is on cross-functional and staff roles where design, analysis and implementation come together. With a Master of Science in Technical Communication and a background in Business Administration, I bring a combination of technical understanding, analytical thinking and strategic perspective.",
-      "Outside of work, I enjoy experimenting with new technologies — whether smart home, building automation or vibe coding. I'm particularly excited by the possibility of turning my own ideas into reality through AI-assisted development — ideas that simply weren't feasible before.",
+      "I'm a passionate problem solver: I thrive on systematically breaking down complex challenges and finding pragmatic solutions. I always think from the product–human interface — technology should work for people, not the other way around.",
+      "Outside of work, I enjoy experimenting with new technologies — whether smart home, building automation or my own projects. I use AI-assisted development to quickly make ideas tangible and validate them through prototypes — not as a substitute for expertise, but as a tool that enables me as a non-programmer to independently bring my own concepts to life.",
     ],
     aboutFocusAreasTitle: "Focus areas",
     aboutFocusAreas: [
@@ -204,15 +211,16 @@ const translations = {
     ],
     aboutDrivesTitle: "What drives me",
     aboutDrivesText:
-      "I'm motivated by creative freedom, systems thinking and the deliberate exploration of new approaches. Currently, I'm particularly interested in automation, system control and building automation — with the goal of transferring technical control and regulation logic to organizational contexts.",
+      "I'm motivated by creative freedom, systems thinking and the urge to make ideas tangible quickly — validate through prototypes rather than plan endlessly. I enjoy inspiring others and bringing them along on the journey. Currently, I'm particularly interested in automation, system control and building automation — with the goal of transferring technical control and regulation logic to organizational contexts.",
     aboutDrivesQuote:
       "How can complex systems be structured so that they become understandable, controllable and effective?",
     aboutWorkStyleTitle: "Work style",
     aboutWorkStyleText:
-      "Analytical, structured and user-oriented. I actively support change through clear communication, training and hands-on implementation.",
+      "Analytical, structured and user-oriented. I need the deliberate balance between creative conceptual work and structured execution — both need their space for great results to emerge. I actively support change through clear communication, training and hands-on implementation.",
     aboutToolsTitle: "Tools & certifications",
     aboutCertificationsLabel: "Certifications",
-    aboutToolsLabel: "Tools & technologies",
+    aboutToolsLabel: "Professional tools",
+    aboutAiToolsLabel: "AI-assisted project work",
     aboutMottoTitle: "Motto",
     aboutCtaProjects: "View my projects",
     aboutCtaCv: "Curriculum Vitae",
