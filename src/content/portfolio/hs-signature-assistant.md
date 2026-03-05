@@ -41,9 +41,9 @@ Ein einzelner Vorgang konnte so bis zu einer Stunde dauern.
 
 ## Technologien
 
-- **React 19 + TypeScript 5.9** – Typsichere, komponentenbasierte Benutzeroberfläche
-- **Vite 7** – Schneller Dev-Server und optimierter Build
-- **Tailwind CSS 3.4** – Utility-First-Styling
+- **React + TypeScript** – Typsichere, komponentenbasierte Benutzeroberfläche
+- **Vite** – Schneller Dev-Server und optimierter Build
+- **Tailwind CSS** – Utility-First-Styling
 - **perfect-freehand** – Natürlich wirkende Stiftstriche auf dem Canvas
 - **pdf-lib** – PDF-Erzeugung direkt im Browser
-- **jszip** – ZIP-Paket mit allen Exportformaten zum Download
+- **JSZip** – ZIP-Paket mit allen Exportformaten zum Download

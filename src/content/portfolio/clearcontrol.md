@@ -32,8 +32,8 @@ ClearControl bietet einen intuitiven Editor direkt im Browser: Labels gestalten,
 
 ## Technologien
 
-- **React 19** – UI-Framework mit TypeScript
-- **Vite 7** – Build-Tool und Dev-Server
+- **React** – UI-Framework mit TypeScript
+- **Vite** – Build-Tool und Dev-Server
 - **i18next** – Internationalisierung (Deutsch & Englisch) mit Browser-Language-Detection
 - **Tabler Icons & Material Design Icons** – Icon-Bibliotheken, ergänzt durch eigene Hue-Icons (SVG)
 - **CSS Modules** – Modulares Styling ohne UI-Framework

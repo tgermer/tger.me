@@ -27,8 +27,8 @@ Die Idee entstand aus einer Hausaufgabe im Mentoring mit [Lisa Kurzenberger](htt
 
 ## Technologien
 
-- **React 19** – Aktuellste Version, reines JSX ohne TypeScript – bewusst minimales Setup
-- **Vite 7** – Build-Tool und Dev-Server
-- **Tailwind CSS 4** – Styling über das offizielle Vite-Plugin
+- **React** – Reines JSX ohne TypeScript – bewusst minimales Setup
+- **Vite** – Build-Tool und Dev-Server
+- **Tailwind CSS** – Styling über das offizielle Vite-Plugin
 - **Web Audio API** – Sound-Generierung direkt im Browser
 - **html-to-image** – Screenshot-Export von DOM-Elementen
