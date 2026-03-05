@@ -22,5 +22,6 @@ statusHistory:
       date: 2026-02-23
       info: "Teams-Call mit Katharina Honsek, Verena Sparla, Katharina Widemann. Ich habe das Gefühl, dass sie überhaupt nicht wissen was sie suchen. Auf der einen Seite wollen sie einen mir frischer herangehensweise ohne eingefahrene Abläufe in dem Bereich, auf der anderen Seite habe ich kein Branchenwissen, und sie meinen dass das das Onboarding 12–24 Monate dauern könnte. Jetzt müssen sie überlegen, ob ihnen das nicht zu lang ist. :-/"
     - status: "absage"
-      date: 2026-02-27
+      date: 2026-03-05
+      info: 'Mir wurde von Katharina Wiedemann telefonisch abgesagt. Als Feedback gab es, dass Sie immer noch nicht selber genau wissen, was Sie suchen. Auf jeden Fall suchen Sie jemanden, der selber programmieren kann. – "As per the recent discussion and feedback you have received from your recruiter, we won’t be progressing further with your application for this role."'
 ---
