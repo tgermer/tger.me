@@ -171,7 +171,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             <!-- Header -->
             <div class="flex items-center justify-between mb-5">
                 <a href="/" class="inline-flex items-center gap-1 text-gray-500 hover:text-gray-900 transition-colors group">
-                    <Icon name="tabler:chevron-left" class="h-5 w-5" />
+                    <Icon name="tabler:chevron-left" class="h-5 w-5 print:hidden" />
                     <h1 class="text-xl font-bold text-gray-900 group-hover:text-gray-900">Bewerbungen</h1>
                 </a>
                 <div class="flex items-center gap-2">
@@ -231,6 +231,10 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                         <button data-sort="update" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Update</button>
                         <button data-sort="status" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Status</button>
                         <button data-sort="company" class="sort-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Firma</button>
+                        <span class="w-px h-4 bg-gray-300 self-center mx-0.5"></span>
+                        <button id="expand-all-btn" class="inline-flex items-center gap-1 border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">
+                            <Icon name="tabler:arrows-maximize" class="h-3 w-3" /><span id="expand-all-label">Aufklappen</span>
+                        </button>
                     </div>
                 </div>
 
@@ -392,7 +396,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 
             <!-- Desktop: table -->
             <div id="table-wrapper" class="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-left [&_td]:align-top">
                     <thead class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
                         <tr>
                             <th class="px-4 py-3">Datum</th>
@@ -559,6 +563,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             #result-count,
             #empty-state,
             #card-container,
+            #expand-all-btn,
             .expand-icon,
             a[href$=".pdf"],
             a[href$="-letter.pdf"] {
@@ -717,6 +722,27 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             extrasMenu.classList.toggle("hidden");
         });
         document.addEventListener("click", () => extrasMenu.classList.add("hidden"));
+
+        // --- Expand/Collapse All ---
+        let allExpanded = false;
+        document.getElementById("expand-all-btn")?.addEventListener("click", () => {
+            allExpanded = !allExpanded;
+            const label = document.getElementById("expand-all-label")!;
+            label.textContent = allExpanded ? "Zuklappen" : "Aufklappen";
+
+            // Desktop rows
+            document.querySelectorAll("tr[data-detail]").forEach((el) => {
+                el.classList.toggle("hidden", !allExpanded);
+            });
+            // Mobile cards
+            document.querySelectorAll("[data-expandable-card] [data-detail]").forEach((el) => {
+                el.classList.toggle("hidden", !allExpanded);
+            });
+            // Chevron icons
+            document.querySelectorAll(".expand-icon").forEach((el) => {
+                el.classList.toggle("rotate-180", allExpanded);
+            });
+        });
 
         // --- Expand/Collapse ---
         document.querySelectorAll("tr[data-expandable]").forEach((row) => {

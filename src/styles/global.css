@@ -7,6 +7,7 @@
   --color-brand-mid: hsl(207, 91%, 55%);
   --color-brand-light: hsl(206, 100%, 89%);
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 /* Smooth scrolling & hyphenation */
