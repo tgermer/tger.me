@@ -157,7 +157,8 @@ Project showcase entries. Frontmatter fields:
 - `title` – Project name
 - `description` – Short project summary
 - `featured` – Show on homepage (default: false)
-- `technologies` – Comma-separated tech list (e.g. `"HTML, CSS, React"`)
+- `technologies` – Comma-separated tech list (e.g. `"HTML, CSS, React"`).
+  **Naming conventions:** No version numbers (write `React`, not `React 19`). No `+` combinations (separate entries). Use official casing: `TypeScript`, `JavaScript`, `SwiftUI`, `JSZip`, `jsPDF`, `D3.js`, `Tailwind CSS`, `CSS Modules`, `Bootstrap`, `i18next`, `pdf-lib`, `perfect-freehand`.
 - `date` – Project date (for sorting)
 - `image` – Cover image (Astro image reference, e.g. `../../assets/portfolio/foo.png`)
 - `imageBackgroundColor` – Optional CSS background color for the image area (e.g. `"#6d5cc6"`)

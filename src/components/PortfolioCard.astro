@@ -16,7 +16,7 @@ interface Props {
 }
 
 const { slug, title, description, type, technologies, image, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
-const techList = technologies.split(',').map((t) => t.trim()).slice(0, 3);
+const techList = technologies.split(',').map((t) => t.trim());
 const isSvg = image.format === 'svg';
 ---
 
@@ -74,7 +74,7 @@ const isSvg = image.format === 'svg';
     <!-- Tech chips -->
     <div class="flex flex-wrap gap-1.5">
       {techList.map((tech) => (
-        <span class="bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs px-2 py-0.5 rounded-full">
+        <span class="bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-[0.65rem] leading-tight px-1.5 py-0.5 rounded-full">
           {tech}
         </span>
       ))}

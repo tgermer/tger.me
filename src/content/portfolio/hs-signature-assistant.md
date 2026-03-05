@@ -2,7 +2,7 @@
 title: HS-Signature-Assistant.
 description: Digitale Unterschriften für Hochschulen – direkt im Browser statt mit InDesign und Kommandozeile. In Minuten statt Stunden.
 featured: true
-technologies: HTML, CSS, TS, React
+technologies: React, TypeScript, Vite, Tailwind CSS, perfect-freehand, pdf-lib, JSZip
 date: 2026-02-24
 icon: /assets/hs-signature-assistant-icon.svg
 image: ../../assets/portfolio/hs-signature-assistant-icon.svg
@@ -41,6 +41,9 @@ Ein einzelner Vorgang konnte so bis zu einer Stunde dauern.
 
 ## Technologien
 
-- **React** – Komponentenbasierte Benutzeroberfläche
-- **TypeScript** – Typsicheres Frontend
-- **HTML/CSS** – Struktur und Styling
+- **React 19 + TypeScript 5.9** – Typsichere, komponentenbasierte Benutzeroberfläche
+- **Vite 7** – Schneller Dev-Server und optimierter Build
+- **Tailwind CSS 3.4** – Utility-First-Styling
+- **perfect-freehand** – Natürlich wirkende Stiftstriche auf dem Canvas
+- **pdf-lib** – PDF-Erzeugung direkt im Browser
+- **jszip** – ZIP-Paket mit allen Exportformaten zum Download

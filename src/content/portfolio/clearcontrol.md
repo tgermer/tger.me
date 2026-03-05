@@ -2,7 +2,7 @@
 title: ClearControl.
 description: Webbasiertes Design-Tool für konsistente Beschriftungen von Smart-Home-Fernbedienungen – visuell und direkt im Browser.
 featured: true
-technologies: Vue.js, TypeScript, Vite, CSS
+technologies: React, TypeScript, Vite, CSS Modules, i18next, jsPDF, JSZip
 date: 2026-02-01
 image: ../../assets/portfolio/clearcontrol.png
 linkGithub: https://github.com/tgermer/ha-remote-designer
@@ -32,7 +32,12 @@ ClearControl bietet einen intuitiven Editor direkt im Browser: Labels gestalten,
 
 ## Technologien
 
-- **Vue.js** – Reaktives Frontend-Framework
-- **TypeScript** – Typsicheres Frontend
-- **Vite** – Build-Tool und Dev-Server
-- **CSS** – Styling
+- **React 19** – UI-Framework mit TypeScript
+- **Vite 7** – Build-Tool und Dev-Server
+- **i18next** – Internationalisierung (Deutsch & Englisch) mit Browser-Language-Detection
+- **Tabler Icons & Material Design Icons** – Icon-Bibliotheken, ergänzt durch eigene Hue-Icons (SVG)
+- **CSS Modules** – Modulares Styling ohne UI-Framework
+- **jsPDF / svg2pdf.js** – PDF-Export direkt im Browser
+- **JSZip** – ZIP-Download für Multi-Page SVG-Exporte
+- **lz-string** – URL-basierter State für teilbare Design-Links
+- **Plausible Analytics** – Datenschutzfreundliches Tracking
