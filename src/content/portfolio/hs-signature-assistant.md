@@ -9,6 +9,7 @@ image: ../../assets/portfolio/hs-signature-assistant-icon.svg
 imageBackgroundColor: "#6d5cc6"
 linkWebsite: https://signature.tger.me
 type: Website, WebApp
+aiBuilt: true
 ---
 
 Der **HS-Signature-Assistant** digitalisiert den gesamten Unterschriften-Prozess für Hochschulen. Statt Hauspost, Scanner, Photoshop, InDesign und Kommandozeile erledigen Dozierende ihre Unterschrift in wenigen Klicks direkt im Browser – inklusive automatischem Export in alle benötigten Formate.

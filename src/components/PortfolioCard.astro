@@ -11,9 +11,10 @@ interface Props {
   image: ImageMetadata;
   imageBackgroundColor?: string;
   featured?: boolean;
+  aiBuilt?: boolean;
 }
 
-const { slug, title, description, type, technologies, image, imageBackgroundColor, featured = false } = Astro.props;
+const { slug, title, description, type, technologies, image, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
 const techList = technologies.split(',').map((t) => t.trim()).slice(0, 3);
 const isSvg = image.format === 'svg';
 ---
@@ -43,11 +44,18 @@ const isSvg = image.format === 'svg';
         loading="lazy"
       />
     )}
-    {featured && (
-      <span class="absolute top-3 right-3 bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full">
-        Featured
-      </span>
-    )}
+    <div class="absolute top-3 right-3 flex gap-1.5">
+      {aiBuilt && (
+        <span class="bg-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+          Built with AI
+        </span>
+      )}
+      {featured && (
+        <span class="bg-blue-600 text-white text-xs font-medium px-2 py-1 rounded-full">
+          Featured
+        </span>
+      )}
+    </div>
   </div>
 
   <!-- Content -->

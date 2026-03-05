@@ -24,6 +24,7 @@ const portfolio = defineCollection({
     screenshotsAvailable: z.boolean().default(false),
     screenshotsPath: z.string().optional(),
     screenshotsFiles: z.array(z.string()).optional(),
+    aiBuilt: z.boolean().default(false),
   }),
 });
 

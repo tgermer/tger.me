@@ -8,6 +8,7 @@ image: ../../assets/portfolio/clearcontrol.png
 linkGithub: https://github.com/tgermer/ha-remote-designer
 linkWebsite: https://clearcontrol.de
 type: Website, WebApp
+aiBuilt: true
 ---
 
 **ClearControl** ist ein webbasiertes Design-Tool zur Erstellung einfacher, konsistenter Beschriftungen für physische Smart-Home-Fernbedienungen. Wer mit erweiterten Automatisierungen arbeitet – Single Press, Double Press, Long Press – verliert schnell den Überblick, welche Taste was auslöst. ClearControl löst genau dieses Problem.

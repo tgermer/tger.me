@@ -170,6 +170,7 @@ Project showcase entries. Frontmatter fields:
 - `screenshotsAvailable` – Enable screenshot gallery (default: false)
 - `screenshotsPath` – Subfolder in `src/assets/screenshots/` for auto-discovery
 - `screenshotsFiles` – Explicit screenshot file list (fallback)
+- `aiBuilt` – Show "Built with AI" badge on card and detail page (default: false)
 
 ### Blog (`src/content/blog/`)
 
