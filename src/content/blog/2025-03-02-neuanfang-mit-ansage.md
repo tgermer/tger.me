@@ -3,6 +3,7 @@ title: "Neuanfang mit Ansage: Warum ich heute den Reset-Knopf drücke"
 date: 2025-03-02
 description: "Vom plötzlichen Jobverlust zur beruflichen Neuorientierung: Warum ich trotz technischer Expertise in ein Loch gefallen bin und wie ich heute mit Mentorin Lisa Kurzenberger den Reset-Knopf drücke, um meine wahre Berufung zu finden."
 image: ../../assets/lisa_kurzenberger_portait.jpeg
+imagePosition: center 35%
 ---
 
 Eigentlich bin ich jemand, der den Blick immer starr nach vorne gerichtet hat. Ich liebe Technologie in jeglicher Form, ich brenne für das, was machbar ist, und ich finde Lösungen an Stellen, an denen andere noch nicht einmal ein Problem vermutet haben. In meiner bisherigen Laufbahn war das oft mein Markenzeichen: Egal in welcher Rolle ich offiziell war – ob BWL oder technische Dokumentation im Hintergrund – ich habe mich oft tiefer in die Materie reingefuchst als die Experten vor Ort.
@@ -17,8 +18,7 @@ Es war der letzte Tag der Probezeit. Ein Job, den ich geliebt habe. Ein fantasti
 
 Ich will nichts beschönigen: Ich bin erst mal in ein Loch gefallen. Wenn man mit vollem Einsatz dabei ist und plötzlich ohne Vorwarnung auf der Straße steht, macht das was mit einem. Das Gedankenkarussell dreht sich: „Wo passe ich eigentlich wirklich rein? Warum passiert mir das, obwohl ich fachlich oft tiefer drinstecke als alle anderen?“ Mein Selbstwert und mein Selbstbewusstsein haben ordentlich gelitten.
 
-![Dein Leben. Deine Entscheidung. Banner von Lisa Kurzenberger.](../../assets/lisa_kurzenberger_banner.png)
-*Dein Leben. Deine Entscheidung. – Lisa Kurzenberger*
+![Dein Leben. Deine Entscheidung. Banner von Lisa Kurzenberger.](../../assets/lisa_kurzenberger_banner.png) _Dein Leben. Deine Entscheidung. – Lisa Kurzenberger_
 
 ## Der Wendepunkt im MOC: „Entdecke deine Stärken“
 

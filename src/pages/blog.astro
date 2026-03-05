@@ -10,37 +10,59 @@ const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime(
 ---
 
 <PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg">
-  <div class="space-y-4">
-    {sorted.map((post) => {
+  <div class="space-y-6">
+    {sorted.map((post, index) => {
       const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      return (
-        <article class="group p-5 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
-          <div class="flex gap-5">
-            {post.data.image && (
-              <a href={`/blog/${post.slug}`} class="shrink-0 hidden sm:block">
-                <Image src={post.data.image} alt={post.data.title} class="w-32 h-24 object-cover rounded-lg" widths={[128, 256]} sizes="128px" />
-              </a>
+      const isHero = index === 0;
+
+      return isHero ? (
+        /* Hero card – first post, full-width image */
+        <a href={`/blog/${post.slug}`} class="group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          {post.data.image ? (
+            <div class="relative h-64 sm:h-72 overflow-hidden">
+              <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[800, 1200]} sizes="(min-width: 1024px) 960px, 100vw" />
+            </div>
+          ) : (
+            <div class="h-1.5 gradient-brand" />
+          )}
+          <div class="p-6">
+            <time datetime={post.data.date.toISOString()} class="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500 mb-2">
+              <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
+              {dateStr}
+            </time>
+            <h3 class="font-bold text-xl sm:text-2xl leading-snug text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {post.data.title}
+            </h3>
+            {post.data.description && (
+              <p class="mt-3 text-gray-600 dark:text-gray-400 line-clamp-4">{post.data.description}</p>
             )}
-            <div class="flex-1 min-w-0">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <a href={`/blog/${post.slug}`} class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {post.data.title}
-                </a>
-                <time datetime={post.data.date.toISOString()} class="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-500 shrink-0">
-                  <Icon name="tabler:calendar" class="h-4 w-4" aria-hidden="true" />
-                  {dateStr}
-                </time>
+          </div>
+        </a>
+      ) : (
+        /* Regular card – horizontal with side image on sm+ */
+        <a href={`/blog/${post.slug}`} class="group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+          <div class="sm:flex">
+            {post.data.image ? (
+              <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
+                <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[400, 800]} sizes="(min-width: 640px) 224px, 100vw" />
               </div>
+            ) : (
+              <div class="h-1.5 sm:h-auto sm:w-1.5 gradient-brand shrink-0" />
+            )}
+            <div class="p-5 flex-1 min-w-0">
+              <time datetime={post.data.date.toISOString()} class="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500 mb-2">
+                <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
+                {dateStr}
+              </time>
+              <h3 class="font-semibold text-base leading-snug text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {post.data.title}
+              </h3>
               {post.data.description && (
-                <p class="mt-2 text-gray-600 dark:text-gray-400">{post.data.description}</p>
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{post.data.description}</p>
               )}
-              <a href={`/blog/${post.slug}`} class="inline-flex items-center gap-1 mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
-                Weiterlesen
-                <Icon name="tabler:arrow-right" class="h-4 w-4" aria-hidden="true" />
-              </a>
             </div>
           </div>
-        </article>
+        </a>
       );
     })}
   </div>

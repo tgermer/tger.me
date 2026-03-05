@@ -1,17 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
 import { getCollection } from 'astro:content';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
+  const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return sorted.map((post, i) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: {
+      post,
+      olderPost: sorted[i + 1] ? { slug: sorted[i + 1].slug, title: sorted[i + 1].data.title } : null,
+      newerPost: sorted[i - 1] ? { slug: sorted[i - 1].slug, title: sorted[i - 1].data.title } : null,
+    },
   }));
 }
 
-const { post } = Astro.props;
+const { post, olderPost, newerPost } = Astro.props;
 const { Content } = await post.render();
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const ogImage = `/og/blog/${post.slug}.jpg`;
@@ -20,16 +26,17 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
 <BaseLayout title={post.data.title} description={post.data.description} ogImage={ogImage} ogType="article">
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <a href="/blog" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-6">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Zum Blog
+      <a href="/blog" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4">
+        <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
+        Zurück zur Übersicht
       </a>
 
       <article>
         <header class="mb-8">
-          <time datetime={post.data.date.toISOString()} class="text-sm text-gray-500 dark:text-gray-400">{dateStr}</time>
+          <time datetime={post.data.date.toISOString()} class="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+            <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
+            {dateStr}
+          </time>
           <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
         </header>
 
@@ -43,6 +50,30 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
           </p>
         )}
       </article>
+
+      <!-- Navigation -->
+      <nav class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <div class="flex items-center justify-between mb-6">
+          {olderPost ? (
+            <a href={`/blog/${olderPost.slug}`} class="group flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors max-w-[45%]">
+              <Icon name="tabler:arrow-left" class="h-4 w-4 shrink-0" aria-hidden="true" />
+              <span class="truncate">{olderPost.title}</span>
+            </a>
+          ) : <div />}
+          {newerPost ? (
+            <a href={`/blog/${newerPost.slug}`} class="group flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors max-w-[45%] ml-auto text-right">
+              <span class="truncate">{newerPost.title}</span>
+              <Icon name="tabler:arrow-right" class="h-4 w-4 shrink-0" aria-hidden="true" />
+            </a>
+          ) : <div />}
+        </div>
+        <div class="text-center">
+          <a href="/blog" class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+            <Icon name="tabler:arrow-left" class="h-4 w-4" aria-hidden="true" />
+            Alle Beiträge
+          </a>
+        </div>
+      </nav>
     </div>
   </div>
 </BaseLayout>
