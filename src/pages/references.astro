@@ -36,22 +36,20 @@ const withText = references.filter((r) => r.reference);
 const withoutText = references.filter((r) => !r.reference);
 ---
 
-<PageLayout title="Referenzen" description={pages.references.description} ogImage="/og/references.jpg">
+<PageLayout title="Referenzen" subtitle="Was andere über mich sagen" description={pages.references.description} ogImage="/og/references.jpg">
     {/* Testimonials with reference text */}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="space-y-6">
         {
             withText.map((ref) => {
                 const linkedin = getLinkedIn(ref);
                 const image = getImage(ref);
                 return (
-                    <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden flex flex-col" data-testimonial>
-                        {/* Accent top bar */}
-                        <div class="h-1 gradient-brand" />
+                    <article class="relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden" data-testimonial>
+                        <div class="flex">
+                        {/* Accent side bar */}
+                        <div class="w-1.5 gradient-brand shrink-0" />
 
                         <div class="p-6 sm:p-8 flex flex-col flex-1">
-                            {/* Quote icon */}
-                            <Icon name="tabler:quote" class="h-8 w-8 text-blue-200 dark:text-blue-900 mb-3" />
-
                             {/* Reference text – truncated by default */}
                             <blockquote class="text-gray-700 dark:text-gray-300 text-[0.95rem] leading-relaxed whitespace-pre-line line-clamp-5" data-quote>
                                 {ref.reference}
@@ -78,9 +76,10 @@ const withoutText = references.filter((r) => !r.reference);
                                         {ref.position}
                                         {ref.company && ` · ${ref.company}`}
                                     </p>
-                                    {ref.date && <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{formatDate(ref.date)}</p>}
+                                    {ref.date && <p class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 mt-0.5"><Icon name="tabler:calendar" class="h-3 w-3" aria-hidden="true" />{formatDate(ref.date)}</p>}
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </article>
                 );
@@ -139,7 +138,6 @@ const withoutText = references.filter((r) => !r.reference);
             btn.addEventListener("click", () => {
                 const expanded = quote.classList.toggle("line-clamp-none");
                 quote.classList.toggle("line-clamp-5", !expanded);
-                card.classList.toggle("lg:col-span-2", expanded);
                 btn.textContent = expanded ? "Weniger" : "Mehr lesen";
             });
         });
