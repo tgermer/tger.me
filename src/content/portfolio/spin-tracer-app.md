@@ -6,7 +6,7 @@ technologies: SwiftUI, SwiftData, CoreLocation, iCloud
 date: 2024-12-01
 icon: /assets/spin-tracer-app-icon.svg
 image: ../../assets/portfolio/spin-tracer-app-icon.svg
-imageBg: "#ff00ff"
+imageBackgroundColor: "#ff00ff"
 type: iOS App
 ---
 

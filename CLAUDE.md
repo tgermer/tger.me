@@ -148,9 +148,42 @@ Can also be triggered manually via `gh workflow run generate-pdfs.yml` or the Gi
 
 ## Content Collections
 
-- `portfolio` – Project showcase entries
-- `blog` – Blog posts
-- `apply` – Application-specific resumes + cover letters (schema in `src/content/config.ts`)
+Schemas defined in `src/content/config.ts`.
+
+### Portfolio (`src/content/portfolio/`)
+
+Project showcase entries. Frontmatter fields:
+
+- `title` – Project name
+- `description` – Short project summary
+- `featured` – Show on homepage (default: false)
+- `technologies` – Comma-separated tech list (e.g. `"HTML, CSS, React"`)
+- `date` – Project date (for sorting)
+- `image` – Cover image (Astro image reference, e.g. `../../assets/portfolio/foo.png`)
+- `imageBackgroundColor` – Optional CSS background color for the image area (e.g. `"#6d5cc6"`)
+- `imageFit` – `contain` (default) or `cover` – controls `object-fit` on the project image
+- `icon` – Optional icon path (e.g. `/assets/foo-icon.svg`)
+- `iconBackgroundColor` – Optional CSS background color for the icon
+- `type` – Project category (e.g. `"Website"`, `"iOS App"`)
+- `linkGithub` – Optional GitHub URL
+- `linkWebsite` – Optional live website URL
+- `screenshotsAvailable` – Enable screenshot gallery (default: false)
+- `screenshotsPath` – Subfolder in `src/assets/screenshots/` for auto-discovery
+- `screenshotsFiles` – Explicit screenshot file list (fallback)
+
+### Blog (`src/content/blog/`)
+
+Blog posts. Frontmatter fields:
+
+- `title` – Post title
+- `date` – Publication date
+- `description` – Optional summary (used for OG meta)
+- `image` – Optional hero image (Astro image reference, displayed in post only — OG uses generated image)
+- `showContact` – Show contact email at bottom (default: true)
+
+### Apply (`src/content/apply/`)
+
+Application-specific resumes + cover letters (see Application System Architecture above).
 
 ## Non-Breaking Spaces in CV Data Files
 

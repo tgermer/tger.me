@@ -6,7 +6,7 @@ technologies: HTML, CSS, Bootstrap, Jekyll
 date: 2024-12-01
 icon: /assets/teamclusion-logo-white.svg
 image: ../../assets/portfolio/teamclusion-logo-white.svg
-imageBg: "#1B57A6"
+imageBackgroundColor: "#1B57A6"
 linkWebsite: https://www.teamclusion.de
 type: Website
 ---

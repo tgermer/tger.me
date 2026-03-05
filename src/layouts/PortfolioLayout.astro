@@ -10,9 +10,10 @@ interface Props {
   type: string;
   technologies: string;
   image: ImageMetadata;
-  imageBg?: string;
+  imageBackgroundColor?: string;
+  imageFit?: 'contain' | 'cover';
   icon?: string;
-  iconBg?: string;
+  iconBackgroundColor?: string;
   linkGithub?: string;
   linkWebsite?: string;
   ogImage?: string;
@@ -27,9 +28,10 @@ const {
   type,
   technologies,
   image,
-  imageBg,
+  imageBackgroundColor,
+  imageFit = 'contain',
   icon,
-  iconBg,
+  iconBackgroundColor,
   linkGithub,
   linkWebsite,
   ogImage,
@@ -81,7 +83,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
           </div>
           {icon && (
             <div class="shrink-0">
-              <img src={icon} alt="" class="h-24 w-24 object-contain rounded-2xl shadow-md" style={(iconBg || imageBg) ? `background-color: ${iconBg || imageBg};` : undefined} />
+              <img src={icon} alt="" class="h-24 w-24 object-contain rounded-2xl shadow-md" style={(iconBackgroundColor || imageBackgroundColor) ? `background-color: ${iconBackgroundColor || imageBackgroundColor};` : undefined} />
             </div>
           )}
         </div>
@@ -173,15 +175,15 @@ const screenshotUrls = screenshots.map((s) => s.src);
             <img
               src={image.src}
               alt={title}
-              class={`w-full object-contain max-h-96 ${imageBg ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
-              style={imageBg ? `background-color: ${imageBg};` : undefined}
+              class={`w-full object-${imageFit} max-h-96 ${imageBackgroundColor ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
+              style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
             />
           ) : (
             <Image
               src={image}
               alt={title}
-              class={`w-full object-contain max-h-96 ${imageBg ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
-              style={imageBg ? `background-color: ${imageBg};` : undefined}
+              class={`w-full object-${imageFit} max-h-96 ${imageBackgroundColor ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
+              style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
               widths={[600, 1200]}
               sizes="(min-width: 1024px) 960px, 100vw"
             />

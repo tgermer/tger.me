@@ -5,7 +5,7 @@ featured: false
 technologies: HTML, CSS, JavaScript, Bootstrap, Jekyll
 date: 2024-12-01
 image: ../../assets/portfolio/studieninformationstag-hm-cover.png
-imageBg: "#708090"
+imageBackgroundColor: "#708090"
 type: Website
 ---
 
