@@ -11,6 +11,8 @@
     "pdf:install": "npx playwright install chromium",
     "new-apply": "bash scripts/new-apply.sh",
     "delete-apply": "bash scripts/delete-apply.sh",
+    "archive": "bash scripts/archive-job.sh",
+    "archive:pdf": "bash scripts/archive-job.sh pdf",
     "json-resume": "node scripts/export-json-resume.mjs"
   },
   "dependencies": {

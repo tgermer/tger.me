@@ -41,6 +41,19 @@ read -rp "Sprache (de/en) [de]: " LANG
 LANG="${LANG:-de}"
 
 read -rp "Job-URL (optional): " JOB_URL
+
+# Archive job URL via Wayback Machine
+JOB_URL_ARCHIVED=""
+if [ -n "${JOB_URL}" ]; then
+    echo "  Archiviere Stellenanzeige via Wayback Machine..."
+    # Open save URL in browser – this triggers the actual archiving (requires JS)
+    open "https://web.archive.org/save/${JOB_URL}" 2>/dev/null || true
+    # Store permalink that redirects to latest snapshot
+    JOB_URL_ARCHIVED="https://web.archive.org/web/${JOB_URL}"
+    echo "  ✓ Browser geöffnet – Seite wird archiviert"
+    echo "  Archiv-URL: ${JOB_URL_ARCHIVED}"
+fi
+
 read -rp "Kontakt-E-Mail (optional): " CONTACT_EMAIL
 read -rp "Quelle/Kanal (optional, z.B. LinkedIn, Stepstone): " SOURCE
 read -rp "Arbeitsort (optional, z.B. München, Remote): " LOCATION
@@ -88,6 +101,7 @@ sed -i '' '/^export type {.*} from/d' "${CV_DST}"
     echo "signature: false"
     echo "photo: true"
     echo "jobUrl: \"${JOB_URL}\""
+    echo "jobUrlArchived: \"${JOB_URL_ARCHIVED}\""
     echo "contact: \"\""
     echo "salutation: \"\""
     echo "companyAddress: \"\""

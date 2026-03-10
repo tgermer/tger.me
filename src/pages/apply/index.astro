@@ -4,8 +4,18 @@ import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import { site } from "../../data/site";
 import { toJsonResume, type CvExports } from "../../data/json-resume";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 const resumes = await getCollection("apply");
+
+// Check which applications have a job posting PDF
+const jobPdfExists = new Set<string>();
+for (const r of resumes) {
+    if (existsSync(resolve("public/apply", `${r.slug}-job.pdf`))) {
+        jobPdfExists.add(r.slug);
+    }
+}
 
 // Pre-compute JSON Resume data for each application (at build time)
 const cvModules = import.meta.glob<Record<string, any>>("../../data/cv_*.ts", { eager: true });
@@ -381,6 +391,16 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <Icon name="tabler:external-link" class="h-4.5 w-4.5" />
                                         </a>
                                     )}
+                                    {r.data.jobUrlArchived && (
+                                        <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (Archiv)">
+                                            <Icon name="tabler:archive" class="h-4.5 w-4.5" />
+                                        </a>
+                                    )}
+                                    {jobPdfExists.has(r.slug) && (
+                                        <a href={`/apply/${r.slug}-job.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (PDF)">
+                                            <Icon name="tabler:briefcase" class="h-4.5 w-4.5" />
+                                        </a>
+                                    )}
                                     <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
                                         <Icon name="tabler:mail" class="h-4.5 w-4.5" />
                                     </a>
@@ -489,6 +509,16 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     {r.data.jobUrl && (
                                                         <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige">
                                                             <Icon name="tabler:external-link" class="h-4 w-4" />
+                                                        </a>
+                                                    )}
+                                                    {r.data.jobUrlArchived && (
+                                                        <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (Archiv)">
+                                                            <Icon name="tabler:archive" class="h-4 w-4" />
+                                                        </a>
+                                                    )}
+                                                    {jobPdfExists.has(r.slug) && (
+                                                        <a href={`/apply/${r.slug}-job.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (PDF)">
+                                                            <Icon name="tabler:briefcase" class="h-4 w-4" />
                                                         </a>
                                                     )}
                                                     <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
