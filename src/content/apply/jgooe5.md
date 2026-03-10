@@ -28,6 +28,9 @@ statusHistory:
     - status: "gespeichert"
       date: 2026-03-10
       info: "Profil ausgefüllt, Bewerbung als Entwurf gespeichert. Absenden wegen Portal-Bug nicht möglich (Fehler 'For input string: Yes' in Sektion 'Weitere Sprachkenntnisse'). E-Mail an jobinfo@epo.org gesendet."
+    - status: "beworben"
+      date: 2026-03-10
+      info: "Ich hatte eine E-Mail bekommen, in der stand, ich soll es mal mit der englischen Version versuchen. Und mit der hat es dann funktioniert."
 ---
 
 mit großem Interesse bewerbe ich mich auf die Position als Technische/r Sachverständige/r im Präsidialbüro des Europäischen Patentamts. Die Verbindung von operativer Unterstützung auf höchster Ebene, Dokumentenmanagement und technischer Koordination entspricht genau meinem beruflichen Profil – und München ist seit über 20 Jahren mein Lebensmittelpunkt.
@@ -39,8 +42,6 @@ In meiner bisherigen Laufbahn habe ich durchgehend an der Schnittstelle von Digi
 - Als **Senior Softwareberater DMS** bei der akdb.digitalfabriX habe ich DMS-Einführungen geleitet, Anforderungsanalysen durchgeführt und Berechtigungskonzepte umgesetzt – die sichere Handhabung sensibler Dokumente und Materialien ist mir vertraut.
 
 Was mich an dieser Rolle besonders anspricht: die Vielseitigkeit der Aufgaben – von der Koordinierung von Dienstreisen über Protokollunterstützung bis hin zur technischen Fehlerbehebung. Ich bringe die geforderte Kombination aus technischem Verständnis, organisatorischem Geschick und diplomatischem Fingerspitzengefühl mit. Mein Master in Technischer Kommunikation hat mich zusätzlich darin geschult, komplexe Sachverhalte klar und adressatengerecht aufzubereiten.
-
-Ich verfüge über einen Führerschein der Klasse B und bin mit der eigenverantwortlichen Koordination von Fahrzeugflotten und Transportlogistik vertraut. Deutsch ist meine Muttersprache, Englisch beherrsche ich fließend.
 
 Ich freue mich auf die Möglichkeit, das Präsidialbüro des EPA mit meiner Erfahrung in Digitalisierung, Dokumentenmanagement und operativer Steuerung zu unterstützen, und stehe für ein Gespräch jederzeit gerne zur Verfügung.
 

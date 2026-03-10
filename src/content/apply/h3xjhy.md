@@ -26,8 +26,9 @@ token: "Ud3HEj"
 # Status-Werte: gespeichert | beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:
-    - status: "gespeichert"
+    - status: "beworben"
       date: 2026-03-10
+      info: "Da ich mit Christian Wilde leider noch nicht auf LinkedIn verknüpft war, habe ich ihm eine Kontaktanfrage geschickt mit einer kleinen Nachricht auf die Bewerbung."
 ---
 
 I am applying for the position of Telecom Carrier Manager Germany. The opportunity to combine business development, partner management, and cross-functional execution at Apple is genuinely exciting — and closely aligned with my professional trajectory.
