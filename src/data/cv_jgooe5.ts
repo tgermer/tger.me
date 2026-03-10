@@ -6,7 +6,7 @@ import type { Work, Education, Certificate, Skill, Reference, Project, Basics, L
 
 export const basics: Basics = {
     name: "Tristan Germer",
-    label: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
+    label: "Dokumentenmanagement & Digitalisierung | Operative Steuerung & Koordination",
     image: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     location: {
@@ -19,7 +19,7 @@ export const basics: Basics = {
     url: "tger.me",
     profiles: [
         { network: "LinkedIn", url: "linkedin.com/in/tgermer" },
-        { network: "GitHub", url: "github.com/tgermer" },
+        // { network: "GitHub", url: "github.com/tgermer" },
     ],
 };
 
@@ -28,7 +28,7 @@ export const work: Work[] = [
         name: "Karriereübergang – Digitalisierung & Systemsteuerung",
         location: "",
         typeOfEmployment: "Berufliche Neuorientierung",
-        highlights: ["Bewusste berufliche Übergangsphase zur fachlichen Vertiefung und strategischen Neupositionierung.", "Schwerpunkt auf Digitalisierung, Automatisierung und Systemsteuerung in Querschnitts- und Stabsfunktionen.", "Übertragung technischer Automatisierungs- und Steuerungslogiken auf organisatorische Kontexte."],
+        highlights: ["Bewusste berufliche Übergangsphase zur fachlichen Vertiefung und strategischen Neupositionierung.", "Schwerpunkt auf Dokumentenmanagement, Digitalisierung und operative Steuerung in Querschnitts- und Stabsfunktionen.", "Vertiefung technischer und organisatorischer Kompetenzen für koordinierende Rollen auf Leitungsebene."],
         startDate: "2025-10-01",
         endDate: "",
     },
@@ -166,10 +166,9 @@ export const certificates: Certificate[] = [
 
 export const skills: Skill[] = [
     { name: "Office", keywords: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
-    { name: "Programmierung", keywords: ["Swift", "JavaScript", "TypeScript"] },
-    { name: "Datenanalyse", keywords: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
-    { name: "Design", keywords: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { name: "AI & Tools", keywords: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
+    { name: "Datenanalyse & Reporting", keywords: ["SQL", "Excel (Fortgeschritten)", "MS Power BI", "KPI-Dashboards"] },
+    { name: "IT & Digitale Tools", keywords: ["Confluence", "MS Office (Fortgeschritten)", "Geräte-Troubleshooting"] },
+    { name: "Sonstiges", keywords: ["Führerschein Klasse B"] },
 ];
 
 export const languages: Language[] = [
@@ -178,23 +177,13 @@ export const languages: Language[] = [
 ];
 
 export const interests: Interest[] = [
-    { name: "Coding", keywords: ["Analytisch", "Detailorientiert"] },
     { name: "Technologie", keywords: ["Innovativ", "Lernbereit"] },
-    { name: "Fitness", keywords: ["Teamfähigkeit", "Ehrgeiz"] },
-    { name: "Reisen", keywords: ["Flexibilität", "Neugier"] },
+    { name: "Organisation", keywords: ["Strukturiert", "Zuverlässig"] },
+    { name: "Fitness", keywords: ["Ausdauer", "Disziplin"] },
+    { name: "Reisen", keywords: ["Flexibilität", "Interkulturelle Offenheit"] },
 ];
 
-export const projects: Project[] = [
-    {
-        name: "ClearControl.de – Klarheit für Smart-Home-Steuerungen",
-        urls: [
-            { network: "Website", url: "clearcontrol.de" },
-            { network: "GitHub", url: "github.com/tgermer/ha-remote-designer" },
-        ],
-        highlights: ["Web-App zum Erstellen professioneller Beschriftungen für Schalter und Fernbedienungen von Smart-Home-Systemen.", "Eigenständige Konzeption und Umsetzung eines produktiven Web-Tools zur Lösung eines konkreten Anwenderproblems.", "Fokus auf UX, Systemlogik, Automatisierung und funktionierende End-to-End-Lösung."],
-        startDate: "2026-01-01",
-    },
-];
+export const projects: Project[] = [];
 
 export const references: Reference[] = [
     {
