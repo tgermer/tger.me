@@ -94,6 +94,8 @@ const apply = defineCollection({
     source: optionalString,
     location: optionalString,
     notes: optionalString,
+    // Auth token for direct access without password (e.g. ?t=<token> in shared links)
+    token: optionalString,
     statusHistory: z.array(statusEntry).default([]),
   }),
 });

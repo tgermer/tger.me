@@ -8,6 +8,14 @@
 [functions]
   directory = "netlify/functions"
 
+[[edge_functions]]
+  function = "auth-apply"
+  path = "/apply"
+
+[[edge_functions]]
+  function = "auth-apply"
+  path = "/apply/*"
+
 [[headers]]
   for = "/apply/*"
   [headers.values]

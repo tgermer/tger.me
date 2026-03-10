@@ -69,6 +69,7 @@ SLUG=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
 while [ -f "${APPLY_DIR}/${SLUG}.md" ] || [ -f "${DATA_DIR}/cv_${SLUG}.ts" ]; do
     SLUG=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
 done
+TOKEN=$(LC_ALL=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
 set -o pipefail
 DATE=$(date +%Y-%m-%d)
 
@@ -110,6 +111,7 @@ sed -i '' '/^export type {.*} from/d' "${CV_DST}"
     echo "source: \"${SOURCE}\""
     echo "location: \"${LOCATION}\""
     echo "notes: \"\""
+    echo "token: \"${TOKEN}\""
     echo "# Status-Werte: gespeichert | beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen"
     echo "# Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)"
     echo "statusHistory:"
@@ -132,7 +134,8 @@ echo "  Files:"
 echo "    src/content/apply/${SLUG}.md     (metadata)"
 echo "    src/data/cv_${SLUG}.ts           (frozen CV snapshot)"
 echo ""
-echo "  URL:      /apply/${SLUG}/"
+echo "  URL:       /apply/${SLUG}/"
+echo "  Share-URL: https://tger.me/apply/${SLUG}/?t=${TOKEN}"
 echo ""
 echo "  Next steps:"
 echo "    1. Edit src/data/cv_${SLUG}.ts to customize for this application"
