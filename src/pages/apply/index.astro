@@ -396,7 +396,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
                                                 </a>
                                             )}
-                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug)) && (
+                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && (
                                                 <div class="border-t border-gray-100 my-1" />
                                             )}
                                             {r.data.jobUrl && (
@@ -412,6 +412,11 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             {jobPdfExists.has(r.slug) && (
                                                 <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                </a>
+                                            )}
+                                            {r.data.portalUrl && (
+                                                <a href={r.data.portalUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />Bewerberportal
                                                 </a>
                                             )}
                                             <div class="border-t border-gray-100 my-1" />
@@ -526,7 +531,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                                 <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
                                                             </a>
                                                         )}
-                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug)) && (
+                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && (
                                                             <div class="border-t border-gray-100 my-1" />
                                                         )}
                                                         {r.data.jobUrl && (
@@ -542,6 +547,11 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                         {jobPdfExists.has(r.slug) && (
                                                             <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                            </a>
+                                                        )}
+                                                        {r.data.portalUrl && (
+                                                            <a href={r.data.portalUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                                <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />Bewerberportal
                                                             </a>
                                                         )}
                                                         <div class="border-t border-gray-100 my-1" />

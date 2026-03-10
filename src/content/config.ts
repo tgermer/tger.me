@@ -84,6 +84,7 @@ const apply = defineCollection({
     // Application tracking fields (empty strings are treated as unset)
     jobUrl: optionalUrl,
     jobUrlArchived: optionalUrl,
+    portalUrl: optionalUrl,
     contact: optionalString,
     companyAddress: optionalString,
     contactEmail: optionalEmail,
