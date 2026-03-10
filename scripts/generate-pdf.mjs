@@ -19,7 +19,7 @@
  */
 
 import { chromium } from 'playwright';
-import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray, PDFString } from 'pdf-lib';
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
@@ -145,7 +145,7 @@ async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl, startPage = 1)
           A: {
             Type: 'Action',
             S: 'URI',
-            URI: pdfUrl,
+            URI: PDFString.of(pdfUrl),
           },
         }),
       );

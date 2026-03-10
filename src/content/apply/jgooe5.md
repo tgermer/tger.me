@@ -21,6 +21,7 @@ salary: ""
 source: "Christine Geiger"
 location: "München"
 notes: "Bewerbung als Entwurf im Portal gespeichert. Kann wegen Bug in SuccessFactors (Stelle 22430, Sektion 'Weitere Sprachkenntnisse', Fehler 'For input string: Yes') nicht abgeschickt werden. E-Mail an jobinfo@epo.org gesendet am 10.03.2026."
+token: "B4OeA4"
 # Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:
