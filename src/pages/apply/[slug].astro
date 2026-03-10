@@ -440,6 +440,29 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             )
         }
 
+        <!-- Interessen -->
+        {
+            cv.interests?.length > 0 && (
+                <section class="resume-section">
+                    <h2 class="resume-heading">{isDE ? "Interessen" : "Interests"}</h2>
+                    <div class="resume-skills-grid">
+                        {cv.interests.map((interest) => (
+                            <div class="resume-skill-group">
+                                <h3 class="resume-skill-label">{interest.name}</h3>
+                                {interest.keywords && interest.keywords.length > 0 && (
+                                    <ul class="resume-skill-items">
+                                        {interest.keywords.map((item) => (
+                                            <li>{item}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+
         <!-- Referenzen -->
         {
             cv.references?.length > 0 && (

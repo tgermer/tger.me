@@ -74,6 +74,7 @@ const translations = {
     cvPrintFurtherEducationHeading: "Zusatzqualifikationen",
     cvPrintProjectsHeading: "Projekte",
     cvPrintSkillsHeading: "Kenntnisse",
+    cvPrintInterestsHeading: "Interessen",
     cvPrintDateLocale: "de-DE" as const,
     cvPrintLocationPrefix: "München",
 
@@ -169,6 +170,7 @@ const translations = {
     cvPrintFurtherEducationHeading: "Additional Qualifications",
     cvPrintProjectsHeading: "Projects",
     cvPrintSkillsHeading: "Skills",
+    cvPrintInterestsHeading: "Interests",
     cvPrintDateLocale: "en-US" as const,
     cvPrintLocationPrefix: "Munich",
 

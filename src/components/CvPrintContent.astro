@@ -13,7 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const l = t(lang);
 const cv = lang === "de" ? cvDe : cvEn;
-const { basics, work, education, certificates, skills, languages, projects } = cv;
+const { basics, work, education, certificates, skills, languages, interests, projects } = cv;
 const otherLang = lang === "de" ? "en" : "de";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>("../assets/apply/*.{jpg,jpeg,png}", { eager: true });
@@ -262,6 +262,28 @@ const today = new Date().toLocaleDateString(l.cvPrintDateLocale, { day: "numeric
                                         <li>{item}</li>
                                     ))}
                                 </ul>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )
+        }
+
+        {
+            interests?.length > 0 && (
+                <section class="resume-section">
+                    <h2 class="resume-heading">{l.cvPrintInterestsHeading}</h2>
+                    <div class="resume-skills-grid">
+                        {interests.map((interest) => (
+                            <div class="resume-skill-group">
+                                <h3 class="resume-skill-label">{interest.name}</h3>
+                                {interest.keywords && interest.keywords.length > 0 && (
+                                    <ul class="resume-skill-items">
+                                        {interest.keywords.map((item) => (
+                                            <li>{item}</li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         ))}
                     </div>
