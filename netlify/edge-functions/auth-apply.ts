@@ -145,27 +145,43 @@ function unauthorizedPage(slug: string): Response {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Zugriff verweigert</title>
+<title>Bewerbung – Zugriff eingeschränkt</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb; color: #374151; }
-  .box { text-align: center; max-width: 24rem; margin: 0 1rem; }
-  h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-  p { font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem; }
-  form { display: flex; gap: 0.5rem; justify-content: center; }
-  input { width: 7rem; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; text-align: center; letter-spacing: 0.05em; outline: none; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%); background-size: 200% 200%; animation: gradient 8s ease infinite; position: relative; overflow: hidden; }
+  @keyframes gradient { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+  body::before, body::after { content: ''; position: absolute; width: 24rem; height: 24rem; border-radius: 9999px; background: rgba(255,255,255,0.05); filter: blur(48px); }
+  body::before { top: -8rem; right: -8rem; }
+  body::after { bottom: -8rem; left: -8rem; }
+  .card { position: relative; z-index: 1; background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1); max-width: 24rem; width: 100%; margin: 0 1rem; }
+  .header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .icon { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: #fef2f2; display: flex; align-items: center; justify-content: center; }
+  .icon svg { width: 1.25rem; height: 1.25rem; color: #dc2626; }
+  h1 { font-size: 1.125rem; font-weight: 700; color: #111827; }
+  p { font-size: 0.875rem; color: #6b7280; margin-bottom: 0.75rem; line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid #e5e7eb; margin: 1rem 0; }
+  .token-label { font-size: 0.75rem; font-weight: 600; color: #374151; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  form { display: flex; gap: 0.5rem; }
+  input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; text-align: center; letter-spacing: 0.1em; outline: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
-  button { padding: 0.5rem 1rem; background: #2563eb; color: #fff; font-size: 0.875rem; border: none; border-radius: 0.5rem; cursor: pointer; }
+  button { padding: 0.5rem 1rem; background: #2563eb; color: #fff; font-size: 0.875rem; border: none; border-radius: 0.5rem; cursor: pointer; white-space: nowrap; }
   button:hover { background: #1d4ed8; }
 </style>
 </head>
 <body>
-<div class="box">
-  <h1>Zugriff verweigert</h1>
-  <p>Diese Seite erfordert einen gültigen Zugangslink oder Token.</p>
+<div class="card">
+  <div class="header">
+    <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+    <h1>Zugriff eingeschränkt</h1>
+  </div>
+  <p>Sie versuchen, auf eine Bewerbung von <strong>Tristan Germer</strong> zuzugreifen. Diese Seite ist nicht öffentlich zugänglich.</p>
+  <p>Falls Sie einen Zugangstoken erhalten haben, können Sie ihn hier eingeben:</p>
+  <hr class="divider" />
+  <p class="token-label">Token</p>
   <form method="GET" action="/apply/${slug}/">
-    <input name="t" type="text" placeholder="Token" autocomplete="off" autofocus />
-    <button type="submit">OK</button>
+    <label for="tk" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Token</label>
+    <input id="tk" name="t" type="text" placeholder="z.B. Ab3xYz" autocomplete="off" autofocus />
+    <button type="submit">Zugriff</button>
   </form>
 </div>
 </body>
