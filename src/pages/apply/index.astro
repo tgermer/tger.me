@@ -116,9 +116,10 @@ function stripMarkdown(text: string): string {
         .replace(/\[(.*?)\]\(.*?\)/g, "$1");
 }
 
-function buildMailtoUrl(displayPos: string, company: string, slug: string, lang: string, initiative: boolean, position?: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string) {
+function buildMailtoUrl(displayPos: string, company: string, slug: string, lang: string, initiative: boolean, position?: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string, token?: string) {
     const subject = `${displayPos} – ${site.author}`;
-    const pdfUrl = `${site.url}/apply/${slug}.pdf`;
+    const tokenParam = token ? `?t=${token}` : "";
+    const pdfUrl = `${site.url}/apply/${slug}.pdf${tokenParam}`;
     const greeting = salutation || (lang === "de" ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,") : contact ? `Hello ${contact},` : "Dear hiring team,");
     const pdfNote = lang === "de" ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}` : `My resume is also available at:\n${pdfUrl}`;
     const closing = lang === "de" ? `Mit freundlichen Grüßen\n${site.author}` : `Best regards,\n${site.author}`;
@@ -395,7 +396,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 </a>
                                             )}
                                             <div class="border-t border-gray-100 my-1" />
-                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                             </a>
                                             <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
@@ -530,7 +531,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                             </a>
                                                         )}
                                                         <div class="border-t border-gray-100 my-1" />
-                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                                         </a>
                                                         <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">

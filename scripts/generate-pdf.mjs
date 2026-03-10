@@ -22,6 +22,7 @@ import { chromium } from 'playwright';
 import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray } from 'pdf-lib';
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,14 +35,24 @@ const BASE_URL = `http://localhost:${PORT}`;
 
 const TERMINAL_STATUSES = ['zusage', 'absage', 'zurückgezogen'];
 
-async function isFinalized(slug) {
+function parseFrontmatter(slug) {
   const mdPath = resolve(APPLY_DIR, `${slug}.md`);
-  const content = await readFile(mdPath, 'utf8');
-  const frontmatter = content.split('---')[1] || '';
+  const content = readFileSync(mdPath, 'utf8');
+  return content.split('---')[1] || '';
+}
+
+async function isFinalized(slug) {
+  const frontmatter = parseFrontmatter(slug);
   const statusMatches = [...frontmatter.matchAll(/status:\s*"?([^"\n]+)"?/g)];
   if (statusMatches.length === 0) return false;
   const lastStatus = statusMatches[statusMatches.length - 1][1].trim();
   return TERMINAL_STATUSES.includes(lastStatus);
+}
+
+function getToken(slug) {
+  const frontmatter = parseFrontmatter(slug);
+  const m = frontmatter.match(/token:\s*"([^"]+)"/);
+  return m ? m[1] : null;
 }
 
 async function waitForServer(url, maxAttempts = 30) {
@@ -204,7 +215,11 @@ async function generatePdf(browser, slug, urlPath, outputPath) {
       'cv-de-print': 'https://tger.me/de/cv-print',
       'cv-en-print': 'https://tger.me/en/cv-print',
     };
-    const pdfUrl = generalPdfUrls[slug] || `https://tger.me/apply/${slug}`;
+    let pdfUrl = generalPdfUrls[slug] || `https://tger.me/apply/${slug}`;
+    if (!generalPdfUrls[slug]) {
+      const token = getToken(slug);
+      if (token) pdfUrl += `/?t=${token}`;
+    }
 
     await addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl);
 
@@ -276,7 +291,8 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
     const pdfDoc = await PDFDocument.load(pdfBytes);
 
     // Footer with URL and page numbers on all pages (startPage: 0)
-    const pdfUrl = `https://tger.me/apply/${slug}`;
+    const token = getToken(slug);
+    const pdfUrl = token ? `https://tger.me/apply/${slug}/?t=${token}` : `https://tger.me/apply/${slug}`;
     await addHeaderFooter(pdfDoc, '', lang, pdfUrl, 0);
 
     const subject = lang === 'de' ? 'Bewerbung' : 'Cover Letter';

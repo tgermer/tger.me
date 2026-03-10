@@ -69,7 +69,7 @@ SLUG=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
 while [ -f "${APPLY_DIR}/${SLUG}.md" ] || [ -f "${DATA_DIR}/cv_${SLUG}.ts" ]; do
     SLUG=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c 6)
 done
-TOKEN=$(LC_ALL=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 32)
+TOKEN=$(LC_ALL=C tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 6)
 set -o pipefail
 DATE=$(date +%Y-%m-%d)
 

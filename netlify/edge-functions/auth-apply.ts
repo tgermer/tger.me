@@ -138,7 +138,7 @@ function loginPage(error = false): Response {
   });
 }
 
-function unauthorizedPage(): Response {
+function unauthorizedPage(slug: string): Response {
   const html = `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -147,13 +147,28 @@ function unauthorizedPage(): Response {
 <meta name="robots" content="noindex, nofollow">
 <title>Zugriff verweigert</title>
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f9fafb; color: #374151; }
-  .box { text-align: center; }
+  .box { text-align: center; max-width: 24rem; margin: 0 1rem; }
   h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-  p { font-size: 0.875rem; color: #6b7280; }
+  p { font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem; }
+  form { display: flex; gap: 0.5rem; justify-content: center; }
+  input { width: 7rem; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; text-align: center; letter-spacing: 0.05em; outline: none; }
+  input:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+  button { padding: 0.5rem 1rem; background: #2563eb; color: #fff; font-size: 0.875rem; border: none; border-radius: 0.5rem; cursor: pointer; }
+  button:hover { background: #1d4ed8; }
 </style>
 </head>
-<body><div class="box"><h1>Zugriff verweigert</h1><p>Diese Seite erfordert einen gültigen Zugangslink.</p></div></body>
+<body>
+<div class="box">
+  <h1>Zugriff verweigert</h1>
+  <p>Diese Seite erfordert einen gültigen Zugangslink oder Token.</p>
+  <form method="GET" action="/apply/${slug}/">
+    <input name="t" type="text" placeholder="Token" autocomplete="off" autofocus />
+    <button type="submit">OK</button>
+  </form>
+</div>
+</body>
 </html>`;
   return new Response(html, {
     status: 401,
@@ -258,7 +273,7 @@ export default async function (request: Request, context: Context) {
       }
     }
 
-    return unauthorizedPage();
+    return unauthorizedPage(slug);
   }
 
   // Anything else under /apply/* — pass through (e.g. OG images)
