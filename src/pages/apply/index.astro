@@ -111,9 +111,12 @@ function buildContactMailto(email: string, position: string, lang: string, conta
 
 function stripMarkdown(text: string): string {
     return text
+        .replace(/<!--[\s\S]*?-->|<!--[\s\S]*$/g, "")
         .replace(/\*\*(.*?)\*\*/g, "$1")
         .replace(/\*(.*?)\*/g, "$1")
-        .replace(/\[(.*?)\]\(.*?\)/g, "$1");
+        .replace(/\[(.*?)\]\(.*?\)/g, "$1")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
 }
 
 function buildMailtoUrl(displayPos: string, company: string, slug: string, lang: string, initiative: boolean, position?: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string, token?: string) {
