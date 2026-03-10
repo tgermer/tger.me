@@ -73,7 +73,7 @@ const TOKEN_CACHE_TTL = 60_000; // 1 minute
 async function getTokens(siteUrl: string): Promise<Record<string, string | null>> {
   if (tokenCache && Date.now() - tokenCacheTime < TOKEN_CACHE_TTL) return tokenCache;
   try {
-    const res = await fetch(new URL("/apply/tokens.json", siteUrl));
+    const res = await fetch(new URL("/api/apply-tokens.json", siteUrl));
     if (res.ok) {
       tokenCache = await res.json();
       tokenCacheTime = Date.now();
@@ -186,11 +186,6 @@ export default async function (request: Request, context: Context) {
   if (!secret) {
     console.error("APPLY_SESSION_SECRET not configured");
     return context.next();
-  }
-
-  // Block access to internal token manifest
-  if (path === "/apply/tokens.json") {
-    return new Response("Not found", { status: 404 });
   }
 
   // Logout: clear cookie and redirect
