@@ -147,6 +147,21 @@ fi
 
 # ─── Confirm and delete ─────────────────────────────────────────────
 
+# Find the display line for the selected slug
+selected_line=""
+for i in "${!sorted_slugs[@]}"; do
+    if [ "${sorted_slugs[$i]}" = "${SLUG}" ]; then
+        selected_line="${sorted_lines[$i]}"
+        break
+    fi
+done
+
+echo ""
+echo "  Ausgewählt:"
+echo ""
+printf "  %-8s  %-12s  %-25s  %s\n" "Slug" "Datum" "Firma" "Position"
+printf "  %-8s  %-12s  %-25s  %s\n" "--------" "------------" "-------------------------" "------------------------------"
+echo "  ${selected_line}"
 echo ""
 echo "  Folgende Dateien werden gelöscht:"
 echo ""
