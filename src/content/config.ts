@@ -42,6 +42,7 @@ const blog = defineCollection({
 });
 
 const applicationStatus = z.enum([
+  'gespeichert',
   'beworben',
   'eingangsbestätigung',
   'vorstellungsgespräch',

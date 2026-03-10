@@ -30,6 +30,7 @@ function getJsonResume(slug: string): string | null {
 const sorted = resumes.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 
 const statusLabels: Record<string, string> = {
+    gespeichert: "Gespeichert",
     beworben: "Beworben",
     eingangsbestätigung: "Eingangsbestätigung",
     vorstellungsgespräch: "Vorstellungsgespräch",
@@ -42,6 +43,7 @@ const statusLabels: Record<string, string> = {
 };
 
 const statusColors: Record<string, string> = {
+    gespeichert: "bg-yellow-50 text-yellow-700",
     beworben: "bg-gray-100 text-gray-700",
     eingangsbestätigung: "bg-blue-50 text-blue-700",
     vorstellungsgespräch: "bg-indigo-50 text-indigo-700",
@@ -54,6 +56,7 @@ const statusColors: Record<string, string> = {
 };
 
 const statusDotColors: Record<string, string> = {
+    gespeichert: "bg-yellow-400",
     beworben: "bg-gray-400",
     eingangsbestätigung: "bg-blue-400",
     vorstellungsgespräch: "bg-indigo-400",
@@ -66,15 +69,16 @@ const statusDotColors: Record<string, string> = {
 };
 
 const statusOrder: Record<string, number> = {
-    beworben: 0,
-    eingangsbestätigung: 1,
-    vorstellungsgespräch: 2,
-    zweitgespräch: 3,
-    assessment: 4,
-    angebot: 5,
-    zusage: 6,
-    absage: 7,
-    zurückgezogen: 8,
+    gespeichert: 0,
+    beworben: 1,
+    eingangsbestätigung: 2,
+    vorstellungsgespräch: 3,
+    zweitgespräch: 4,
+    assessment: 5,
+    angebot: 6,
+    zusage: 7,
+    absage: 8,
+    zurückgezogen: 9,
 };
 
 // Collect which statuses actually exist in the data
@@ -374,39 +378,51 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         ))}
                                     </div>
                                 )}
-                                <div class="flex items-center gap-1 pt-2 border-t border-gray-100">
-                                    <a href={`/apply/${r.slug}/`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-blue-600 hover:bg-blue-50 hover:text-blue-800 transition-colors" title="Lebenslauf">
-                                        <Icon name="tabler:file-text" class="h-4.5 w-4.5" />
-                                    </a>
-                                    <a href={`/apply/${r.slug}.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="CV PDF">
-                                        <Icon name="tabler:download" class="h-4.5 w-4.5" />
-                                    </a>
-                                    {r.body && r.body.trim().length > 0 && (
-                                        <a href={`/apply/${r.slug}-letter.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Anschreiben PDF">
-                                            <Icon name="tabler:file-type-doc" class="h-4.5 w-4.5" />
-                                        </a>
-                                    )}
-                                    {r.data.jobUrl && (
-                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige">
-                                            <Icon name="tabler:external-link" class="h-4.5 w-4.5" />
-                                        </a>
-                                    )}
-                                    {r.data.jobUrlArchived && (
-                                        <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (Archiv)">
-                                            <Icon name="tabler:archive" class="h-4.5 w-4.5" />
-                                        </a>
-                                    )}
-                                    {jobPdfExists.has(r.slug) && (
-                                        <a href={`/apply/${r.slug}-job.pdf`} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (PDF)">
-                                            <Icon name="tabler:briefcase" class="h-4.5 w-4.5" />
-                                        </a>
-                                    )}
-                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
-                                        <Icon name="tabler:mail" class="h-4.5 w-4.5" />
-                                    </a>
-                                    <button data-json-resume={getJsonResume(r.slug)} class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="JSON Resume kopieren">
-                                        <Icon name="tabler:braces" class="h-4.5 w-4.5" />
-                                    </button>
+                                <div class="flex items-center pt-2 border-t border-gray-100">
+                                    <div class="relative">
+                                        <button class="row-menu-btn inline-flex items-center gap-1.5 text-sm px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                                            <Icon name="tabler:dots" class="h-4 w-4" />
+                                            <span>Aktionen</span>
+                                        </button>
+                                        <div class="row-menu hidden absolute left-0 bottom-full mb-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                                            <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
+                                            </a>
+                                            <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
+                                            </a>
+                                            {r.body && r.body.trim().length > 0 && (
+                                                <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
+                                                </a>
+                                            )}
+                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug)) && (
+                                                <div class="border-t border-gray-100 my-1" />
+                                            )}
+                                            {r.data.jobUrl && (
+                                                <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />Stellenanzeige
+                                                </a>
+                                            )}
+                                            {r.data.jobUrlArchived && (
+                                                <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />Stellenanzeige (Archiv)
+                                                </a>
+                                            )}
+                                            {jobPdfExists.has(r.slug) && (
+                                                <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                    <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                </a>
+                                            )}
+                                            <div class="border-t border-gray-100 my-1" />
+                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
+                                            </a>
+                                            <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -426,7 +442,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                             <th class="px-4 py-3">Quelle</th>
                             <th class="px-4 py-3">Standort</th>
                             <th class="px-4 py-3">Gehalt</th>
-                            <th class="px-4 py-3">Links</th>
+                            <th class="px-4 py-3">Aktionen</th>
                         </tr>
                     </thead>
                     <tbody id="table-body" class="divide-y divide-gray-100">
@@ -494,39 +510,48 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <td class="px-4 py-3 text-gray-600">{r.data.location || <span class="text-gray-300">–</span>}</td>
                                             <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{r.data.salary || <span class="text-gray-300">–</span>}</td>
                                             <td class="px-4 py-3 whitespace-nowrap">
-                                                <div class="flex items-center gap-1">
-                                                    <a href={`/apply/${r.slug}/`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-blue-600 hover:bg-blue-50 hover:text-blue-800 transition-colors" title="Lebenslauf">
-                                                        <Icon name="tabler:file-text" class="h-4 w-4" />
-                                                    </a>
-                                                    <a href={`/apply/${r.slug}.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="CV PDF">
-                                                        <Icon name="tabler:download" class="h-4 w-4" />
-                                                    </a>
-                                                    {r.body && r.body.trim().length > 0 && (
-                                                        <a href={`/apply/${r.slug}-letter.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Anschreiben PDF">
-                                                            <Icon name="tabler:file-type-doc" class="h-4 w-4" />
-                                                        </a>
-                                                    )}
-                                                    {r.data.jobUrl && (
-                                                        <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige">
-                                                            <Icon name="tabler:external-link" class="h-4 w-4" />
-                                                        </a>
-                                                    )}
-                                                    {r.data.jobUrlArchived && (
-                                                        <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (Archiv)">
-                                                            <Icon name="tabler:archive" class="h-4 w-4" />
-                                                        </a>
-                                                    )}
-                                                    {jobPdfExists.has(r.slug) && (
-                                                        <a href={`/apply/${r.slug}-job.pdf`} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title="Stellenanzeige (PDF)">
-                                                            <Icon name="tabler:briefcase" class="h-4 w-4" />
-                                                        </a>
-                                                    )}
-                                                    <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" title={r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}>
-                                                        <Icon name="tabler:mail" class="h-4 w-4" />
-                                                    </a>
-                                                    <button data-json-resume={getJsonResume(r.slug)} class="inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="JSON Resume kopieren">
-                                                        <Icon name="tabler:braces" class="h-4 w-4" />
+                                                <div class="relative">
+                                                    <button class="row-menu-btn inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="Aktionen">
+                                                        <Icon name="tabler:dots" class="h-4 w-4" />
                                                     </button>
+                                                    <div class="row-menu hidden absolute right-0 mt-1 w-52 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                                                        <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
+                                                        </a>
+                                                        <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
+                                                        </a>
+                                                        {r.body && r.body.trim().length > 0 && (
+                                                            <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                                <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
+                                                            </a>
+                                                        )}
+                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug)) && (
+                                                            <div class="border-t border-gray-100 my-1" />
+                                                        )}
+                                                        {r.data.jobUrl && (
+                                                            <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                                <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />Stellenanzeige
+                                                            </a>
+                                                        )}
+                                                        {r.data.jobUrlArchived && (
+                                                            <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                                <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />Stellenanzeige (Archiv)
+                                                            </a>
+                                                        )}
+                                                        {jobPdfExists.has(r.slug) && (
+                                                            <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                                <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                            </a>
+                                                        )}
+                                                        <div class="border-t border-gray-100 my-1" />
+                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
+                                                        </a>
+                                                        <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                            <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -595,6 +620,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             #card-container,
             #expand-all-btn,
             .expand-icon,
+            .row-menu-btn,
             a[href$=".pdf"],
             a[href$="-letter.pdf"] {
                 display: none !important;
@@ -749,9 +775,29 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
         const extrasMenu = document.getElementById("extras-menu")!;
         extrasBtn.addEventListener("click", (e) => {
             e.stopPropagation();
+            closeAllRowMenus();
             extrasMenu.classList.toggle("hidden");
         });
-        document.addEventListener("click", () => extrasMenu.classList.add("hidden"));
+        document.addEventListener("click", () => {
+            extrasMenu.classList.add("hidden");
+            closeAllRowMenus();
+        });
+
+        // --- Row action menus ---
+        function closeAllRowMenus() {
+            document.querySelectorAll(".row-menu").forEach((m) => m.classList.add("hidden"));
+        }
+
+        document.querySelectorAll(".row-menu-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                extrasMenu.classList.add("hidden");
+                const menu = btn.nextElementSibling as HTMLElement;
+                const wasHidden = menu.classList.contains("hidden");
+                closeAllRowMenus();
+                if (wasHidden) menu.classList.remove("hidden");
+            });
+        });
 
         // --- Expand/Collapse All ---
         let allExpanded = false;
@@ -777,7 +823,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
         // --- Expand/Collapse ---
         document.querySelectorAll("tr[data-expandable]").forEach((row) => {
             row.addEventListener("click", (e) => {
-                if ((e.target as HTMLElement).closest("a, button")) return;
+                if ((e.target as HTMLElement).closest("a, button, .row-menu")) return;
                 const detail = row.nextElementSibling;
                 if (detail?.hasAttribute("data-detail")) {
                     detail.classList.toggle("hidden");
@@ -788,7 +834,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
 
         document.querySelectorAll("[data-expandable-card]").forEach((card) => {
             card.addEventListener("click", (e) => {
-                if ((e.target as HTMLElement).closest("a, button")) return;
+                if ((e.target as HTMLElement).closest("a, button, .row-menu")) return;
                 const detail = card.querySelector("[data-detail]");
                 if (detail) {
                     detail.classList.toggle("hidden");

@@ -23,6 +23,6 @@ notes: ""
 # Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:
-  - status: "beworben"
-    date: 2026-03-10
+    - status: "gespeichert"
+      date: 2026-03-10
 ---
