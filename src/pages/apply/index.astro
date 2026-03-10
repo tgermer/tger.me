@@ -333,7 +333,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                     </p>
                                 )}
                                 {r.data.notes && (
-                                    <p class="text-xs text-gray-400 mb-2 truncate" title={r.data.notes}>
+                                    <p class="text-xs text-gray-400 mb-2">
                                         {r.data.notes}
                                     </p>
                                 )}
@@ -468,7 +468,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
                                                 <p class="text-gray-500">{r.data.company}</p>
                                                 {r.data.notes && (
-                                                    <p class="text-xs text-gray-400 mt-1 max-w-xs truncate" title={r.data.notes}>
+                                                    <p class="text-xs text-gray-400 mt-1">
                                                         {r.data.notes}
                                                     </p>
                                                 )}
