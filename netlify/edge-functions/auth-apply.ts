@@ -138,14 +138,37 @@ function loginPage(error = false): Response {
   });
 }
 
-function unauthorizedPage(slug: string): Response {
+function unauthorizedPage(slug: string, request: Request): Response {
+  const acceptLang = request.headers.get("accept-language") ?? "";
+  const isEN = !acceptLang.match(/^de/i);
+  const l = isEN
+    ? {
+        lang: "en",
+        title: "Application – Access Restricted",
+        heading: "Access Restricted",
+        desc: "You are trying to access a job application by <strong>Tristan Germer</strong>. This page is not publicly available.",
+        prompt: "If you have received an access token, you can enter it below:",
+        label: "Token",
+        placeholder: "e.g. Ab3xYz",
+        button: "Open",
+      }
+    : {
+        lang: "de",
+        title: "Bewerbung – Zugriff eingeschränkt",
+        heading: "Zugriff eingeschränkt",
+        desc: "Sie versuchen, auf eine Bewerbung von <strong>Tristan Germer</strong> zuzugreifen. Diese Seite ist nicht öffentlich zugänglich.",
+        prompt: "Falls Sie einen Zugangstoken erhalten haben, können Sie ihn hier eingeben:",
+        label: "Token",
+        placeholder: "z.B. Ab3xYz",
+        button: "Öffnen",
+      };
   const html = `<!DOCTYPE html>
-<html lang="de">
+<html lang="${l.lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Bewerbung – Zugriff eingeschränkt</title>
+<title>${l.title}</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%); background-size: 200% 200%; animation: gradient 8s ease infinite; position: relative; overflow: hidden; }
@@ -153,7 +176,7 @@ function unauthorizedPage(slug: string): Response {
   body::before, body::after { content: ''; position: absolute; width: 24rem; height: 24rem; border-radius: 9999px; background: rgba(255,255,255,0.05); filter: blur(48px); }
   body::before { top: -8rem; right: -8rem; }
   body::after { bottom: -8rem; left: -8rem; }
-  .card { position: relative; z-index: 1; background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1); max-width: 24rem; width: 100%; margin: 0 1rem; }
+  .card { position: relative; z-index: 1; background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,.1); max-width: 28rem; width: 100%; margin: 0 1rem; }
   .header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
   .icon { width: 2.5rem; height: 2.5rem; border-radius: 0.75rem; background: #fef2f2; display: flex; align-items: center; justify-content: center; }
   .icon svg { width: 1.25rem; height: 1.25rem; color: #dc2626; }
@@ -172,16 +195,16 @@ function unauthorizedPage(slug: string): Response {
 <div class="card">
   <div class="header">
     <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
-    <h1>Zugriff eingeschränkt</h1>
+    <h1>${l.heading}</h1>
   </div>
-  <p>Sie versuchen, auf eine Bewerbung von <strong>Tristan Germer</strong> zuzugreifen. Diese Seite ist nicht öffentlich zugänglich.</p>
-  <p>Falls Sie einen Zugangstoken erhalten haben, können Sie ihn hier eingeben:</p>
+  <p>${l.desc}</p>
+  <p>${l.prompt}</p>
   <hr class="divider" />
-  <p class="token-label">Token</p>
+  <p class="token-label">${l.label}</p>
   <form method="GET" action="/apply/${slug}/">
-    <label for="tk" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Token</label>
-    <input id="tk" name="t" type="text" placeholder="z.B. Ab3xYz" autocomplete="off" autofocus />
-    <button type="submit">Zugriff</button>
+    <label for="tk" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">${l.label}</label>
+    <input id="tk" name="t" type="text" placeholder="${l.placeholder}" autocomplete="off" autofocus />
+    <button type="submit">${l.button}</button>
   </form>
 </div>
 </body>
@@ -284,7 +307,7 @@ export default async function (request: Request, context: Context) {
       }
     }
 
-    return unauthorizedPage(slug);
+    return unauthorizedPage(slug, request);
   }
 
   // Anything else under /apply/* — pass through (e.g. OG images)
