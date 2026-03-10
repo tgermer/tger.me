@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { resume } = Astro.props;
-const { initiative, position, company, lang, date, cvData, signature, photo: showPhoto, salutation, companyAddress } = resume.data;
+const { initiative, position, refNumber, company, lang, date, cvData, signature, photo: showPhoto, salutation, companyAddress } = resume.data;
 
 // Render markdown body (cover letter)
 const { Content } = await resume.render();
@@ -34,6 +34,9 @@ const initiativeLabel = isDE ? "Initiativbewerbung" : "Speculative Application";
 const displayPosition = initiative
     ? (position ? (isDE ? `${initiativeLabel} als ${position}` : `${initiativeLabel} for ${position}`) : initiativeLabel)
     : position || "";
+// Letter subject includes ref number (e.g. "Application for Manager (Ref: 12345)")
+const refSuffix = refNumber ? ` (${isDE ? "Ref" : "Ref"}: ${refNumber})` : "";
+const letterSubject = displayPosition + refSuffix;
 const coverLabel = initiative
     ? (position ? (isDE ? "Initiativbewerbung als" : "Speculative Application for") : "")
     : (isDE ? "Bewerbung als" : "Application for");
@@ -84,7 +87,7 @@ const l = isDE
           residence: "Wohnort",
           contact: "Kontakt",
           online: "Online",
-          letterSubject: displayPosition,
+          letterSubject: letterSubject,
           letterClosing: "Mit freundlichen Grüßen",
           letterPdfLabel: "Anschreiben herunterladen",
           letterPdfLabelShort: "Anschreiben",
@@ -109,7 +112,7 @@ const l = isDE
           residence: "Residence",
           contact: "Contact",
           online: "Online",
-          letterSubject: displayPosition,
+          letterSubject: letterSubject,
           letterClosing: "Best regards,",
           letterPdfLabel: "Download cover letter",
           letterPdfLabelShort: "Letter",
@@ -163,6 +166,7 @@ const headerTitle = `${p.name} | ${displayPosition}`;
         <div class="cover-application">
             {l.applicationFor && <p class="cover-application-label">{l.applicationFor}</p>}
             <h1 class="cover-application-title">{coverTitle}</h1>
+            {refNumber && <p class="cover-application-ref">{isDE ? "Ref" : "Ref"}: {refNumber}</p>}
             <p class="cover-application-company">{company}</p>
         </div>
 

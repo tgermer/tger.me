@@ -69,6 +69,8 @@ const apply = defineCollection({
     initiative: z.boolean().default(false),
     // Job title being applied for. Optional for speculative applications (initiative: true).
     position: optionalString,
+    // Optional job reference number (e.g. "200645736"). Displayed on cover page and letter subject.
+    refNumber: optionalString,
     company: z.string(),
     lang: z.enum(['de', 'en']).default('de'),
     date: z.date(),
