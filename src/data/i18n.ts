@@ -51,6 +51,8 @@ const translations = {
     cvProjectsHeading: "Projekte",
     cvSkillsHeading: "Kenntnisse",
     cvReferencesHeading: "Referenzen",
+    cvOverviewNote: "Dies ist ein kompakter Überblick meines beruflichen Werdegangs. Für eine ausführliche Version {contactLink}.",
+    cvOverviewNoteLink: "kontaktieren Sie mich gerne",
 
     // ── CV print page ──
     cvPrintPageTitle: "Lebenslauf – Tristan Germer",
@@ -147,6 +149,8 @@ const translations = {
     cvProjectsHeading: "Projects",
     cvSkillsHeading: "Skills",
     cvReferencesHeading: "References",
+    cvOverviewNote: "This is a compact overview of my professional background. For a detailed version, {contactLink}.",
+    cvOverviewNoteLink: "feel free to get in touch",
 
     // ── CV print page ──
     cvPrintPageTitle: "CV – Tristan Germer",
