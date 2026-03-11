@@ -32,6 +32,13 @@ html {
   transform: translateY(0);
 }
 
+/* Disable transition during View Transition swap to prevent double animation */
+.reveal.no-transition,
+.fact-animate.no-transition {
+  transition: none !important;
+  animation: none !important;
+}
+
 /* Staggered delay for child cards */
 .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.1s; }
 .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.2s; }

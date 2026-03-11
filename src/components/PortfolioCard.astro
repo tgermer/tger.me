@@ -39,7 +39,6 @@ const dateLabel = updatedDate
         alt={title}
         class={`w-full h-full group-hover:scale-105 transition-transform duration-300 ${imageBackgroundColor ? 'object-contain p-6' : 'object-cover'}`}
         style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
-        loading="lazy"
       />
     ) : (
       <Image
@@ -49,7 +48,6 @@ const dateLabel = updatedDate
         style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
         widths={[400, 800]}
         sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-        loading="lazy"
       />
     )}
     <div class="absolute top-3 right-3 flex gap-1.5">

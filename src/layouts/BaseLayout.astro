@@ -6,7 +6,7 @@ import "@fontsource/ibm-plex-sans/700.css";
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
     title?: string;
@@ -108,7 +108,7 @@ const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hrefl
         </script>
 
         <!-- View Transitions -->
-        <ViewTransitions />
+        <ClientRouter />
 
         <!-- Plausible Analytics (production only) -->
         {import.meta.env.PROD && <script defer data-domain="tger.me" src="https://analytics.thebunnyhill.de/js/script.js" />}
@@ -139,20 +139,37 @@ const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hrefl
 
         <!-- Scroll-reveal & nav-shadow observer -->
         <script>
+            let revealObserver: IntersectionObserver | null = null;
+            let isViewTransition = false;
+
             function initAnimations() {
-                // Scroll-reveal: observe .reveal elements
-                const revealObserver = new IntersectionObserver((entries) => {
+                // Clean up previous observer
+                revealObserver?.disconnect();
+
+                revealObserver = new IntersectionObserver((entries) => {
                     entries.forEach((e) => {
                         if (e.isIntersecting) {
                             e.target.classList.add("visible");
-                            revealObserver.unobserve(e.target);
+                            revealObserver?.unobserve(e.target);
                         }
                     });
                 }, { threshold: 0.1 });
 
                 document.querySelectorAll(".reveal, .fact-animate").forEach((el) => {
-                    revealObserver.observe(el);
+                    if (el.classList.contains("visible")) return;
+
+                    if (isViewTransition) {
+                        // After VT: below-fold elements still get scroll-reveal,
+                        // but re-enable their CSS transition first
+                        el.classList.remove("no-transition");
+                        revealObserver!.observe(el);
+                    } else {
+                        // Initial page load: normal scroll-reveal for all
+                        revealObserver!.observe(el);
+                    }
                 });
+
+                isViewTransition = false;
 
                 // Nav shadow on scroll
                 const nav = document.querySelector("header");
@@ -164,6 +181,28 @@ const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hrefl
                     onScroll();
                 }
             }
+
+            // After View Transition DOM swap: make above-fold elements instantly
+            // visible (no transition) to prevent double-animation judder.
+            // Below-fold elements keep their hidden state for scroll-reveal.
+            document.addEventListener("astro:after-swap", () => {
+                isViewTransition = true;
+                document.querySelectorAll(".reveal, .fact-animate").forEach((el) => {
+                    // Temporarily disable CSS transition, set visible, then
+                    // initAnimations will re-enable transitions for below-fold
+                    el.classList.add("no-transition");
+                    el.classList.add("visible");
+                });
+                // Force reflow so the no-transition + visible state is painted,
+                // then remove visible from below-fold for scroll-reveal
+                document.body.offsetHeight;
+                document.querySelectorAll(".reveal, .fact-animate").forEach((el) => {
+                    if (el.getBoundingClientRect().top >= window.innerHeight) {
+                        el.classList.remove("visible");
+                    }
+                    el.classList.remove("no-transition");
+                });
+            });
 
             document.addEventListener("astro:page-load", initAnimations);
         </script>

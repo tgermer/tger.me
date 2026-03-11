@@ -152,7 +152,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
 
       <!-- Screenshot Gallery -->
       {screenshotsAvailable && screenshots.length > 0 && (
-        <div class="mb-10 relative group">
+        <div class="reveal mb-10 relative group">
           <!-- Fade edges (hidden at scroll boundaries) -->
           <div id="gallery-fade-left" class="hidden md:block pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-5 transition-opacity opacity-0" style="background: linear-gradient(to right, var(--gallery-fade-color, white), transparent);"></div>
           <div id="gallery-fade-right" class="hidden md:block pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-5 transition-opacity" style="background: linear-gradient(to left, var(--gallery-fade-color, white), transparent);"></div>
@@ -196,7 +196,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
 
       <!-- Single project image (no screenshots) -->
       {!screenshotsAvailable && (
-        <div class="mb-10 rounded-2xl overflow-hidden shadow-lg">
+        <div class="reveal mb-10 rounded-2xl overflow-hidden shadow-lg">
           {isSvg ? (
             <img
               src={image.src}
