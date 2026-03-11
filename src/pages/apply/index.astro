@@ -363,7 +363,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <Icon name="tabler:dots" class="h-4 w-4" />
                                             <span>Aktionen</span>
                                         </button>
-                                        <div class="row-menu hidden absolute left-0 bottom-full mb-1 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                                        <div class="row-menu hidden absolute left-0 bottom-full mb-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                                             <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
                                             </a>
@@ -408,6 +408,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                 <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
                                             </button>
+                                            <a href={`https://analytics.thebunnyhill.de/tger.me?page=%2Fapply%2F${r.slug}%2F`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />Analytics
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -501,7 +504,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     <button class="row-menu-btn inline-flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer" title="Aktionen">
                                                         <Icon name="tabler:dots" class="h-4 w-4" />
                                                     </button>
-                                                    <div class="row-menu hidden absolute right-0 mt-1 w-52 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
+                                                    <div class="row-menu hidden absolute right-0 mt-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                                                         <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
                                                         </a>
@@ -546,6 +549,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                         <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                             <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
                                                         </button>
+                                                        <a href={`https://analytics.thebunnyhill.de/tger.me?page=%2Fapply%2F${r.slug}%2F`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />Analytics
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>

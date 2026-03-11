@@ -32,6 +32,9 @@ const ogImageUrl = ogImage ? (ogImage.startsWith("http") ? ogImage : new URL(ogI
         {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <!-- Plausible Analytics (production only) -->
+        {import.meta.env.PROD && <script defer data-domain="tger.me" src="https://analytics.thebunnyhill.de/js/script.js" />}
+
         <title>{title}</title>
     </head>
     <body class="bg-white text-gray-900 font-sans antialiased resume-body">
