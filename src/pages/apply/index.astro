@@ -9,15 +9,15 @@ import { resolve } from "node:path";
 
 const resumes = await getCollection("apply");
 
-// Check which applications have a job posting PDF or anlagen PDF
+// Check which applications have a job posting PDF or attachments PDF
 const jobPdfExists = new Set<string>();
-const anlagenPdfExists = new Set<string>();
+const attachmentsPdfExists = new Set<string>();
 for (const r of resumes) {
     if (existsSync(resolve("public/apply", `${r.slug}-job.pdf`))) {
         jobPdfExists.add(r.slug);
     }
-    if (existsSync(resolve("public/apply", `${r.slug}-anlagen.pdf`))) {
-        anlagenPdfExists.add(r.slug);
+    if (existsSync(resolve("public/apply", `${r.slug}-attachments.pdf`))) {
+        attachmentsPdfExists.add(r.slug);
     }
 }
 
@@ -388,10 +388,10 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     Anschreiben PDF
                                                 </a>
                                             )}
-                                            {anlagenPdfExists.has(r.slug) && (
-                                                <a href={`/apply/${r.slug}-anlagen.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            {attachmentsPdfExists.has(r.slug) && (
+                                                <a href={`/apply/${r.slug}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:paperclip" class="h-4 w-4 shrink-0" />
-                                                    Anlagen PDF
+                                                    Attachments PDF
                                                 </a>
                                             )}
                                             {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
@@ -540,10 +540,10 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                                 Anschreiben PDF
                                                             </a>
                                                         )}
-                                                        {anlagenPdfExists.has(r.slug) && (
-                                                            <a href={`/apply/${r.slug}-anlagen.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        {attachmentsPdfExists.has(r.slug) && (
+                                                            <a href={`/apply/${r.slug}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:paperclip" class="h-4 w-4 shrink-0" />
-                                                                Anlagen PDF
+                                                                Attachments PDF
                                                             </a>
                                                         )}
                                                         {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}

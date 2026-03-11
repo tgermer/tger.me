@@ -7,7 +7,7 @@
 #   src/data/cv_<slug>.ts             – Frozen CV snapshot
 #   public/apply/<slug>.pdf           – CV PDF
 #   public/apply/<slug>-letter.pdf    – Cover letter PDF (if exists)
-#   public/apply/<slug>-anlagen.pdf   – Anlagen PDF (if exists)
+#   public/apply/<slug>-attachments.pdf – Attachments PDF (if exists)
 #
 # Usage:
 #   ./scripts/delete-apply.sh          # Interactive selection
@@ -136,7 +136,7 @@ for f in \
     "${DATA_DIR}/cv_${SLUG}.ts" \
     "${PDF_DIR}/${SLUG}.pdf" \
     "${PDF_DIR}/${SLUG}-letter.pdf" \
-    "${PDF_DIR}/${SLUG}-anlagen.pdf"; do
+    "${PDF_DIR}/${SLUG}-attachments.pdf"; do
     if [ -f "${f}" ]; then
         files+=("${f}")
     fi

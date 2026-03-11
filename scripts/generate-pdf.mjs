@@ -9,6 +9,7 @@
  *   node scripts/generate-pdf.mjs --all        # all applications + general cv-de/cv-en
  *   node scripts/generate-pdf.mjs --force       # all applications (including finalized)
  *   node scripts/generate-pdf.mjs --force a1b2c3 # specific slug (even if finalized)
+ *   node scripts/generate-pdf.mjs --attachments-only # only merge attachment PDFs (no browser)
  *
  * Finalized applications (last status: zusage/absage/zurückgezogen) are skipped
  * unless --force is specified.
@@ -152,7 +153,7 @@ const CATEGORY_LABELS_EN = {
   sonstiges: 'Other',
 };
 
-async function generateAnlagenPdf(slug) {
+async function generateAttachmentsPdf(slug) {
   const docIds = getDocumentIds(slug);
   if (docIds.length === 0) return false;
 
@@ -162,7 +163,7 @@ async function generateAnlagenPdf(slug) {
     .filter(Boolean);
 
   if (resolvedDocs.length === 0) {
-    console.log(`  SKIP: ${slug}-anlagen.pdf (no matching documents in registry)`);
+    console.log(`  SKIP: ${slug}-attachments.pdf (no matching documents in registry)`);
     return false;
   }
 
@@ -219,7 +220,7 @@ async function generateAnlagenPdf(slug) {
   }
 
   if (finalPdf.getPageCount() === 0) {
-    console.log(`  SKIP: ${slug}-anlagen.pdf (no pages merged)`);
+    console.log(`  SKIP: ${slug}-attachments.pdf (no pages merged)`);
     return false;
   }
 
@@ -411,14 +412,14 @@ async function generateAnlagenPdf(slug) {
   finalPdf.setTitle(isDE ? `Anlagen – ${titleSuffix}` : `Attachments – ${titleSuffix}`);
   finalPdf.setCreator('Astro + pdf-lib');
 
-  const outputPath = resolve(OUTPUT_DIR, `${slug}-anlagen.pdf`);
+  const outputPath = resolve(OUTPUT_DIR, `${slug}-attachments.pdf`);
   const mergedBytes = await finalPdf.save();
   await writeFile(outputPath, mergedBytes);
   console.log(`  OK: ${outputPath.replace(ROOT + '/', '')}`);
   return true;
 }
 
-/** Add a two-level PDF outline (bookmarks panel) to an Anlagen PDF.
+/** Add a two-level PDF outline (bookmarks panel) to an Attachments PDF.
  *  groups: [{ label, entries: [{ doc, startPageIdx, pageCount }] }]
  *  PAGE_OFFSET: 1 (cover page is at index 0, documents start at index 1)
  */
@@ -758,13 +759,13 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const anlagenOnly = args.includes('--anlagen-only');
+  const attachmentsOnly = args.includes('--attachments-only');
   const includeGeneral = args.includes('--all');
   const force = args.includes('--force');
   const targetSlugs = args.filter((a) => !a.startsWith('--'));
 
-  // --anlagen-only: skip build/server/browser, just merge PDFs
-  if (anlagenOnly) {
+  // --attachments-only: skip build/server/browser, just merge PDFs
+  if (attachmentsOnly) {
     await mkdir(OUTPUT_DIR, { recursive: true });
     const slugs =
       targetSlugs.length > 0
@@ -775,7 +776,7 @@ async function main() {
         console.log(`  SKIP: ${slug} (finalized)`);
         continue;
       }
-      await generateAnlagenPdf(slug);
+      await generateAttachmentsPdf(slug);
     }
     console.log('\nDone!');
     return;
@@ -858,11 +859,11 @@ async function main() {
       for (const target of targets) {
         await generatePdf(browser, target.slug, target.url, target.output);
 
-        // Also generate cover letter PDF and anlagen PDF if applicable
+        // Also generate cover letter PDF and attachments PDF if applicable
         if (!(target.slug.startsWith('cv-') && target.slug.endsWith('-print'))) {
           const letterOutput = resolve(OUTPUT_DIR, `${target.slug}-letter.pdf`);
           await generateLetterPdf(browser, target.slug, target.url, letterOutput);
-          await generateAnlagenPdf(target.slug);
+          await generateAttachmentsPdf(target.slug);
         }
       }
 

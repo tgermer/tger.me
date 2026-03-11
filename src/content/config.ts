@@ -96,7 +96,7 @@ const apply = defineCollection({
     notes: optionalString,
     // Auth token for direct access without password (e.g. ?t=<token> in shared links)
     token: optionalString,
-    // === Anlagen ===
+    // === Attachments ===
     // Document IDs from src/data/documents.ts to attach to this application
     documents: z.array(z.string()).default([]),
     statusHistory: z.array(statusEntry).default([]),

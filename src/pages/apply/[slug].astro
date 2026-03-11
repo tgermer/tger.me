@@ -149,8 +149,8 @@ const groupedDocs = Object.entries(documentCategories)
     }))
     .filter((g) => g.docs.length > 0);
 
-const hasAnlagen = resolvedDocs.length > 0;
-const anlagenPdfExists = hasAnlagen && existsSync(resolve("public/apply", `${resume.slug}-anlagen.pdf`));
+const hasAttachments = resolvedDocs.length > 0;
+const attachmentsPdfExists = hasAttachments && existsSync(resolve("public/apply", `${resume.slug}-attachments.pdf`));
 ---
 
 <ResumeLayout title={pageTitle} description={`${displayPosition} – ${company}`} ogImage={`/og/apply/${resume.slug}.jpg`} lang={lang}>
@@ -172,8 +172,8 @@ const anlagenPdfExists = hasAnlagen && existsSync(resolve("public/apply", `${res
                     <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
                     {l.downloadLabelShort}
                 </a>
-                {anlagenPdfExists && (
-                    <a href={`/apply/${resume.slug}-anlagen.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-2.5 sm:px-4 py-1.5 border border-gray-400 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
+                {attachmentsPdfExists && (
+                    <a href={`/apply/${resume.slug}-attachments.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-2.5 sm:px-4 py-1.5 border border-gray-400 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
                         <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
                         {isDE ? "Anlagen" : "Attachments"}
                     </a>
@@ -518,7 +518,7 @@ const anlagenPdfExists = hasAnlagen && existsSync(resolve("public/apply", `${res
     </div>
 
     <!-- ==================== ANLAGEN (Attachments) ==================== -->
-    {hasAnlagen && (
+    {hasAttachments && (
         <div class="resume-page print:hidden" style="padding: 0 var(--din-page-padding-x) 15mm;">
             <div class="border-t border-gray-100 pt-8">
                 <div class="mb-5">

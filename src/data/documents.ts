@@ -1,4 +1,4 @@
-// Central document registry for application attachments (Anlagen).
+// Central document registry for application attachments.
 // Each entry maps to a PDF file in public/apply/docs/.
 // Referenced by ID in application frontmatter: documents: [id1, id2, ...]
 
