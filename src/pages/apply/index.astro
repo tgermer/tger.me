@@ -267,7 +267,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             </div>
 
             <!-- Mobile: stacked cards -->
-            <div id="card-container" class="md:hidden flex flex-col gap-3">
+            <div id="card-container" class="min-[1200px]:hidden flex flex-col gap-3">
                 {
                     sorted.map((r) => {
                         const current = getCurrentStatus(r.data.statusHistory);
@@ -446,18 +446,18 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             </div>
 
             <!-- Desktop: table -->
-            <div id="table-wrapper" class="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
+            <div id="table-wrapper" class="hidden min-[1200px]:block overflow-x-auto bg-white rounded-lg shadow-sm border border-gray-200">
                 <table class="w-full text-sm text-left [&_td]:align-top">
                     <thead class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
                         <tr>
-                            <th class="px-4 py-3">Datum</th>
-                            <th class="px-4 py-3">Position / Firma</th>
-                            <th class="px-4 py-3">Status</th>
-                            <th class="px-4 py-3">Kontakt</th>
-                            <th class="px-4 py-3">Quelle</th>
-                            <th class="px-4 py-3">Standort</th>
-                            <th class="px-4 py-3">Gehalt</th>
-                            <th class="px-4 py-3">Aktionen</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Datum</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Position / Firma</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Status</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Kontakt</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Quelle</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Standort</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Gehalt</th>
+                            <th class="px-4 py-3 whitespace-nowrap">Aktionen</th>
                         </tr>
                     </thead>
                     <tbody id="table-body" class="divide-y divide-gray-100">
