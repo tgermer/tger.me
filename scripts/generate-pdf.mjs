@@ -19,7 +19,7 @@
  */
 
 import { chromium } from 'playwright';
-import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray, PDFString } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray, PDFString, PDFNull, PDFHexString } from 'pdf-lib';
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
@@ -32,6 +32,8 @@ const APPLY_DIR = resolve(ROOT, 'src/content/apply');
 const OUTPUT_DIR = resolve(ROOT, 'public/apply');
 const PORT = 4322;
 const BASE_URL = `http://localhost:${PORT}`;
+
+const DOCS_DIR = resolve(ROOT, 'public/apply/docs');
 
 const TERMINAL_STATUSES = ['zusage', 'absage', 'zurückgezogen'];
 
@@ -53,6 +55,446 @@ function getToken(slug) {
   const frontmatter = parseFrontmatter(slug);
   const m = frontmatter.match(/token:\s*"([^"]+)"/);
   return m ? m[1] : null;
+}
+
+function getDocumentIds(slug) {
+  const frontmatter = parseFrontmatter(slug);
+  const ids = [];
+  const lines = frontmatter.split('\n');
+  let inDocuments = false;
+  for (const line of lines) {
+    if (line.match(/^documents:/)) {
+      // Check for empty array on same line: documents: []
+      if (line.match(/\[\s*\]/)) return [];
+      // Check for inline array: documents: ["id1", "id2", id3]
+      const inlineMatch = line.match(/^documents:\s*\[([^\]]+)\]/);
+      if (inlineMatch) {
+        return inlineMatch[1]
+          .split(',')
+          .map((s) => s.trim().replace(/^["']|["']$/g, ''))
+          .filter(Boolean);
+      }
+      inDocuments = true;
+      continue;
+    }
+    if (inDocuments) {
+      const m = line.match(/^\s+-\s+"?([^"\n]+)"?/);
+      if (m) {
+        ids.push(m[1].trim());
+        continue;
+      }
+      if (!line.match(/^\s/) || line.match(/^\S/)) break;
+    }
+  }
+  return ids;
+}
+
+/** Parse the documents registry from src/data/documents.ts (regex-based, no TS import needed) */
+function parseDocumentsRegistry() {
+  const registryPath = resolve(ROOT, 'src/data/documents.ts');
+  let content;
+  try {
+    content = readFileSync(registryPath, 'utf8');
+  } catch {
+    return [];
+  }
+  const entries = [];
+  // Match each object block in the documents array
+  for (const match of content.matchAll(/\{([^}]+)\}/gs)) {
+    const block = match[1];
+    const strVal = (key) => {
+      const m = block.match(new RegExp(`\\b${key}:\\s*(?:"([^"]*)"|'([^']*)')`));
+      return m ? (m[1] ?? m[2]) : undefined;
+    };
+    const id = strVal('id');
+    const filename = strVal('filename');
+    const filenameEn = strVal('filenameEn');
+    const category = strVal('category');
+    const name = strVal('name');
+    const nameEn = strVal('nameEn');
+    const issuer = strVal('issuer');
+    const issuerEn = strVal('issuerEn');
+    if (id && filename && category) {
+      entries.push({ id, filename, filenameEn: filenameEn || '', category, name: name || '', nameEn: nameEn || '', issuer: issuer || '', issuerEn: issuerEn || '' });
+    }
+  }
+  return entries;
+}
+
+function getApplicantName(slug) {
+  const frontmatter = parseFrontmatter(slug);
+  const cvDataMatch = frontmatter.match(/cvData:\s*['"]([^'"]+)['"]/);
+  const cvFile = cvDataMatch ? cvDataMatch[1] : `cv_${slug}`;
+  const cvPath = resolve(ROOT, `src/data/${cvFile}.ts`);
+  try {
+    const content = readFileSync(cvPath, 'utf8');
+    const m = content.match(/name:\s*['"]([^'"]+)['"]/);
+    return m ? m[1] : '';
+  } catch {
+    return '';
+  }
+}
+
+const CATEGORY_ORDER = { arbeitszeugnis: 1, hochschulausbildung: 2, ausbildungszeugnis: 3, zertifikat: 4, sonstiges: 5 };
+
+const CATEGORY_LABELS_DE = {
+  arbeitszeugnis: 'Arbeitszeugnisse',
+  hochschulausbildung: 'Hochschulausbildung',
+  ausbildungszeugnis: 'Ausbildungszeugnisse',
+  zertifikat: 'Zertifikate',
+  sonstiges: 'Sonstiges',
+};
+const CATEGORY_LABELS_EN = {
+  arbeitszeugnis: 'Work References',
+  hochschulausbildung: 'University Education',
+  ausbildungszeugnis: 'Education Transcripts',
+  zertifikat: 'Certificates',
+  sonstiges: 'Other',
+};
+
+async function generateAnlagenPdf(slug) {
+  const docIds = getDocumentIds(slug);
+  if (docIds.length === 0) return false;
+
+  const registry = parseDocumentsRegistry();
+  const resolvedDocs = docIds
+    .map((id) => registry.find((d) => d.id === id))
+    .filter(Boolean);
+
+  if (resolvedDocs.length === 0) {
+    console.log(`  SKIP: ${slug}-anlagen.pdf (no matching documents in registry)`);
+    return false;
+  }
+
+  resolvedDocs.sort((a, b) => (CATEGORY_ORDER[a.category] || 99) - (CATEGORY_ORDER[b.category] || 99));
+
+  // Get metadata
+  const frontmatter = parseFrontmatter(slug);
+  const posMatch = frontmatter.match(/position:\s*"([^"]+)"/);
+  const position = posMatch ? posMatch[1] : '';
+  const compMatch = frontmatter.match(/company:\s*"([^"]+)"/);
+  const company = compMatch ? compMatch[1] : '';
+  const langMatch = frontmatter.match(/lang:\s*"([^"]+)"/);
+  const lang = langMatch ? langMatch[1] : 'de';
+  const isDE = lang !== 'en';
+  const catLabels = isDE ? CATEGORY_LABELS_DE : CATEGORY_LABELS_EN;
+  const applicantName = getApplicantName(slug);
+  const isInitiative = /^initiative:\s*true\s*$/m.test(frontmatter);
+  const initiativeLabel = isDE ? 'Initiativbewerbung' : 'Speculative Application';
+  const displayPosition = isInitiative
+    ? (position ? (isDE ? `${initiativeLabel} als ${position}` : `${initiativeLabel} for ${position}`) : initiativeLabel)
+    : position;
+  const token = getToken(slug);
+  const pdfUrl = token ? `https://tger.me/apply/${slug}/?t=${token}` : `https://tger.me/apply/${slug}`;
+
+  const A4_W = 210 * MM;
+  const A4_H = 297 * MM;
+
+  // --- Step 1: Embed all document pages (scale to max A4 width), track start positions ---
+  const finalPdf = await PDFDocument.create();
+  const docEntries = []; // { doc, startPageIdx, pageCount }
+
+  for (const doc of resolvedDocs) {
+    const effectiveFilename = (!isDE && doc.filenameEn) ? doc.filenameEn : doc.filename;
+    const docPath = resolve(DOCS_DIR, effectiveFilename);
+    try {
+      const docBytes = await readFile(docPath);
+      const srcDoc = await PDFDocument.load(docBytes);
+      const allIndices = Array.from({ length: srcDoc.getPageCount() }, (_, i) => i);
+      const embeddedPages = await finalPdf.embedPdf(docBytes, allIndices);
+      const startPageIdx = finalPdf.getPageCount();
+      for (const ep of embeddedPages) {
+        const srcW = ep.width;
+        const srcH = ep.height;
+        const scale = srcW > A4_W ? A4_W / srcW : 1;
+        const pageW = srcW * scale;
+        const pageH = srcH * scale;
+        const newPage = finalPdf.addPage([pageW, pageH]);
+        newPage.drawPage(ep, { x: 0, y: 0, width: pageW, height: pageH });
+      }
+      docEntries.push({ doc, startPageIdx, pageCount: embeddedPages.length });
+    } catch (err) {
+      console.warn(`  WARN: Could not read ${effectiveFilename}: ${err.message}`);
+    }
+  }
+
+  if (finalPdf.getPageCount() === 0) {
+    console.log(`  SKIP: ${slug}-anlagen.pdf (no pages merged)`);
+    return false;
+  }
+
+  // --- Step 2: Insert cover/TOC page at position 0 ---
+  // All document pages shift by +1 after insertPage(0)
+  const PAGE_OFFSET = 1;
+  const MARGIN = 25 * MM;
+
+  const coverPage = finalPdf.insertPage(0, [A4_W, A4_H]);
+  const font = await finalPdf.embedFont(StandardFonts.Helvetica);
+  const boldFont = await finalPdf.embedFont(StandardFonts.HelveticaBold);
+
+  const blue = rgb(37 / 255, 99 / 255, 235 / 255); // #2563eb
+  const grayDark = rgb(17 / 255, 24 / 255, 39 / 255); // #111827
+  const grayMid = rgb(107 / 255, 114 / 255, 128 / 255); // #6b7280
+  const grayLight = rgb(229 / 255, 231 / 255, 235 / 255); // #e5e7eb
+
+  // Blue header bar (12mm — matches --din-header-bar-height in CSS)
+  coverPage.drawRectangle({ x: 0, y: A4_H - 12 * MM, width: A4_W, height: 12 * MM, color: blue });
+
+  // Title
+  const titleText = isDE ? 'Anlagen' : 'Attachments';
+  coverPage.drawText(titleText, {
+    x: MARGIN,
+    y: A4_H - 36 * MM,
+    size: 26,
+    font: boldFont,
+    color: grayDark,
+  });
+
+  // Subtitle: same logic as cover page — "zur Bewerbung als {position} bei {company}"
+  const applicationPhrase = isInitiative
+    ? (isDE ? `zur ${displayPosition}` : `for ${displayPosition}`)
+    : (displayPosition ? (isDE ? `zur Bewerbung als ${displayPosition}` : `for Application as ${displayPosition}`) : '');
+  const subtitleText = [applicationPhrase, company ? (isDE ? `bei ${company}` : `at ${company}`) : '']
+    .filter(Boolean)
+    .join(' ');
+  if (subtitleText) {
+    coverPage.drawText(subtitleText, { x: MARGIN, y: A4_H - 47 * MM, size: 10, font, color: grayMid });
+  }
+
+  // Applicant name
+  if (applicantName) {
+    coverPage.drawText(applicantName, { x: MARGIN, y: A4_H - 58 * MM, size: 11, font: boldFont, color: grayDark });
+  }
+
+  // Separator line
+  coverPage.drawLine({
+    start: { x: MARGIN, y: A4_H - 67 * MM },
+    end: { x: A4_W - MARGIN, y: A4_H - 67 * MM },
+    thickness: 0.5,
+    color: grayLight,
+  });
+
+  // Footer: URL with slug+token (same as CV/letter PDFs)
+  const footerText = pdfUrl.replace('https://', '');
+  const footerSize = 7.5;
+  const footerW = font.widthOfTextAtSize(footerText, footerSize);
+  coverPage.drawText(footerText, { x: MARGIN, y: 12.5 * MM, size: footerSize, font, color: grayMid });
+  const footerLinkRef = finalPdf.context.register(
+    finalPdf.context.obj({
+      Type: PDFName.of('Annot'),
+      Subtype: PDFName.of('Link'),
+      Rect: finalPdf.context.obj([MARGIN, 12.5 * MM - 2, MARGIN + footerW, 12.5 * MM + footerSize]),
+      Border: finalPdf.context.obj([0, 0, 0]),
+      A: finalPdf.context.obj({ Type: PDFName.of('Action'), S: PDFName.of('URI'), URI: PDFString.of(pdfUrl) }),
+    }),
+  );
+
+  // --- Step 3: Build grouped TOC entries ---
+  // Group by category (preserve sort order)
+  const seen = new Set();
+  const groups = [];
+  for (const entry of docEntries) {
+    const cat = entry.doc.category;
+    if (!seen.has(cat)) {
+      seen.add(cat);
+      groups.push({ cat, label: catLabels[cat] || cat, entries: [] });
+    }
+    groups[groups.length - 1].entries.push(entry);
+  }
+
+  // --- Step 4: Draw TOC rows with clickable GoTo links ---
+  let yPos = A4_H - 77 * MM;
+  const rowH = 9 * MM;
+  const catHeadSize = 7.5;
+  const entrySize = 10;
+  const contentW = A4_W - 2 * MARGIN;
+  const annots = [];
+
+  for (const group of groups) {
+    // Category header
+    coverPage.drawText(group.label.toUpperCase(), {
+      x: MARGIN,
+      y: yPos,
+      size: catHeadSize,
+      font: boldFont,
+      color: grayMid,
+    });
+    yPos -= rowH * 0.9;
+
+    for (const { doc, startPageIdx } of group.entries) {
+      const targetPage = finalPdf.getPage(startPageIdx + PAGE_OFFSET);
+      const displayPageNum = startPageIdx + PAGE_OFFSET + 1; // 1-based display
+
+      // Label: for arbeitszeugnis use issuer only, otherwise name + issuer
+      const docName = (isDE ? doc.name : (doc.nameEn || doc.name)) || doc.filename;
+      const docIssuer = isDE ? doc.issuer : (doc.issuerEn || doc.issuer);
+      const label =
+        doc.category === 'arbeitszeugnis'
+          ? (docIssuer || docName)
+          : docIssuer
+            ? `${docName} — ${docIssuer}`
+            : docName;
+      // Dotted leader line
+      const pageNumStr = String(displayPageNum);
+      const pageNumW = font.widthOfTextAtSize(pageNumStr, entrySize);
+      const minLeader = 6 * MM;
+      const maxLabelW = contentW - pageNumW - minLeader;
+      let truncated = label;
+      if (font.widthOfTextAtSize(label, entrySize) > maxLabelW) {
+        const ellipsisW = font.widthOfTextAtSize('…', entrySize);
+        while (truncated.length > 0 && font.widthOfTextAtSize(truncated, entrySize) > maxLabelW - ellipsisW) {
+          truncated = truncated.slice(0, -1);
+        }
+        truncated += '…';
+      }
+      const labelW = font.widthOfTextAtSize(truncated, entrySize);
+      const leaderStart = MARGIN + labelW + 2 * MM;
+      const leaderEnd = A4_W - MARGIN - pageNumW - 2 * MM;
+      if (leaderEnd > leaderStart) {
+        const dotSpacing = 2.5 * MM;
+        const numDots = Math.floor((leaderEnd - leaderStart) / dotSpacing);
+        for (let d = 0; d < numDots; d++) {
+          coverPage.drawText('.', {
+            x: leaderStart + d * dotSpacing,
+            y: yPos,
+            size: entrySize,
+            font,
+            color: grayLight,
+          });
+        }
+      }
+
+      // Label text (blue, underline effect via link annotation)
+      coverPage.drawText(truncated, { x: MARGIN, y: yPos, size: entrySize, font, color: blue });
+
+      // Page number (right-aligned)
+      coverPage.drawText(pageNumStr, {
+        x: A4_W - MARGIN - pageNumW,
+        y: yPos,
+        size: entrySize,
+        font,
+        color: grayMid,
+      });
+
+      // GoTo link annotation spanning the full row
+      const linkRef = finalPdf.context.register(
+        finalPdf.context.obj({
+          Type: PDFName.of('Annot'),
+          Subtype: PDFName.of('Link'),
+          Rect: finalPdf.context.obj([MARGIN, yPos - 2, MARGIN + contentW, yPos + entrySize]),
+          Border: finalPdf.context.obj([0, 0, 0]),
+          A: finalPdf.context.obj({
+            Type: PDFName.of('Action'),
+            S: PDFName.of('GoTo'),
+            D: finalPdf.context.obj([targetPage.ref, PDFName.of('XYZ'), PDFNull, PDFNull, PDFNull]),
+          }),
+        }),
+      );
+      annots.push(linkRef);
+
+      yPos -= rowH;
+      if (yPos < MARGIN + 10 * MM) break; // safety: don't overflow page
+    }
+
+    yPos -= rowH * 0.5; // extra spacing between categories
+  }
+
+  // Attach all annotations (TOC GoTo links + footer URL) to cover page
+  annots.push(footerLinkRef);
+  coverPage.node.set(PDFName.of('Annots'), finalPdf.context.obj(annots));
+
+  // --- Step 5: PDF outline (bookmarks panel) ---
+  addPdfOutline(finalPdf, groups, PAGE_OFFSET, isDE);
+
+  // --- Step 6: Metadata & save ---
+  const titleSuffix = displayPosition || (isDE ? 'Initiativbewerbung' : 'Speculative Application');
+  finalPdf.setTitle(isDE ? `Anlagen – ${titleSuffix}` : `Attachments – ${titleSuffix}`);
+  finalPdf.setCreator('Astro + pdf-lib');
+
+  const outputPath = resolve(OUTPUT_DIR, `${slug}-anlagen.pdf`);
+  const mergedBytes = await finalPdf.save();
+  await writeFile(outputPath, mergedBytes);
+  console.log(`  OK: ${outputPath.replace(ROOT + '/', '')}`);
+  return true;
+}
+
+/** Add a two-level PDF outline (bookmarks panel) to an Anlagen PDF.
+ *  groups: [{ label, entries: [{ doc, startPageIdx, pageCount }] }]
+ *  PAGE_OFFSET: 1 (cover page is at index 0, documents start at index 1)
+ */
+function addPdfOutline(pdfDoc, groups, PAGE_OFFSET, isDE = true) {
+  if (groups.length === 0) return;
+  const context = pdfDoc.context;
+
+  const docLabel = (doc) => {
+    const name = (isDE ? doc.name : (doc.nameEn || doc.name)) || doc.filename;
+    const issuer = isDE ? doc.issuer : (doc.issuerEn || doc.issuer);
+    return doc.category === 'arbeitszeugnis'
+      ? (issuer || name)
+      : issuer
+        ? `${name} \u2014 ${issuer}`
+        : name;
+  };
+
+  const outlineRootRef = context.nextRef();
+
+  // Pre-create refs for all items (needed for forward references)
+  const topItems = groups.map((group) => ({
+    ref: context.nextRef(),
+    label: group.label,
+    pageIndex: group.entries[0].startPageIdx + PAGE_OFFSET,
+    children: group.entries.map((entry) => ({
+      ref: context.nextRef(),
+      label: docLabel(entry.doc),
+      pageIndex: entry.startPageIdx + PAGE_OFFSET,
+    })),
+  }));
+
+  // Register top-level items
+  for (let i = 0; i < topItems.length; i++) {
+    const item = topItems[i];
+    const page = pdfDoc.getPage(item.pageIndex);
+    const obj = {
+      Title: PDFHexString.fromText(item.label),
+      Parent: outlineRootRef,
+      Dest: context.obj([page.ref, PDFName.of('XYZ'), PDFNull, PDFNull, PDFNull]),
+      Count: item.children.length, // positive = expanded in viewer
+      First: item.children[0].ref,
+      Last: item.children[item.children.length - 1].ref,
+    };
+    if (i > 0) obj.Prev = topItems[i - 1].ref;
+    if (i < topItems.length - 1) obj.Next = topItems[i + 1].ref;
+    context.assign(item.ref, context.obj(obj));
+
+    // Register children
+    for (let j = 0; j < item.children.length; j++) {
+      const child = item.children[j];
+      const childPage = pdfDoc.getPage(child.pageIndex);
+      const childObj = {
+        Title: PDFHexString.fromText(child.label),
+        Parent: item.ref,
+        Dest: context.obj([childPage.ref, PDFName.of('XYZ'), PDFNull, PDFNull, PDFNull]),
+      };
+      if (j > 0) childObj.Prev = item.children[j - 1].ref;
+      if (j < item.children.length - 1) childObj.Next = item.children[j + 1].ref;
+      context.assign(child.ref, context.obj(childObj));
+    }
+  }
+
+  // Root outline dict
+  const totalCount = topItems.reduce((sum, item) => sum + 1 + item.children.length, 0);
+  context.assign(
+    outlineRootRef,
+    context.obj({
+      Type: PDFName.of('Outlines'),
+      Count: totalCount,
+      First: topItems[0].ref,
+      Last: topItems[topItems.length - 1].ref,
+    }),
+  );
+
+  pdfDoc.catalog.set(PDFName.of('Outlines'), outlineRootRef);
+  pdfDoc.catalog.set(PDFName.of('PageMode'), PDFName.of('UseOutlines')); // open bookmarks panel by default
 }
 
 async function waitForServer(url, maxAttempts = 30) {
@@ -316,9 +758,28 @@ async function generateLetterPdf(browser, slug, urlPath, outputPath) {
 
 async function main() {
   const args = process.argv.slice(2);
+  const anlagenOnly = args.includes('--anlagen-only');
   const includeGeneral = args.includes('--all');
   const force = args.includes('--force');
   const targetSlugs = args.filter((a) => !a.startsWith('--'));
+
+  // --anlagen-only: skip build/server/browser, just merge PDFs
+  if (anlagenOnly) {
+    await mkdir(OUTPUT_DIR, { recursive: true });
+    const slugs =
+      targetSlugs.length > 0
+        ? targetSlugs
+        : (await readdir(APPLY_DIR)).filter((f) => f.endsWith('.md')).map((f) => f.replace('.md', ''));
+    for (const slug of slugs) {
+      if (!force && (await isFinalized(slug))) {
+        console.log(`  SKIP: ${slug} (finalized)`);
+        continue;
+      }
+      await generateAnlagenPdf(slug);
+    }
+    console.log('\nDone!');
+    return;
+  }
 
   // Build site
   await buildSite();
@@ -397,10 +858,11 @@ async function main() {
       for (const target of targets) {
         await generatePdf(browser, target.slug, target.url, target.output);
 
-        // Also generate cover letter PDF if applicable
+        // Also generate cover letter PDF and anlagen PDF if applicable
         if (!(target.slug.startsWith('cv-') && target.slug.endsWith('-print'))) {
           const letterOutput = resolve(OUTPUT_DIR, `${target.slug}-letter.pdf`);
           await generateLetterPdf(browser, target.slug, target.url, letterOutput);
+          await generateAnlagenPdf(target.slug);
         }
       }
 

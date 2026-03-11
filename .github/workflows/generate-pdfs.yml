@@ -6,6 +6,8 @@ on:
     paths:
       - 'src/content/apply/**'
       - 'src/data/cv_*.ts'
+      - 'src/data/documents.ts'
+      - 'public/apply/docs/**'
 
 jobs:
   generate-pdfs:

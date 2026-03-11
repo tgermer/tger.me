@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "pdf": "node scripts/generate-pdf.mjs",
+    "pdf:anlagen": "node scripts/generate-pdf.mjs --anlagen-only",
     "pdf:install": "npx playwright install chromium",
     "new-apply": "bash scripts/new-apply.sh",
     "delete-apply": "bash scripts/delete-apply.sh",

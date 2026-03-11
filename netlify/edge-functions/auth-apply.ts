@@ -59,8 +59,8 @@ function clearCookie(): string {
 
 /** Extract the application slug from the URL path. Returns null for overview / non-slug paths. */
 function extractSlug(path: string): string | null {
-  // Matches /apply/<slug>, /apply/<slug>.pdf, /apply/<slug>-letter.pdf, /apply/<slug>-job.pdf
-  const m = path.match(/^\/apply\/([a-z0-9]{4,12})(?:(?:-(?:letter|job))?\.pdf)?(?:\/)?$/);
+  // Matches /apply/<slug>, /apply/<slug>.pdf, /apply/<slug>-letter.pdf, /apply/<slug>-job.pdf, /apply/<slug>-anlagen.pdf
+  const m = path.match(/^\/apply\/([a-z0-9]{4,12})(?:(?:-(?:letter|job|anlagen))?\.pdf)?(?:\/)?$/);
   return m ? m[1] : null;
 }
 
@@ -308,6 +308,12 @@ export default async function (request: Request, context: Context) {
     }
 
     return unauthorizedPage(slug, request);
+  }
+
+  // Protect /apply/docs/* (document attachments) — require session cookie
+  if (path.startsWith('/apply/docs/')) {
+    if (hasSession) return context.next();
+    return new Response('Unauthorized', { status: 401 });
   }
 
   // Anything else under /apply/* — pass through (e.g. OG images)

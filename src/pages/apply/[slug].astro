@@ -6,6 +6,9 @@ import { getCollection } from "astro:content";
 import * as cvDe from "../../data/cv_de";
 import * as cvEn from "../../data/cv_en";
 import signatureSvg from "../../assets/signature.svg?raw";
+import { documents, documentCategories, type DocumentCategory } from "../../data/documents";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>("../../assets/apply/*.{jpg,jpeg,png}", { eager: true });
 
@@ -130,6 +133,24 @@ const formattedResumeDate = isDE ? new Date(date).toLocaleDateString("de-DE", { 
 const pageTitle = `${[coverLabel, coverTitle].filter(Boolean).join(" ")} | ${p.name}`;
 
 const headerTitle = `${p.name} | ${displayPosition}`;
+
+// Resolve document attachments (Anlagen)
+const docIds = resume.data.documents ?? [];
+const resolvedDocs = docIds
+    .map((id) => documents.find((d) => d.id === id))
+    .filter((d): d is NonNullable<typeof d> => d != null);
+
+// Group by category, sorted by category order then date descending
+const groupedDocs = Object.entries(documentCategories)
+    .map(([key, cat]) => ({
+        key: key as DocumentCategory,
+        label: isDE ? cat.label : cat.labelEn,
+        docs: resolvedDocs.filter((d) => d.category === key).sort((a, b) => b.date.localeCompare(a.date)),
+    }))
+    .filter((g) => g.docs.length > 0);
+
+const hasAnlagen = resolvedDocs.length > 0;
+const anlagenPdfExists = hasAnlagen && existsSync(resolve("public/apply", `${resume.slug}-anlagen.pdf`));
 ---
 
 <ResumeLayout title={pageTitle} description={`${displayPosition} – ${company}`} ogImage={`/og/apply/${resume.slug}.jpg`} lang={lang}>
@@ -144,15 +165,19 @@ const headerTitle = `${p.name} | ${displayPosition}`;
                 {hasLetter && (
                     <a href={`/apply/${resume.slug}-letter.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-2.5 sm:px-4 py-1.5 border border-blue-600 text-blue-600 rounded-full hover:bg-blue-50 transition-colors">
                         <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
-                        <span class="hidden sm:inline">{l.letterPdfLabel}</span>
-                        <span class="sm:hidden">{l.letterPdfLabelShort}</span>
+                        {l.letterPdfLabelShort}
                     </a>
                 )}
                 <a href={`/apply/${resume.slug}.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-2.5 sm:px-4 py-1.5 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
                     <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
-                    <span class="hidden sm:inline">{l.downloadLabel}</span>
-                    <span class="sm:hidden">{l.downloadLabelShort}</span>
+                    {l.downloadLabelShort}
                 </a>
+                {anlagenPdfExists && (
+                    <a href={`/apply/${resume.slug}-anlagen.pdf`} target="_blank" class="inline-flex items-center gap-1.5 text-sm px-2.5 sm:px-4 py-1.5 border border-gray-400 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
+                        <Icon name="tabler:file-type-pdf" class="h-4 w-4" />
+                        {isDE ? "Anlagen" : "Attachments"}
+                    </a>
+                )}
             </div>
         </div>
     </div>
@@ -491,6 +516,39 @@ const headerTitle = `${p.name} | ${displayPosition}`;
             )}
         </div>
     </div>
+
+    <!-- ==================== ANLAGEN (Attachments) ==================== -->
+    {hasAnlagen && (
+        <div class="resume-page print:hidden" style="padding: 0 var(--din-page-padding-x) 15mm;">
+            <div class="border-t border-gray-100 pt-8">
+                <div class="mb-5">
+                    <h2 class="resume-heading">{isDE ? "Anlagen" : "Attachments"}</h2>
+                </div>
+                {groupedDocs.map((group) => (
+                    <div class="mb-5">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">{group.label}</h3>
+                        <ul class="space-y-2">
+                            {group.docs.map((doc) => (
+                                <li class="text-sm">
+                                    <span class="flex items-start gap-2">
+                                        <Icon name="tabler:file-type-pdf" class="h-4 w-4 shrink-0 text-blue-400" />
+                                        <span>
+                                            <a href={`/apply/docs/${isDE ? doc.filename : (doc.filenameEn ?? doc.filename)}`} target="_blank" class="text-blue-600 hover:text-blue-800 transition-colors">
+                                                {doc.category === 'arbeitszeugnis' ? ((isDE ? doc.issuer : (doc.issuerEn ?? doc.issuer)) || doc.name) : (isDE ? doc.name : (doc.nameEn ?? doc.name))}
+                                            </a>
+                                            {doc.category !== 'arbeitszeugnis' && doc.issuer && (
+                                                <span class="text-gray-400"> — {isDE ? doc.issuer : (doc.issuerEn ?? doc.issuer)}</span>
+                                            )}
+                                        </span>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )}
 
     <script>
         // Show "back to overview" link only when coming from /apply overview or in dev mode
