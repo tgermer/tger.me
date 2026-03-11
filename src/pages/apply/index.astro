@@ -367,6 +367,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
                                             </a>
+                                            <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                <Icon name="tabler:link" class="h-4 w-4 shrink-0" />Link kopieren
+                                            </button>
                                             <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
                                             </a>
@@ -502,6 +505,9 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                         <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
                                                         </a>
+                                                        <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                            <Icon name="tabler:link" class="h-4 w-4 shrink-0" />Link kopieren
+                                                        </button>
                                                         <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
                                                         </a>
@@ -1009,6 +1015,22 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
         window.addEventListener("afterprint", () => {
             document.querySelectorAll("tr[data-detail]").forEach((el) => el.classList.add("hidden"));
             document.querySelectorAll(".expand-icon").forEach((el) => el.classList.remove("rotate-180"));
+        });
+
+        // --- Copy link to clipboard ---
+        document.querySelectorAll<HTMLButtonElement>("[data-copy-link]").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                const url = btn.getAttribute("data-copy-link");
+                if (!url) return;
+                try {
+                    await navigator.clipboard.writeText(url);
+                    showToast("Link in die Zwischenablage kopiert");
+                } catch {
+                    // Fallback: select text in prompt
+                    window.prompt("Link kopieren:", url);
+                }
+            });
         });
 
         // --- JSON Resume copy to clipboard ---
