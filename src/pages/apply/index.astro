@@ -196,6 +196,10 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                 <Icon name="tabler:file-type-pdf" class="h-4 w-4 text-gray-400" />PDF EN
                             </a>
                             <div class="border-t border-gray-100 my-1"></div>
+                            <a href="https://analytics.thebunnyhill.de/tger.me?f=is,page,/apply/&period=28d" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                <Icon name="tabler:chart-bar" class="h-4 w-4 text-gray-400" />Analytics
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
                             <button data-json-resume={getJsonResume("de")} class="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer">
                                 <Icon name="tabler:braces" class="h-4 w-4 text-gray-400" />JSON Resume DE
                             </button>
@@ -235,11 +239,13 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 <div class="flex gap-1.5 flex-wrap text-xs">
                     <button data-status-filter="all" class="status-filter-btn border border-gray-800 bg-gray-800 text-white px-2.5 py-1 rounded-full transition-colors cursor-pointer">Alle</button>
                     <button data-status-filter="active" class="status-filter-btn border border-gray-300 text-gray-600 hover:bg-gray-50 px-2.5 py-1 rounded-full transition-colors cursor-pointer">Offen</button>
-                    {orderedActiveStatuses.map((status) => (
-                        <button data-status-filter={status} class:list={["status-filter-btn border px-2.5 py-1 rounded-full transition-colors cursor-pointer", "border-gray-300 text-gray-600 hover:bg-gray-50"]}>
-                            {statusLabels[status] || status}
-                        </button>
-                    ))}
+                    {
+                        orderedActiveStatuses.map((status) => (
+                            <button data-status-filter={status} class:list={["status-filter-btn border px-2.5 py-1 rounded-full transition-colors cursor-pointer", "border-gray-300 text-gray-600 hover:bg-gray-50"]}>
+                                {statusLabels[status] || status}
+                            </button>
+                        ))
+                    }
                 </div>
             </div>
 
@@ -332,11 +338,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         )}
                                     </p>
                                 )}
-                                {r.data.notes && (
-                                    <p class="text-xs text-gray-400 mb-2">
-                                        {r.data.notes}
-                                    </p>
-                                )}
+                                {r.data.notes && <p class="text-xs text-gray-400 mb-2">{r.data.notes}</p>}
                                 {history.length > 0 && (
                                     <div data-detail class="hidden border-t border-gray-100 pt-3 mb-2">
                                         <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
@@ -365,51 +367,60 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         </button>
                                         <div class="row-menu hidden absolute left-0 bottom-full mb-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                                             <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
+                                                <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />
+                                                Lebenslauf öffnen
                                             </a>
                                             <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
-                                                <Icon name="tabler:link" class="h-4 w-4 shrink-0" />Link kopieren
+                                                <Icon name="tabler:link" class="h-4 w-4 shrink-0" />
+                                                Link kopieren
                                             </button>
                                             <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
+                                                <Icon name="tabler:download" class="h-4 w-4 shrink-0" />
+                                                CV PDF
                                             </a>
                                             {r.body && r.body.trim().length > 0 && (
                                                 <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                    <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
+                                                    <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />
+                                                    Anschreiben PDF
                                                 </a>
                                             )}
-                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && (
-                                                <div class="border-t border-gray-100 my-1" />
-                                            )}
+                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                    <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />Stellenanzeige
+                                                    <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />
+                                                    Stellenanzeige
                                                 </a>
                                             )}
                                             {r.data.jobUrlArchived && (
                                                 <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                    <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />Stellenanzeige (Archiv)
+                                                    <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />
+                                                    Stellenanzeige (Archiv)
                                                 </a>
                                             )}
                                             {jobPdfExists.has(r.slug) && (
                                                 <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                    <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                    <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />
+                                                    Stellenanzeige (PDF)
                                                 </a>
                                             )}
                                             {r.data.portalUrl && (
                                                 <a href={r.data.portalUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                    <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />Bewerberportal
+                                                    <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />
+                                                    Bewerberportal
                                                 </a>
                                             )}
                                             <div class="border-t border-gray-100 my-1" />
                                             <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
+                                                <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
+                                                {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                             </a>
                                             <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
-                                                <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
+                                                <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />
+                                                JSON Resume kopieren
                                             </button>
-                                            <a href={`https://analytics.thebunnyhill.de/tger.me?page=%2Fapply%2F${r.slug}%2F`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />Analytics
+                                            <a href={`https://analytics.thebunnyhill.de/tger.me?f=is,page,/apply/${r.slug}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />
+                                                Analytics
                                             </a>
                                         </div>
                                     </div>
@@ -473,11 +484,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 </a>
                                                 <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
                                                 <p class="text-gray-500">{r.data.company}</p>
-                                                {r.data.notes && (
-                                                    <p class="text-xs text-gray-400 mt-1">
-                                                        {r.data.notes}
-                                                    </p>
-                                                )}
+                                                {r.data.notes && <p class="text-xs text-gray-400 mt-1">{r.data.notes}</p>}
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="flex items-center gap-1.5">
@@ -506,51 +513,60 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     </button>
                                                     <div class="row-menu hidden absolute right-0 mt-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
                                                         <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                            <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />Lebenslauf öffnen
+                                                            <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />
+                                                            Lebenslauf öffnen
                                                         </a>
                                                         <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
-                                                            <Icon name="tabler:link" class="h-4 w-4 shrink-0" />Link kopieren
+                                                            <Icon name="tabler:link" class="h-4 w-4 shrink-0" />
+                                                            Link kopieren
                                                         </button>
                                                         <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                            <Icon name="tabler:download" class="h-4 w-4 shrink-0" />CV PDF
+                                                            <Icon name="tabler:download" class="h-4 w-4 shrink-0" />
+                                                            CV PDF
                                                         </a>
                                                         {r.body && r.body.trim().length > 0 && (
                                                             <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                                <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />Anschreiben PDF
+                                                                <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />
+                                                                Anschreiben PDF
                                                             </a>
                                                         )}
-                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && (
-                                                            <div class="border-t border-gray-100 my-1" />
-                                                        )}
+                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
                                                         {r.data.jobUrl && (
                                                             <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                                <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />Stellenanzeige
+                                                                <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />
+                                                                Stellenanzeige
                                                             </a>
                                                         )}
                                                         {r.data.jobUrlArchived && (
                                                             <a href={r.data.jobUrlArchived} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                                <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />Stellenanzeige (Archiv)
+                                                                <Icon name="tabler:archive" class="h-4 w-4 shrink-0" />
+                                                                Stellenanzeige (Archiv)
                                                             </a>
                                                         )}
                                                         {jobPdfExists.has(r.slug) && (
                                                             <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                                <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />Stellenanzeige (PDF)
+                                                                <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />
+                                                                Stellenanzeige (PDF)
                                                             </a>
                                                         )}
                                                         {r.data.portalUrl && (
                                                             <a href={r.data.portalUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                                <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />Bewerberportal
+                                                                <Icon name="tabler:door-enter" class="h-4 w-4 shrink-0" />
+                                                                Bewerberportal
                                                             </a>
                                                         )}
                                                         <div class="border-t border-gray-100 my-1" />
                                                         <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />{r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
+                                                            <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
+                                                            {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                                         </a>
                                                         <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
-                                                            <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />JSON Resume kopieren
+                                                            <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />
+                                                            JSON Resume kopieren
                                                         </button>
-                                                        <a href={`https://analytics.thebunnyhill.de/tger.me?page=%2Fapply%2F${r.slug}%2F`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                                                            <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />Analytics
+                                                        <a href={`https://analytics.thebunnyhill.de/tger.me?f=is,page,/apply/${r.slug}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />
+                                                            Analytics
                                                         </a>
                                                     </div>
                                                 </div>
@@ -645,7 +661,6 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             #content {
                 display: block !important;
             }
-
 
             .min-h-screen {
                 min-height: auto !important;
@@ -1012,7 +1027,6 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
             }
         });
 
-
         // --- Print: expand all status histories ---
         window.addEventListener("beforeprint", () => {
             document.querySelectorAll("tr[data-detail]").forEach((el) => el.classList.remove("hidden"));
@@ -1058,6 +1072,5 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                 }
             });
         });
-
     </script>
 </ResumeLayout>
