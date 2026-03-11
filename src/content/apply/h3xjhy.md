@@ -23,6 +23,11 @@ source: "LinkedIn"
 location: "München"
 notes: "Stelle über Christian Wilde (LinkedIn) gesehen. Kontakt 2011 (Praxissemester-Gespräch während BWL-Studium). Aria Djamschidi (Senior Distribution Manager, Apple München) als Referenz angegeben."
 token: "Ud3HEj"
+documents:
+    - "ba-urkunde"
+    # - "ba-zeugnis"
+    - "msc-urkunde"
+    # - "msc-zeugnis"
 # Status-Werte: gespeichert | beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:

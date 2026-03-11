@@ -5,7 +5,7 @@ initiative: true
 # Position: Pflichtfeld bei normaler Bewerbung, optional bei Initiativbewerbung (initiative: true)
 position: "Manager Automations"
 company: "Projekt M Immobilien GmbH"
-lang: "de"
+lang: "en"
 date: 2026-02-26
 cvData: "cv_umjp31"
 signature: true
@@ -19,6 +19,16 @@ salary: ""
 source: ""
 location: "München"
 notes: ""
+documents:
+    - "ba-urkunde"
+    - "ba-zeugnis"
+    - "msc-urkunde"
+    - "msc-zeugnis"
+    - "az-bvs"
+    - "az-hm"
+    - "ios-nanodegree"
+    - "pspo-1"
+    - "psm-1"
 # Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:
