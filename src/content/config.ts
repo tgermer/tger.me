@@ -52,6 +52,7 @@ const applicationStatus = z.enum([
   'zusage',
   'absage',
   'zurückgezogen',
+  'talentpool',
 ]);
 
 const statusEntry = z.object({
