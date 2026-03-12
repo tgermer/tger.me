@@ -88,6 +88,14 @@ export const documents: DocumentEntry[] = [
         issuerEn: "Munich University of Applied Sciences",
     },
     {
+        id: "az-dfx",
+        filename: "2025-09-14--az-dfx.pdf",
+        name: "Arbeitszeugnis",
+        category: "arbeitszeugnis",
+        date: "2025-09-14",
+        issuer: "akdb.digitalfabriX GmbH",
+    },
+    {
         id: "az-bvs",
         filename: "2024-12-31--az-bvs.pdf",
         name: "Arbeitszeugnis",
