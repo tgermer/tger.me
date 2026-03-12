@@ -112,9 +112,36 @@ function getDisplayPosition(data: { initiative?: boolean; position?: string; lan
     return data.position || "";
 }
 
-function buildContactMailto(email: string, position: string, lang: string, contact?: string, salutation?: string) {
+function buildDocsNote(lang: string, slug: string, token?: string, letterBody?: string, hasDocuments?: boolean): string {
+    const tokenParam = token ? `?t=${token}` : "";
+    const pageUrl = `${site.url}/apply/${slug}${tokenParam}`;
+    const hasLetter = letterBody && letterBody.trim().length > 0;
+    if (lang === "de") {
+        const parts: string[] = [];
+        if (hasLetter) parts.push("mein Anschreiben");
+        parts.push("meinen Lebenslauf");
+        if (hasDocuments) parts.push("meine Anlagen");
+        const listing = parts.length === 1 ? parts[0] : parts.slice(0, -1).join(", ") + " und " + parts[parts.length - 1];
+        return `${listing.charAt(0).toUpperCase() + listing.slice(1)} finden Sie unter:\n${pageUrl}`;
+    } else {
+        const parts: string[] = [];
+        if (hasLetter) parts.push("my cover letter");
+        parts.push("my resume");
+        if (hasDocuments) parts.push("my attachments");
+        const listing = parts.length === 1 ? parts[0] : parts.slice(0, -1).join(", ") + " and " + parts[parts.length - 1];
+        return `${listing.charAt(0).toUpperCase() + listing.slice(1)} can be found at:\n${pageUrl}`;
+    }
+}
+
+function buildContactMailto(email: string, position: string, lang: string, contact?: string, salutation?: string, slug?: string, token?: string, letterBody?: string, hasDocuments?: boolean) {
     const greeting = salutation || (lang === "de" ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,") : contact ? `Hello ${contact},` : "Dear Hiring Team,");
-    return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(greeting + "\n\n")}`;
+    const closing = lang === "de" ? `Mit freundlichen Grüßen\n${site.author}` : `Best regards,\n${site.author}`;
+    let body = greeting + "\n\n\n\n\n\n\n";
+    if (slug) {
+        body += buildDocsNote(lang, slug, token, letterBody, hasDocuments) + "\n\n";
+    }
+    body += closing;
+    return `mailto:${email}?subject=${encodeURIComponent(position)}&body=${encodeURIComponent(body)}`;
 }
 
 function stripMarkdown(text: string): string {
@@ -127,12 +154,11 @@ function stripMarkdown(text: string): string {
         .trim();
 }
 
-function buildMailtoUrl(displayPos: string, company: string, slug: string, lang: string, initiative: boolean, position?: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string, token?: string) {
+function buildMailtoUrl(displayPos: string, company: string, slug: string, lang: string, initiative: boolean, position?: string, email?: string, contact?: string, letterBody?: string, source?: string, salutation?: string, token?: string, hasDocuments?: boolean) {
     const subject = `${displayPos} – ${site.author}`;
-    const tokenParam = token ? `?t=${token}` : "";
-    const pdfUrl = `${site.url}/apply/${slug}.pdf${tokenParam}`;
     const greeting = salutation || (lang === "de" ? (contact ? `Hallo ${contact},` : "Sehr geehrte Damen und Herren,") : contact ? `Hello ${contact},` : "Dear hiring team,");
-    const pdfNote = lang === "de" ? `Meinen Lebenslauf finden Sie auch unter:\n${pdfUrl}` : `My resume is also available at:\n${pdfUrl}`;
+
+    const pdfNote = buildDocsNote(lang, slug, token, letterBody, hasDocuments);
     const closing = lang === "de" ? `Mit freundlichen Grüßen\n${site.author}` : `Best regards,\n${site.author}`;
 
     let intro: string;
@@ -339,7 +365,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <span class="text-gray-400">
                                                 {" "}
                                                 ·{" "}
-                                                <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">
+                                                <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.slug, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
                                                     {r.data.contactEmail}
                                                 </a>
                                             </span>
@@ -424,7 +450,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 </a>
                                             )}
                                             <div class="border-t border-gray-100 my-1" />
-                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
                                                 {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                             </a>
@@ -511,7 +537,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 {r.data.contact || <span class="text-gray-300">–</span>}
                                                 {r.data.contactEmail && (
                                                     <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}>
-                                                        <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation)} class="hover:text-blue-600 transition-colors">
+                                                        <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.slug, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
                                                             {r.data.contactEmail}
                                                         </a>
                                                     </p>
@@ -576,7 +602,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                             </a>
                                                         )}
                                                         <div class="border-t border-gray-100 my-1" />
-                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
                                                             {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                                         </a>
