@@ -526,7 +526,7 @@ const attachmentsPdfExists = hasAttachments && existsSync(resolve("public/apply"
                 </div>
                 {groupedDocs.map((group) => (
                     <div class="mb-5">
-                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">{group.label}</h3>
+                        <h3 class="text-sm font-semibold text-gray-400 tracking-widest mb-2">{group.label}</h3>
                         <ul class="space-y-2">
                             {group.docs.map((doc) => (
                                 <li class="text-sm">

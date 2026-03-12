@@ -20,7 +20,8 @@
  */
 
 import { chromium } from 'playwright';
-import { PDFDocument, StandardFonts, rgb, PDFName, PDFArray, PDFString, PDFNull, PDFHexString } from 'pdf-lib';
+import { PDFDocument, rgb, PDFName, PDFArray, PDFString, PDFNull, PDFHexString } from 'pdf-lib';
+import fontkit from '@pdf-lib/fontkit';
 import { spawn } from 'node:child_process';
 import { readdir, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
@@ -113,10 +114,11 @@ function parseDocumentsRegistry() {
     const category = strVal('category');
     const name = strVal('name');
     const nameEn = strVal('nameEn');
+    const date = strVal('date');
     const issuer = strVal('issuer');
     const issuerEn = strVal('issuerEn');
     if (id && filename && category) {
-      entries.push({ id, filename, filenameEn: filenameEn || '', category, name: name || '', nameEn: nameEn || '', issuer: issuer || '', issuerEn: issuerEn || '' });
+      entries.push({ id, filename, filenameEn: filenameEn || '', category, date: date || '', name: name || '', nameEn: nameEn || '', issuer: issuer || '', issuerEn: issuerEn || '' });
     }
   }
   return entries;
@@ -136,19 +138,17 @@ function getApplicantName(slug) {
   }
 }
 
-const CATEGORY_ORDER = { arbeitszeugnis: 1, hochschulausbildung: 2, ausbildungszeugnis: 3, zertifikat: 4, sonstiges: 5 };
+const CATEGORY_ORDER = { arbeitszeugnis: 1, hochschulausbildung: 2, zertifikat: 3, sonstiges: 4 };
 
 const CATEGORY_LABELS_DE = {
   arbeitszeugnis: 'Arbeitszeugnisse',
   hochschulausbildung: 'Hochschulausbildung',
-  ausbildungszeugnis: 'Ausbildungszeugnisse',
   zertifikat: 'Zertifikate',
   sonstiges: 'Sonstiges',
 };
 const CATEGORY_LABELS_EN = {
   arbeitszeugnis: 'Work References',
   hochschulausbildung: 'University Education',
-  ausbildungszeugnis: 'Education Transcripts',
   zertifikat: 'Certificates',
   sonstiges: 'Other',
 };
@@ -167,7 +167,7 @@ async function generateAttachmentsPdf(slug) {
     return false;
   }
 
-  resolvedDocs.sort((a, b) => (CATEGORY_ORDER[a.category] || 99) - (CATEGORY_ORDER[b.category] || 99));
+  resolvedDocs.sort((a, b) => (CATEGORY_ORDER[a.category] || 99) - (CATEGORY_ORDER[b.category] || 99) || (b.date || '').localeCompare(a.date || ''));
 
   // Get metadata
   const frontmatter = parseFrontmatter(slug);
@@ -230,8 +230,12 @@ async function generateAttachmentsPdf(slug) {
   const MARGIN = 25 * MM;
 
   const coverPage = finalPdf.insertPage(0, [A4_W, A4_H]);
-  const font = await finalPdf.embedFont(StandardFonts.Helvetica);
-  const boldFont = await finalPdf.embedFont(StandardFonts.HelveticaBold);
+  finalPdf.registerFontkit(fontkit);
+  const fontPath = resolve(__dirname, 'fonts');
+  const fontBytes = await readFile(resolve(fontPath, 'IBMPlexSans-Regular.ttf'));
+  const boldFontBytes = await readFile(resolve(fontPath, 'IBMPlexSans-SemiBold.ttf'));
+  const font = await finalPdf.embedFont(fontBytes);
+  const boldFont = await finalPdf.embedFont(boldFontBytes);
 
   const blue = rgb(37 / 255, 99 / 255, 235 / 255); // #2563eb
   const grayDark = rgb(17 / 255, 24 / 255, 39 / 255); // #111827
@@ -306,17 +310,16 @@ async function generateAttachmentsPdf(slug) {
   // --- Step 4: Draw TOC rows with clickable GoTo links ---
   let yPos = A4_H - 77 * MM;
   const rowH = 9 * MM;
-  const catHeadSize = 7.5;
   const entrySize = 10;
   const contentW = A4_W - 2 * MARGIN;
   const annots = [];
 
   for (const group of groups) {
     // Category header
-    coverPage.drawText(group.label.toUpperCase(), {
+    coverPage.drawText(group.label, {
       x: MARGIN,
       y: yPos,
-      size: catHeadSize,
+      size: entrySize,
       font: boldFont,
       color: grayMid,
     });
@@ -536,7 +539,10 @@ function startPreviewServer() {
 const MM = 2.8346; // 1mm in PDF points
 
 async function addHeaderFooter(pdfDoc, headerTitle, lang, pdfUrl, startPage = 1) {
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  pdfDoc.registerFontkit(fontkit);
+  const fontPath = resolve(__dirname, 'fonts');
+  const fontBytes = await readFile(resolve(fontPath, 'IBMPlexSans-Regular.ttf'));
+  const font = await pdfDoc.embedFont(fontBytes);
   const fontSize = 7.5;
   const color = rgb(107 / 255, 114 / 255, 128 / 255); // #6b7280
   const linkColor = rgb(107 / 255, 114 / 255, 128 / 255); // same gray for subtle look
