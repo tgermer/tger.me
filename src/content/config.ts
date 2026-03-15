@@ -38,6 +38,7 @@ const blog = defineCollection({
     image: image().optional(),
     imagePosition: z.string().default('center'),
     showContact: z.boolean().default(true),
+    unlisted: z.boolean().default(false),
   }),
 });
 

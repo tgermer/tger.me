@@ -14,10 +14,11 @@ interface Props {
     ogImage?: string;
     ogType?: string;
     lang?: string;
+    noindex?: boolean;
     alternates?: { hreflang: string; href: string }[];
 }
 
-const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/og-image.jpg", ogType = "website", lang = "de", alternates } = Astro.props;
+const { title = "Tristan Germer", description = "Professional information about Tristan Germer, M.Sc.", ogImage = "/assets/og-image.jpg", ogType = "website", lang = "de", noindex = false, alternates } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = ogImage.startsWith("http") ? ogImage : new URL(ogImage, Astro.site).toString();
 
@@ -33,8 +34,8 @@ const langPaths = alternates ? Object.fromEntries(alternates.map((a) => [a.hrefl
         <meta name="description" content={description} />
         <meta name="author" content="Tristan Germer" />
 
-        <!-- Block AI training -->
-        <meta name="robots" content="noai, noimageai" />
+        <!-- Block AI training (+ noindex for unlisted pages) -->
+        <meta name="robots" content={noindex ? "noindex, nofollow, noai, noimageai" : "noai, noimageai"} />
 
         <!-- Canonical URL -->
         <link rel="canonical" href={canonicalUrl.toString()} />

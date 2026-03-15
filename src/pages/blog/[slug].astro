@@ -7,14 +7,20 @@ import { site } from '../../data/site';
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  return sorted.map((post, i) => ({
-    params: { slug: post.slug },
-    props: {
-      post,
-      olderPost: sorted[i + 1] ? { slug: sorted[i + 1].slug, title: sorted[i + 1].data.title } : null,
-      newerPost: sorted[i - 1] ? { slug: sorted[i - 1].slug, title: sorted[i - 1].data.title } : null,
-    },
-  }));
+  const listed = sorted.filter(p => !p.data.unlisted);
+  return sorted.map((post) => {
+    // Unlisted posts have no prev/next navigation; listed posts navigate only between listed posts
+    const navList = post.data.unlisted ? [] : listed;
+    const idx = navList.findIndex(p => p.slug === post.slug);
+    return {
+      params: { slug: post.slug },
+      props: {
+        post,
+        olderPost: idx >= 0 && navList[idx + 1] ? { slug: navList[idx + 1].slug, title: navList[idx + 1].data.title } : null,
+        newerPost: idx >= 0 && navList[idx - 1] ? { slug: navList[idx - 1].slug, title: navList[idx - 1].data.title } : null,
+      },
+    };
+  });
 }
 
 const { post, olderPost, newerPost } = Astro.props;
@@ -23,7 +29,7 @@ const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', mon
 const ogImage = `/og/blog/${post.slug}.jpg`;
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} ogImage={ogImage} ogType="article">
+<BaseLayout title={post.data.title} description={post.data.description} ogImage={ogImage} ogType="article" noindex={post.data.unlisted}>
   <div class="pt-24 pb-16">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <a href="/blog" class="reveal inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline mb-4">
