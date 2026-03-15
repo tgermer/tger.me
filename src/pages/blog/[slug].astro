@@ -46,7 +46,7 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
           <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
         </header>
 
-        <div class="reveal prose max-w-none text-gray-700 dark:text-gray-300">
+        <div class="prose max-w-none text-gray-700 dark:text-gray-300" data-blog-content>
           <Content />
         </div>
 
@@ -82,4 +82,34 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
       </nav>
     </div>
   </div>
+  <script>
+    function wrapBlogSections() {
+      const container = document.querySelector('[data-blog-content]');
+      if (!container) return;
+
+      const children = Array.from(container.children);
+      const sections: Element[][] = [[]];
+
+      for (const child of children) {
+        if (child.tagName === 'H2') {
+          sections.push([]);
+        }
+        sections[sections.length - 1].push(child);
+      }
+
+      container.innerHTML = '';
+      for (const section of sections) {
+        if (section.length === 0) continue;
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('reveal');
+        for (const el of section) {
+          wrapper.appendChild(el);
+        }
+        container.appendChild(wrapper);
+      }
+    }
+
+    wrapBlogSections();
+    document.addEventListener('astro:after-swap', wrapBlogSections);
+  </script>
 </BaseLayout>
