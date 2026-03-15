@@ -1,6 +1,7 @@
 ---
 title: "Was andere in mir sehen – eine Auswertung aus 25 Rückmeldungen"
 date: 2026-03-15
+unlisted: true
 description: "Eine persönliche Fremdwahrnehmung aus psychologischer, psychotherapeutischer und Coaching-Sicht"
 image: ../../assets/Gemini_Generated_Image_o7etbeo7etbeo7et.png
 # imagePosition: center 35%
