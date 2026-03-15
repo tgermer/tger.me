@@ -1,6 +1,6 @@
 ---
 title: "Neuanfang mit Ansage: Warum ich heute den Reset-Knopf drücke"
-date: 2025-03-02
+date: 2026-03-02
 description: "Vom plötzlichen Jobverlust zur beruflichen Neuorientierung: Warum ich trotz technischer Expertise in ein Loch gefallen bin und wie ich heute mit Mentorin Lisa Kurzenberger den Reset-Knopf drücke, um meine wahre Berufung zu finden."
 image: ../../assets/lisa_kurzenberger_portait.jpeg
 imagePosition: center 35%
