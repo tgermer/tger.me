@@ -7,6 +7,7 @@ import { pages } from '../data/pages';
 
 const posts = await getCollection('blog');
 const sorted = posts.filter(p => !p.data.unlisted).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) : [];
 ---
 
 <PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg" revealContent={false}>
@@ -66,4 +67,43 @@ const sorted = posts.filter(p => !p.data.unlisted).sort((a, b) => b.data.date.ge
       );
     })}
   </div>
+
+  {unlisted.length > 0 && (
+    <div class="mt-12 pt-8 border-t border-dashed border-gray-300 dark:border-gray-700">
+      <h2 class="reveal text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">Unlisted</h2>
+      <div class="space-y-3">
+        {unlisted.map((post) => {
+          const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+          return (
+            <a href={`/blog/${post.slug}`} class="reveal group block bg-gray-50 dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800 overflow-hidden hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+              <div class="sm:flex">
+                {post.data.image ? (
+                  <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
+                    <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[400, 800]} sizes="(min-width: 640px) 224px, 100vw" />
+                  </div>
+                ) : (
+                  <div class="h-1.5 sm:h-auto sm:w-1.5 bg-gray-300 dark:bg-gray-700 shrink-0" />
+                )}
+                <div class="p-5 flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-2">
+                    <Icon name="tabler:eye-off" class="h-3.5 w-3.5 text-gray-400" aria-hidden="true" />
+                    <time datetime={post.data.date.toISOString()} class="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-500">
+                      <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
+                      {dateStr}
+                    </time>
+                  </div>
+                  <h3 class="font-semibold text-base leading-snug text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {post.data.title}
+                  </h3>
+                  {post.data.description && (
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{post.data.description}</p>
+                  )}
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )}
 </PageLayout>
