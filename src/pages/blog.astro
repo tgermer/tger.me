@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { pages } from '../data/pages';
+import { site } from '../data/site';
 
 const posts = await getCollection('blog');
 const sorted = posts.filter(p => !p.data.unlisted).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -75,7 +76,8 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
         {unlisted.map((post) => {
           const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
           return (
-            <a href={`/blog/${post.slug}`} class="reveal group block bg-gray-50 dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800 overflow-hidden hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+            <div class="reveal group relative bg-gray-50 dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800 overflow-hidden hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
+              <a href={`/blog/${post.slug}`} class="absolute inset-0 z-0" aria-label={post.data.title} />
               <div class="sm:flex">
                 {post.data.image ? (
                   <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
@@ -91,6 +93,11 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
                       <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
                       {dateStr}
                     </time>
+                    <button type="button" data-copy-url={`${site.url}/blog/${post.slug}`} class="relative z-10 ml-auto inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950 transition-colors cursor-pointer">
+                      <Icon name="tabler:link" class="h-3.5 w-3.5 copy-icon" aria-hidden="true" />
+                      <Icon name="tabler:check" class="h-3.5 w-3.5 check-icon hidden" aria-hidden="true" />
+                      <span class="copy-label">URL kopieren</span>
+                    </button>
                   </div>
                   <h3 class="font-semibold text-base leading-snug text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {post.data.title}
@@ -100,10 +107,38 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
                   )}
                 </div>
               </div>
-            </a>
+            </div>
           );
         })}
       </div>
     </div>
   )}
+  <script>
+    function initCopyButtons() {
+      document.querySelectorAll<HTMLButtonElement>('[data-copy-url]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const url = btn.dataset.copyUrl!;
+          navigator.clipboard.writeText(url).then(() => {
+            const linkIcon = btn.querySelector('.copy-icon')! as HTMLElement;
+            const checkIcon = btn.querySelector('.check-icon')! as HTMLElement;
+            const label = btn.querySelector('.copy-label')! as HTMLElement;
+            linkIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            label.textContent = 'Kopiert!';
+            btn.classList.add('text-green-600', 'dark:text-green-400');
+            setTimeout(() => {
+              linkIcon.classList.remove('hidden');
+              checkIcon.classList.add('hidden');
+              label.textContent = 'URL kopieren';
+              btn.classList.remove('text-green-600', 'dark:text-green-400');
+            }, 2000);
+          });
+        });
+      });
+    }
+    initCopyButtons();
+    document.addEventListener('astro:after-swap', initCopyButtons);
+  </script>
 </PageLayout>
