@@ -1,33 +1,30 @@
 ---
-title: "Was andere in mir sehen – eine Auswertung aus 25 Rückmeldungen"
+title: "Was andere in mir sehen – eine Auswertung aus 31 Rückmeldungen"
 date: 2026-03-15
 unlisted: true
-description: "Eine persönliche Fremdwahrnehmung aus psychologischer, psychotherapeutischer und Coaching-Sicht"
+description: "Eine persönliche Fremdwahrnehmung aus psychologischer, psychotherapeutischer und Coaching-Sicht – entstanden aus 31 Rückmeldungen aus meinem privaten und beruflichen Umfeld."
+categories: [Reflexion, Coaching, Persönlichkeitsentwicklung]
+tags: [Fremdwahrnehmung, Stärken, Coaching, Psychologie, Selbstreflexion]
 image: ../../assets/Gemini_Generated_Image_o7etbeo7etbeo7et.png
-# imagePosition: center 35%
 ---
+
+# Was andere in mir sehen – eine Auswertung aus 31 Rückmeldungen
 
 _Eine persönliche Fremdwahrnehmung aus psychologischer, psychotherapeutischer und Coaching-Sicht._
 
 ![Was lange wie Widerspruch wirkte, kann auch Zusammenhang sein. Illustration mit Gemini.](../../assets/Gemini_Generated_Image_o7etbeo7etbeo7et.png) _Was lange wie Widerspruch wirkte, kann auch Zusammenhang sein. Illustration mit Gemini._
 
-## Wie diese Auswertung entstanden ist
+## Wie dieser Text entstanden ist
 
-Die Auswertung dieses Beitrags wurde mit Unterstützung von **ChatGPT** erstellt. Ich habe dafür nicht nur die anonymen Rückmeldungen aus meiner Umfrage zur Verfügung gestellt, sondern auch zusätzlichen Kontext mitgegeben, damit die Antworten differenzierter eingeordnet werden konnten.
+Diesen Text habe ich nicht komplett allein geschrieben. Für die Auswertung der Rückmeldungen habe ich **ChatGPT** genutzt – nicht, um mir ein fertiges Urteil über mich geben zu lassen, sondern um die vielen Antworten strukturiert zu sortieren, Muster zu erkennen und die Ergebnisse sprachlich zu verdichten.
 
-Dazu gehörten:
+Ich habe dafür den Fragebogen, die anonymen Antworten, die Einordnung nach Beziehungstyp und Kontaktverhältnis sowie zusätzliche Kontextinformationen eingebracht. Außerdem habe ich beschrieben, aus welcher Perspektive ich die Auswertung lesen möchte: **psychologisch, psychotherapeutisch und aus Coaching-Sicht**.
 
-- die Fragen des ursprünglichen Fragebogens
-- die Zuordnung der Rückmeldungen nach **Beziehungstyp**
-- die Unterscheidung nach **Kontaktverhältnis**
-- die Beschreibung, wie die einzelnen Beziehungskategorien zu verstehen sind
-- die Bitte, die Gesamtauswertung aus **psychologischer, psychotherapeutischer und Coaching-Sicht** zu formulieren
-
-ChatGPT hat auf dieser Grundlage wiederkehrende Themen gebündelt, Unterschiede zwischen den Gruppen herausgearbeitet und die Ergebnisse in eine zusammenhängende Sprache gebracht. Die Deutung bleibt dabei eine **qualitative, KI-gestützte Reflexion** – keine Diagnose und keine wissenschaftliche Auswertung.
+ChatGPT hat daraus keine Diagnose erstellt, sondern eine **qualitative Interpretation wiederkehrender Themen** formuliert. Der Text ist also weder eine wissenschaftliche Studie noch eine therapeutische Befundung, sondern eine reflektierte, KI-gestützte Auswertung von Fremdfeedback.
 
 ## Datengrundlage und Einordnung
 
-Die Grundlage dieses Beitrags bildet eine anonyme Umfrage in meinem persönlichen und beruflichen Umfeld. Zum Zeitpunkt dieser Auswertung lagen **25 Rückmeldungen** vor. Die Antworten kamen aus unterschiedlichen Beziehungskontexten, darunter Menschen aus meinem **innersten Kreis**, meiner **Familie**, meinem **Freundes- und Bekanntenkreis** sowie **Wegbegleiter und Arbeitskolleg:innen**.
+Die Grundlage dieses Beitrags bildet eine anonyme Umfrage in meinem persönlichen und beruflichen Umfeld. Zum Zeitpunkt dieser Auswertung lagen **31 Rückmeldungen** vor. Die Antworten kamen aus unterschiedlichen Beziehungskontexten, darunter Menschen aus meinem **innersten Kreis**, meiner **Familie**, meinem **Freundes- und Bekanntenkreis** sowie **Wegbegleiter und Arbeitskolleg:innen**.
 
 Die Rückmeldungen wurden außerdem nach Beziehungstyp und Kontaktverhältnis eingeordnet, um Unterschiede zwischen Nähe, Alltagserleben und Außenwirkung besser sichtbar zu machen.
 
@@ -35,7 +32,15 @@ Diese Auswertung ist **qualitativ** zu verstehen. Sie ist **keine wissenschaftli
 
 Mich interessiert dabei weniger, ob jede einzelne Formulierung „objektiv wahr“ ist. Spannend ist vor allem, **welches Bild entsteht, wenn viele unterschiedliche Menschen auf mich schauen** – aus Nähe, aus Distanz, privat und beruflich.
 
-Die Struktur der Auswertung orientiert sich an den vier Fragen des Fragebogens: Wofür bin ich eine „First-Call“-Person, welche Anekdoten oder konkreten Situationen fallen anderen zu mir ein, welche Stärken sehen sie in mir und wann erleben sie mich als besonders „in meinem Element“.
+Die Struktur der Auswertung orientiert sich an den vier Fragen des Fragebogens:
+
+> **Wofür bin ich eine „First-Call“-Person?** In welchen Situationen würdest du mich zu Rate ziehen oder um meine Unterstützung bitten? Warum ausgerechnet mich? (z. B. technischer Rat, emotionales Feedback, Organisation, kreatives Brainstorming…)
+
+> **Gibt es eine Geschichte oder ein Erlebnis, das mich gut charakterisiert?** Ein Moment, in dem du dachtest: „Typisch Tristan!“ (Muss keine große Sache sein, eine kleine Anekdote reicht völlig). Hier sind einige Impulse zur Inspiration. Du kannst diese Begriffe nutzen oder eigene wählen: Kreativität • Neugier • Urteilsvermögen • Liebe zum Lernen • Weisheit • Mut • Ausdauer • Ehrlichkeit • Begeisterung • Bindungsfähigkeit • Freundlichkeit • Soziale Intelligenz • Teamwork • Fairness • Führungsstärke • Vergebungsbereitschaft • Bescheidenheit • Vorsicht • Selbstregulation • Sinn für das Schöne • Dankbarkeit • Hoffnung • Humor • Spiritualität
+
+> **Welche 5 Stärken siehst du in mir – und warum?** Nenne mir bitte spontan 5 Begriffe. Es wäre eine riesige Hilfe, wenn du zu jeder Stärke kurz schreibst: ‚Warum?‘ oder ‚Wann ist dir das aufgefallen?‘ . Ein kurzer Satz reicht völlig!
+
+> **Wann hast du mich schon „in meinem Element“ erlebt?** Wann wirkte ich auf dich besonders lebendig, fokussiert oder sicher? Was habe ich da gerade getan?
 
 ## Warum ich diese Auswertung mache
 
@@ -62,11 +67,11 @@ Gerade in einer Zeit, in der viele Menschen auf Leistung, Rollen oder Lebensläu
 
 ## Die Verteilung der Rückmeldungen
 
-Zum Zeitpunkt dieser Auswertung verteilen sich die 25 Rückmeldungen wie folgt:
+Zum Zeitpunkt dieser Auswertung verteilen sich die 31 Rückmeldungen wie folgt:
 
 ### Nach Beziehungstyp
 
-- **Wegbegleiter & Bekannte:** 17
+- **Wegbegleiter & Bekannte:** 23
 - **Familie:** 3
 - **Innerster Kreis:** 3
 - **Enge Freunde:** 1
@@ -74,8 +79,8 @@ Zum Zeitpunkt dieser Auswertung verteilen sich die 25 Rückmeldungen wie folgt:
 
 ### Nach Kontaktverhältnis
 
-- **Freund/Bekannte:** 12
-- **Arbeitskollege:** 8
+- **Freund/Bekannte:** 16
+- **Arbeitskollege:** 10
 - **Familie:** 4
 - **Nicht angegeben:** 1
 
@@ -115,6 +120,8 @@ Parallel dazu taucht sehr häufig auf, dass ich zuhören kann, für andere da bi
 
 Ich wirke also offenbar nicht wie jemand, der ehrlich, aber schroff ist. Eher entsteht das Bild eines Menschen, der **klar und gleichzeitig menschlich anschlussfähig** ist.
 
+Neu hinzu kommt in mehreren Rückmeldungen noch deutlicher der Eindruck, dass ich gerade bei sensiblen, persönlichen oder emotional anspruchsvollen Themen als Ansprechpartner wahrgenommen werde. Dabei scheint nicht nur Empathie wichtig zu sein, sondern auch die Erfahrung, dass ich zuhöre, ohne vorschnell zu urteilen. Das verstärkt das Bild einer eher feinfühligen, emotional sicheren Präsenz.
+
 Aus psychotherapeutischer Sicht spricht das für eine gute Beziehungsfähigkeit. Vor allem die Rückmeldungen aus dem inneren Kreis betonen, dass ich nicht nachtragend bin, mich entschuldigen kann und eher versöhnlich wirke. Das sind Hinweise auf emotionale Reife, auf Bindungsfähigkeit und auf eine gewisse Tragfähigkeit im Kontakt.
 
 ### Kreativität, Ideenreichtum und gestalterische Energie
@@ -122,6 +129,8 @@ Aus psychotherapeutischer Sicht spricht das für eine gute Beziehungsfähigkeit.
 Ein weiteres starkes Motiv ist Kreativität. Ich werde von anderen als jemand erlebt, der Ideen hat, neue Wege sieht, kreativ denkt und gestaltet. Diese Kreativität wird nicht als bloße Spontaneität beschrieben, sondern oft im Zusammenhang mit Lösungsfindung, Projekten oder praktischer Umsetzung.
 
 Psychologisch betrachtet geht es hier um mehr als ein „kreatives Hobby“. Es deutet auf **mentale Beweglichkeit** hin. Offenbar neige ich dazu, Probleme nicht nur linear zu betrachten, sondern auch querzudenken, Möglichkeiten zu sehen und Neues zu kombinieren. Das ist oft eine wichtige Ressource in Rollen, die zwischen Struktur und Innovation vermitteln.
+
+Die neueren Rückmeldungen machen außerdem deutlicher, dass Kreativität bei mir nicht nur mit Ideen oder Problemlösung verbunden wird, sondern auch mit einem Sinn für Gestaltung, Ästhetik und gute Form. Technik und Kreativität scheinen in meiner Wirkung also nicht getrennt aufzutreten, sondern oft zusammen.
 
 ### Neugier, Offenheit und Lernorientierung
 
@@ -135,29 +144,45 @@ Viele Rückmeldungen betonen, dass ich Dinge zu Ende bringe, nicht schnell aufge
 
 Im Coaching ist das ein wichtiger Befund, weil es zeigt: Kreativität ist bei mir offenbar nicht nur spontan, sondern auch tragfähig. Es geht nicht nur um Ideen, sondern auch um die Bereitschaft, Arbeit, Zeit und Ernsthaftigkeit in gute Ergebnisse zu investieren.
 
+### Hilfsbereitschaft, Verlässlichkeit und Großzügigkeit
+
+Ein weiteres Motiv, das sich in den neueren Rückmeldungen noch klarer zeigt, ist eine sehr konkrete Form von Hilfsbereitschaft. Gemeint ist nicht nur ein allgemeines „nett sein“, sondern eine spürbare Bereitschaft, wirklich da zu sein, mitzudenken, zu unterstützen und nicht halbherzig auszuweichen.
+
+Das verstärkt den Eindruck, dass ich nicht nur als kompetent, sondern auch als verlässlich erlebt werde. Gerade im Zusammenspiel mit Ehrlichkeit und Empathie entsteht dadurch ein Bild von jemandem, an den man sich mit echten Anliegen wenden kann.
+
+### Menschen verbinden, beruhigen und Räume halten
+
+Neu und besonders spannend ist für mich ein weiterer Aspekt: Einige Rückmeldungen beschreiben mich nicht nur als guten Gesprächspartner im 1:1, sondern als jemanden, der Menschen zusammenbringen, Stimmungen beruhigen und Gruppen eher verbinden kann.
+
+Das weist auf eine soziale Qualität hin, die über bloße Sympathie hinausgeht. Es geht eher um **soziale Moderation**, um das Schaffen eines guten Rahmens, um das Gefühl, dass durch meine Anwesenheit Verbindung entstehen kann.
+
 ## Wofür Menschen mich als „First-Call“-Person erleben
 
 Die Frage, wofür jemand eine „First-Call“-Person ist, ist psychologisch besonders spannend. Sie zeigt nicht, was andere theoretisch nett an mir finden, sondern **wofür sie mich innerlich bereits abgespeichert haben**.
 
-Hier zeigen sich drei größere Felder.
+Hier zeigen sich vier größere Felder.
 
-### 1. Technik, IT, Apps, Smart Home, KI und praktische Problemlösung
+### 1. Technik, IT, Apps, Smart Home, Apple und praktische Problemlösung
 
 Das ist das sichtbarste Feld. Viele Menschen verbinden mich spontan mit technischer Kompetenz, Verständnis, Rat und Umsetzungsfähigkeit. Ich werde also nicht nur als interessiert wahrgenommen, sondern als **wirksam**.
 
 Das deutet darauf hin, dass andere mir zutrauen, Komplexität zu verstehen und in praktikable Lösungen zu übersetzen. Es geht nicht bloß um Wissen, sondern um Anwendbarkeit.
 
-### 2. Emotionaler Austausch und reflektiertes Feedback
+### 2. Emotionaler Austausch, sensible Themen und reflektiertes Feedback
 
-Fast ebenso stark bin ich für viele jemand, an den man sich für emotionalen Austausch, Rat, Reflexion oder gedankliche Klärung wenden würde. Das ist ein bemerkenswerter Befund, weil damit neben Sachkompetenz auch **psychische Resonanz** verbunden wird.
+Fast ebenso stark bin ich für viele jemand, an den man sich für emotionalen Austausch, Rat, Reflexion oder gedankliche Klärung wenden würde. Dazu kommen inzwischen noch deutlicher sensible, feinfühlige und sehr persönliche Themen.
 
-Menschen scheinen also nicht nur zu denken: „Tristan kann mir ein technisches Problem erklären“, sondern auch: „Mit Tristan kann ich über etwas sprechen, das mich beschäftigt.“
+Bemerkenswert ist dabei nicht nur die Empathie, sondern auch das Motiv des **Nicht-Verurteilens**. Menschen scheinen sich bei mir verstanden zu fühlen, ohne sich sofort rechtfertigen zu müssen.
 
-### 3. Kreatives Brainstorming und Ideenfindung
+### 3. Kreatives Brainstorming, Design und Ideenfindung
 
-Ein drittes Feld ist das kreative Mitdenken. Ich werde als jemand erlebt, der Ideen hat, Zusammenhänge erkennt, Perspektiven eröffnet und nicht nur reagiert, sondern Impulse gibt.
+Ein drittes Feld ist das kreative Mitdenken. Ich werde als jemand erlebt, der Ideen hat, Zusammenhänge erkennt, Perspektiven eröffnet und nicht nur reagiert, sondern Impulse gibt. Neu dazu kommt sichtbarer ein Gespür für Design, Ästhetik und gute Gestaltung.
 
-Wenn man diese drei Bereiche zusammenzieht, ergibt sich kein eindimensionales Bild wie „der Techniktyp“ oder „der gute Zuhörer“, sondern eher dieses:
+### 4. Prozessverbesserung, Vision und Umsetzung
+
+Schließlich zeigt sich auch, dass ich nicht nur kleine Probleme löse, sondern offenbar gern über bessere Abläufe, neue Lösungen und weiterführende Möglichkeiten nachdenke. Das geht in Richtung Prozessgestaltung, Verbesserung und gelegentlich sogar kleinerer Visionen davon, wie etwas eigentlich besser funktionieren könnte.
+
+Wenn man diese vier Bereiche zusammenzieht, ergibt sich kein eindimensionales Bild wie „der Techniktyp“ oder „der gute Zuhörer“, sondern eher dieses:
 
 **Ich werde als reflektierter Problemlöser wahrgenommen – jemand, der im Sachlichen wie im Menschlichen denken kann.**
 
@@ -171,12 +196,14 @@ Ich wirke offenbar besonders in meinem Element, wenn ich:
 - an Projekten baue oder tüftele
 - Dinge erkläre oder vermittle
 - kreativ gestalte
-- repariere, schraube oder etwas funktional besser mache
+- repariere, optimiere oder etwas funktional besser mache
+- neue Ideen anstoße und Visionen greifbar mache
+- Menschen in guten Austausch bringe
 
 Das Muster ist eindeutig:  
 **Ich bin dann besonders bei mir, wenn Denken und Tun zusammenkommen.**
 
-Das ist ein wichtiger Coaching-Befund. Manche Menschen wirken am stärksten in reinen Beziehungssituationen, andere in reinen Leistungssituationen. Bei mir scheint die größte Lebendigkeit dort zu entstehen, wo ich **Komplexität verstehe, in Handlung übersetze und etwas Konkretes daraus mache**.
+Neu hinzu kommt der Eindruck, dass ich nicht nur im Lösen und Umsetzen, sondern auch im Anstoßen, Verbinden und gemeinsamen Weiterdenken besonders lebendig wirke. Das erweitert das Bild vom Tüftler hin zu jemandem, der auch Räume für Ideen, Austausch und gemeinsames Erleben schafft.
 
 Das spricht dafür, dass ich langfristig eher in Kontexten aufblühe, in denen Gestaltungsspielraum, Problemlösung und sichtbare Wirksamkeit zusammenkommen.
 
@@ -184,7 +211,7 @@ Das spricht dafür, dass ich langfristig eher in Kontexten aufblühe, in denen G
 
 ### Wegbegleiter & Bekannte
 
-Diese Gruppe ist zahlenmäßig am stärksten. Hier dominieren Ehrlichkeit, Offenheit, Kreativität, Neugier, Klarheit und sichtbare Kompetenz. Hinzu kommen Aspekte wie Vernetzung, Prinzipientreue und Selbstbewusstsein.
+Diese Gruppe ist zahlenmäßig am stärksten. Hier dominieren Ehrlichkeit, Offenheit, Kreativität, Neugier, Klarheit und sichtbare Kompetenz. Hinzu kommen durch die neueren Antworten noch deutlicher Humor, Beruhigung, Verbindungskraft, Designgespür, Teamfähigkeit und eine gewisse Visionierungsstärke.
 
 Das bedeutet: Schon aus mittlerer Distanz ist offenbar relativ schnell sichtbar, dass ich **ein eigenes Profil** habe. Ich wirke nicht austauschbar, sondern eher wie jemand mit Haltung, Ideen und Präsenz.
 
@@ -219,13 +246,15 @@ Mit anderen Worten: In enger Beziehung wirke ich offenbar auf andere nicht nur i
 
 ### Arbeitskolleg:innen
 
-Hier stehen Klarheit, Kreativität, Neugier, technische Kompetenz und Lösungsorientierung besonders im Vordergrund. Das spricht für eine starke berufliche Außenwirkung: Ich falle offenbar nicht nur fachlich auf, sondern auch als denkender, eigenständiger Mensch.
+Hier stehen Klarheit, Kreativität, Neugier, technische Kompetenz und Lösungsorientierung besonders im Vordergrund. Durch die neueren Rückmeldungen kommen jetzt noch stärker Teamwork auf Augenhöhe, Prozessgestaltung, Wertschätzung, Dankbarkeit und die Fähigkeit hinzu, Visionen nicht nur zu formulieren, sondern auch in die Umsetzung zu bringen.
 
-Coaching-seitig ist das bedeutsam, weil es zeigt, dass meine Persönlichkeit im Arbeitskontext nicht verschwindet. Viele Menschen wirken im Beruf deutlich angepasster oder flacher als privat. Bei mir scheint ein wesentlicher Teil meines Eigenprofils auch dort sichtbar zu bleiben.
+Das spricht für eine starke berufliche Außenwirkung: Ich falle offenbar nicht nur fachlich auf, sondern auch als denkender, eigenständiger und kooperativer Mensch.
 
 ### Freund:innen und Bekannte
 
-Im Freundes- und Bekanntenkreis treten Wärme, Empathie, Ehrlichkeit, Mut, Offenheit und Verlässlichkeit stärker hervor. Hier wird der zwischenmenschliche Teil meines Profils besonders sichtbar.
+Im Freundes- und Bekanntenkreis treten Wärme, Empathie, Ehrlichkeit, Mut, Offenheit und Verlässlichkeit stärker hervor. Neu deutlicher sichtbar werden außerdem Feinfühligkeit, Nicht-Verurteilen, Verbindungskraft, Designinteresse und eine sehr konkrete Hilfsbereitschaft.
+
+Hier wird also besonders sichtbar, dass mein Profil nicht nur aus Kompetenz, sondern auch aus menschlicher Resonanz besteht.
 
 ### Familie
 
@@ -245,6 +274,7 @@ Bei mir taucht immer wieder eine andere Kombination auf:
 - Kreativität **und** Ausdauer
 - technische Kompetenz **und** menschliche Zugänglichkeit
 - Direktheit **und** Versöhnlichkeit
+- Vision **und** praktische Umsetzung
 
 Das spricht für eine gewisse psychische Reife. Nicht im Sinne von Perfektion, sondern im Sinne einer gewissen **Integration**. Meine Anteile scheinen nicht völlig gegeneinander zu arbeiten, sondern eher gemeinsam wirksam zu werden.
 
@@ -263,6 +293,8 @@ Die Rückmeldungen legen nahe, dass ich viel Lebendigkeit und Selbstwert aus fol
 - Dasein für andere
 - Ehrlichkeit und innere Stimmigkeit
 - Dinge in Ordnung bringen
+- Menschen verbinden
+- Ideen in eine Form bringen
 
 Das ist grundsätzlich sehr kraftvoll. Gleichzeitig liegt darin oft auch eine typische Spannung. Menschen mit diesem Profil werden von anderen schnell als stark, hilfreich und kompetent erlebt. Das kann dazu führen, dass ihre verletzlichen, suchenden oder erschöpften Seiten weniger gesehen werden.
 
@@ -306,6 +338,19 @@ Ich scheine besonders stark zu sein, wenn ich nicht nur etwas „mache“, sonde
 - zwischen Idee und Umsetzung
 - zwischen Problem und Struktur
 - zwischen Gefühl und Reflexion
+- zwischen Vision und konkreter Machbarkeit
+
+## Worin ich mich selbst besonders wiedererkenne
+
+Was mich an dieser Auswertung besonders berührt hat, war nicht nur, dass ich mich in vielen der beschriebenen Stärken wiederfinde. Fast noch stärker war für mich die Erkenntnis, dass sich darin auch ein innerer Konflikt zeigt, den ich schon lange kenne.
+
+Ich habe an vielen unterschiedlichen Dingen ehrlich Freude. Technik, kreative Gestaltung, Problemlösung, reflektierte Gespräche, praktische Umsetzung, Lernen, Erklären, neue Ideen – vieles davon ist nicht nur ein loses Interesse, sondern etwas, das mich wirklich lebendig macht.
+
+Genau das ist einerseits eine Stärke. Andererseits macht es Orientierung nicht unbedingt leichter. Denn wenn mehrere Richtungen gleichzeitig stimmig wirken, entsteht schnell das Gefühl, sich entscheiden zu müssen, obwohl man sich in mehr als einer Welt zu Hause fühlt.
+
+Vielleicht liegt mein Konflikt deshalb gar nicht darin, dass ich zu wenig kann oder zu wenig weiß, was ich will. Vielleicht liegt er eher darin, dass ich **mehrere echte Begabungen und Interessen gleichzeitig in mir trage** – und noch nicht vollständig gelernt habe, daraus ein stimmiges Ganzes zu bauen.
+
+Gerade deshalb war diese Auswertung für mich so aufschlussreich. Sie zeigt mir nicht nur, was andere als meine Stärken wahrnehmen. Sie zeigt mir auch, dass mein inneres Spannungsfeld nicht zufällig ist. Es hängt offenbar eng mit genau den Qualitäten zusammen, die andere an mir besonders deutlich sehen.
 
 ## Mögliche blinde Flecken
 
@@ -322,7 +367,7 @@ Gerade das ist coaching-relevant. Viele Menschen versuchen, sich selbst zu verei
 
 Wenn ich mein Fremdbild in eine zusammenhängende Charakterbeschreibung übersetzen müsste, würde ich es so formulieren:
 
-Ich wirke auf andere wie ein Mensch mit klarer innerer Linie, ausgeprägter Neugier und echter menschlicher Resonanz. Menschen erleben mich als ehrlich und direkt, aber nicht kalt; als kreativ und ideenreich, aber nicht beliebig; als technisch stark und lösungsorientiert, aber nicht abgehoben. In engeren Beziehungen scheine ich zusätzlich eine versöhnliche, tragende und geduldige Qualität zu haben. Besonders lebendig und authentisch wirke ich offenbar dann, wenn ich etwas verstehe, strukturiere, erkläre, gestalte oder praktisch löse. Meine Stärke liegt nicht nur in Einzelkompetenzen, sondern in einer eher seltenen Verbindung von Denken, Fühlen und Umsetzen.
+Ich wirke auf andere wie ein Mensch mit klarer innerer Linie, ausgeprägter Neugier und echter menschlicher Resonanz. Menschen erleben mich als ehrlich und direkt, aber nicht kalt; als kreativ und ideenreich, aber nicht beliebig; als technisch stark und lösungsorientiert, aber nicht abgehoben. Hinzu kommt offenbar eine verbindende, beruhigende und nicht wertende Qualität, die gerade in sensiblen oder persönlichen Themen spürbar wird. In engeren Beziehungen scheine ich zusätzlich eine versöhnliche, tragende und geduldige Seite zu haben. Besonders lebendig und authentisch wirke ich offenbar dann, wenn ich etwas verstehe, strukturiere, erkläre, gestalte, verbinde oder praktisch löse. Meine Stärke liegt nicht nur in Einzelkompetenzen, sondern in einer eher seltenen Verbindung von Denken, Fühlen und Umsetzen.
 
 ## Eine Verdichtung aus Coaching-Sicht
 
@@ -346,7 +391,7 @@ Aus Coaching-Sicht ergeben sich für mich daraus einige spannende Fragen:
 
 ## Vorläufiges Fazit
 
-Das Gesamtbild dieser 25 Rückmeldungen ist ungewöhnlich konsistent. Es zeigt keinen bloßen Sympathie-Eindruck, sondern ein Profil mit Wiedererkennungswert.
+Das Gesamtbild dieser 31 Rückmeldungen ist ungewöhnlich konsistent. Es zeigt keinen bloßen Sympathie-Eindruck, sondern ein Profil mit Wiedererkennungswert.
 
 Der rote Faden lautet für mich:
 
