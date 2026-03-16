@@ -312,7 +312,7 @@ details[open] > .blog-toc-toggle::before {
     top: 0;
     bottom: 0;
     right: calc(100% + 1.5rem);
-    width: 13rem;
+    width: 16rem;
     border: none;
     border-radius: 0;
     background: none;
@@ -330,11 +330,6 @@ details[open] > .blog-toc-toggle::before {
     top: 5rem;
     max-height: calc(100vh - 6rem);
     overflow-y: auto;
-  }
-
-  /* Force details open and hide toggle chevron */
-  .blog-toc details:not([open]) > .blog-toc-list {
-    display: block;
   }
 
   .blog-toc-toggle {

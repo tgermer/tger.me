@@ -183,4 +183,33 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
     initScrollSpy();
     document.addEventListener('astro:after-swap', initScrollSpy);
   </script>
+  <script>
+    function initTocDetails() {
+      const details = document.querySelector('.blog-toc details') as HTMLDetailsElement | null;
+      if (!details) return;
+
+      const mq = window.matchMedia('(min-width: 1600px)');
+
+      function sync() {
+        if (mq.matches) {
+          details!.open = true;
+          details!.addEventListener('toggle', forceOpen);
+        } else {
+          details!.removeEventListener('toggle', forceOpen);
+        }
+      }
+
+      function forceOpen() {
+        if (mq.matches && !details!.open) {
+          details!.open = true;
+        }
+      }
+
+      mq.addEventListener('change', sync);
+      sync();
+    }
+
+    initTocDetails();
+    document.addEventListener('astro:after-swap', initTocDetails);
+  </script>
 </BaseLayout>
