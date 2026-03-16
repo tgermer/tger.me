@@ -1,5 +1,5 @@
 ---
-title: "Was andere in mir sehen – eine Auswertung aus 31 Rückmeldungen"
+title: "Was andere in mir sehen – eine Auswertung aus 31 Rückmeldungen"
 date: 2026-03-15
 unlisted: true
 description: "Eine persönliche Fremdwahrnehmung aus psychologischer, psychotherapeutischer und Coaching-Sicht – entstanden aus 31 Rückmeldungen aus meinem privaten und beruflichen Umfeld."
