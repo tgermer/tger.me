@@ -24,7 +24,9 @@ export async function getStaticPaths() {
 }
 
 const { post, olderPost, newerPost } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+const showToc = tocHeadings.length >= 4;
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const ogImage = `/og/blog/${post.slug}.jpg`;
 ---
@@ -46,15 +48,36 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
           <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
         </header>
 
-        <div class="prose max-w-none text-gray-700 dark:text-gray-300" data-blog-content>
-          <Content />
-        </div>
+        <div class:list={['blog-layout', { 'has-toc': showToc }]}>
+          {showToc && (
+            <nav class="blog-toc" aria-label="Inhaltsverzeichnis">
+              <div class="blog-toc-sticky">
+                <details>
+                  <summary class="blog-toc-toggle">Inhaltsverzeichnis</summary>
+                  <ol class="blog-toc-list">
+                    {tocHeadings.map(h => (
+                      <li class={h.depth === 3 ? 'blog-toc-h3' : undefined}>
+                        <a href={`#${h.slug}`}>{h.text}</a>
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+              </div>
+            </nav>
+          )}
 
-        {post.data.showContact && (
-          <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
-            Fragen oder Anmerkungen? Schreib mir an <a href={`mailto:${site.email}`} class="text-blue-600 dark:text-blue-400 hover:underline">{site.email}</a>
-          </p>
-        )}
+          <div>
+            <div class="prose max-w-none text-gray-700 dark:text-gray-300" data-blog-content>
+              <Content />
+            </div>
+
+            {post.data.showContact && (
+              <p class="mt-8 text-sm text-gray-500 dark:text-gray-400">
+                Fragen oder Anmerkungen? Schreib mir an <a href={`mailto:${site.email}`} class="text-blue-600 dark:text-blue-400 hover:underline">{site.email}</a>
+              </p>
+            )}
+          </div>
+        </div>
       </article>
 
       <!-- Navigation -->
@@ -111,5 +134,53 @@ const ogImage = `/og/blog/${post.slug}.jpg`;
 
     wrapBlogSections();
     document.addEventListener('astro:after-swap', wrapBlogSections);
+  </script>
+  <script>
+    function initScrollSpy() {
+      const tocList = document.querySelector('.blog-toc-list');
+      if (!tocList) return;
+
+      const tocLinks = tocList.querySelectorAll('a');
+      const headings: { el: HTMLElement; link: HTMLAnchorElement }[] = [];
+
+      tocLinks.forEach(link => {
+        const id = link.getAttribute('href')?.slice(1);
+        const el = id ? document.getElementById(id) : null;
+        if (el) headings.push({ el, link: link as HTMLAnchorElement });
+      });
+
+      if (!headings.length) return;
+
+      let ticking = false;
+
+      function update() {
+        const offset = 100;
+        let active = headings[0];
+
+        for (const h of headings) {
+          if (h.el.getBoundingClientRect().top <= offset) {
+            active = h;
+          } else {
+            break;
+          }
+        }
+
+        tocLinks.forEach(l => l.classList.remove('active'));
+        active?.link.classList.add('active');
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, { passive: true });
+
+      update();
+    }
+
+    initScrollSpy();
+    document.addEventListener('astro:after-swap', initScrollSpy);
   </script>
 </BaseLayout>
