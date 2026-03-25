@@ -6,6 +6,10 @@ import { site } from "../../data/site";
 import { toJsonResume, type CvExports } from "../../data/json-resume";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { marked } from "marked";
+
+marked.setOptions({ breaks: true });
+const md = (text: string) => marked.parse(text) as string;
 
 const resumes = await getCollection("apply");
 
@@ -37,6 +41,7 @@ const statusLabels: Record<string, string> = {
     gespeichert: "Gespeichert",
     beworben: "Beworben",
     eingangsbestätigung: "Eingangsbestätigung",
+    einladung: "Einladung",
     vorstellungsgespräch: "Vorstellungsgespräch",
     zweitgespräch: "Zweitgespräch",
     assessment: "Assessment",
@@ -51,6 +56,7 @@ const statusColors: Record<string, string> = {
     gespeichert: "bg-yellow-50 text-yellow-700",
     beworben: "bg-gray-100 text-gray-700",
     eingangsbestätigung: "bg-blue-50 text-blue-700",
+    einladung: "bg-teal-50 text-teal-700",
     vorstellungsgespräch: "bg-indigo-50 text-indigo-700",
     zweitgespräch: "bg-violet-50 text-violet-700",
     assessment: "bg-purple-50 text-purple-700",
@@ -65,6 +71,7 @@ const statusDotColors: Record<string, string> = {
     gespeichert: "bg-yellow-400",
     beworben: "bg-gray-400",
     eingangsbestätigung: "bg-blue-400",
+    einladung: "bg-teal-400",
     vorstellungsgespräch: "bg-indigo-400",
     zweitgespräch: "bg-violet-400",
     assessment: "bg-purple-400",
@@ -79,14 +86,15 @@ const statusOrder: Record<string, number> = {
     gespeichert: 0,
     beworben: 1,
     eingangsbestätigung: 2,
-    vorstellungsgespräch: 3,
-    zweitgespräch: 4,
-    assessment: 5,
-    angebot: 6,
-    zusage: 7,
-    absage: 8,
-    zurückgezogen: 9,
-    talentpool: 10,
+    einladung: 3,
+    vorstellungsgespräch: 4,
+    zweitgespräch: 5,
+    assessment: 6,
+    angebot: 7,
+    zusage: 8,
+    absage: 9,
+    zurückgezogen: 10,
+    talentpool: 11,
 };
 
 // Collect which statuses actually exist in the data
@@ -372,7 +380,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         )}
                                     </p>
                                 )}
-                                {r.data.notes && <p class="text-xs text-gray-400 mb-2">{r.data.notes}</p>}
+                                {r.data.notes && <div class="text-xs text-gray-400 mb-2 prose-inline" set:html={md(r.data.notes)} />}
                                 {history.length > 0 && (
                                     <div data-detail class="hidden border-t border-gray-100 pt-3 mb-2">
                                         <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Status-Verlauf</p>
@@ -387,7 +395,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                         <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>{statusLabels[entry.status] || entry.status}</span>
                                                         <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
                                                     </div>
-                                                    {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                    {entry.info && <div class="text-sm text-gray-600 mt-1 prose-inline" set:html={md(entry.info)} />}
                                                 </div>
                                             </div>
                                         ))}
@@ -524,7 +532,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 </a>
                                                 <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
                                                 <p class="text-gray-500">{r.data.company}</p>
-                                                {r.data.notes && <p class="text-xs text-gray-400 mt-1">{r.data.notes}</p>}
+                                                {r.data.notes && <div class="text-xs text-gray-400 mt-1 prose-inline" set:html={md(r.data.notes)} />}
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="flex items-center gap-1.5">
@@ -634,7 +642,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                                         <span class:list={["text-xs font-medium px-2 py-0.5 rounded-full", statusColors[entry.status] || "bg-gray-100 text-gray-700"]}>{statusLabels[entry.status] || entry.status}</span>
                                                                         <span class="text-xs text-gray-400">{formatDate(entry.date)}</span>
                                                                     </div>
-                                                                    {entry.info && <p class="text-sm text-gray-600 mt-1 whitespace-pre-line">{entry.info}</p>}
+                                                                    {entry.info && <div class="text-sm text-gray-600 mt-1 prose-inline" set:html={md(entry.info)} />}
                                                                 </div>
                                                             </div>
                                                         ))}

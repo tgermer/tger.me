@@ -46,6 +46,7 @@ const applicationStatus = z.enum([
   'gespeichert',
   'beworben',
   'eingangsbestätigung',
+  'einladung',
   'vorstellungsgespräch',
   'zweitgespräch',
   'assessment',

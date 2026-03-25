@@ -22,7 +22,7 @@ source: "Christine Geiger"
 location: "München"
 notes: "Bewerbung als Entwurf im Portal gespeichert. Kann wegen Bug in SuccessFactors (Stelle 22430, Sektion 'Weitere Sprachkenntnisse', Fehler 'For input string: Yes') nicht abgeschickt werden. E-Mail an jobinfo@epo.org gesendet am 10.03.2026."
 token: "B4OeA4"
-# Status-Werte: beworben | eingangsbestätigung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
+# Status-Werte: beworben | eingangsbestätigung | einladung | vorstellungsgespräch | zweitgespräch | assessment | angebot | zusage | absage | zurückgezogen
 # Terminal-Status (zusage/absage/zurückgezogen): PDF-Generierung wird übersprungen (--force zum Überschreiben)
 statusHistory:
     - status: "gespeichert"
@@ -31,6 +31,36 @@ statusHistory:
     - status: "beworben"
       date: 2026-03-10
       info: "Ich hatte eine E-Mail bekommen, in der stand, ich soll es mal mit der englischen Version versuchen. Und mit der hat es dann funktioniert."
+    - status: "assessment"
+      date: 2026-03-18
+      info: |
+          **Ich hab einen OPQ32 (berufsbezogener Persönlichkeitsfragebogen) als Assesment durchgeführt.**
+
+          Der **OPQ32** steht für **Occupational Personality Questionnaire** und ist ein berufsbezogener Persönlichkeitsfragebogen von SHL. Er soll **nicht Intelligenz oder Fachwissen** messen, sondern deinen **typischen Arbeits- und Verhaltensstil im beruflichen Kontext** – also zum Beispiel, wie du mit anderen zusammenarbeitest, Entscheidungen triffst, mit Regeln umgehst, auf Druck reagierst oder Veränderungen begegnest. SHL beschreibt ihn ausdrücklich als Instrument zur Erfassung von **workplace behavioural style** und zur Einschätzung von **Role Fit** bzw. potenzieller Leistung im Job. ([SHL – OPQ32R](https://www.shl.com/products/product-catalog/view/occupational-personality-questionnaire-opq32r/))
+
+          „32“ bedeutet, dass das Verfahren **32 einzelne Persönlichkeitsdimensionen** betrachtet. Diese liegen in größeren Bereichen wie **Umgang mit Menschen**, **Denkstil** sowie **Gefühle und Emotionen**. Dazu gehören zum Beispiel Facetten wie Einflussnahme, soziale Sicherheit, Empathie, analytisches Denken, Innovationsneigung, Detailorientierung, Regelorientierung, Gelassenheit, Optimismus oder Wettbewerbsorientierung. ([SHL – OPQ Product Fact Sheet (PDF)](https://service.shl.com/docs/OPQ%20Product%20Fact%20Sheet%20%281%29.pdf))
+
+          Wichtig ist: Das Ergebnis ist normalerweise **kein „bestanden/nicht bestanden“**. Stattdessen entsteht ein **Profil**, das zeigt, welche Verhaltenspräferenzen bei dir im Vergleich zu einer Referenzgruppe eher stärker oder schwächer ausgeprägt sind. SHL weist auch darauf hin, dass solche Berichte von **geschulten Personen** interpretiert werden sollten und dass es sich um einen **Selbstbericht** handelt – die Aussagekraft hängt also auch davon ab, wie offen und konsistent man geantwortet hat. ([SHL – Universal Competency Report 2.0 (PDF)](https://service.shl.com/docs/Universal%20Competency%20Report%202.0%20German.pdf))
+
+          Wie die Ergebnisse typischerweise genutzt werden: In Auswahlverfahren werden sie meist dafür verwendet, um zu prüfen, **wie gut dein Arbeitsstil zu den Anforderungen der Rolle passt**. Die 32 Skalen können auf **Kompetenzmodelle** gemappt werden, etwa auf Themen wie Zusammenarbeit, Analyse, Planung, Anpassungsfähigkeit, Ergebnisorientierung oder Führungspotenzial. In der Praxis fließt das oft in die **Gesamtbeurteilung** ein und wird mit Lebenslauf, Interviews und eventuell kognitiven Tests kombiniert. ([SHL – OPQ Product Fact Sheet (PDF)](https://service.shl.com/docs/OPQ%20Product%20Fact%20Sheet%20%281%29.pdf))
+
+          Für das **EPO-Verfahren** ist sehr wahrscheinlich, dass der Test genutzt wird, um dein Profil im Hinblick auf die konkrete Stelle strukturierter einzuordnen und eventuell Interviewfragen abzuleiten. In der EPO-Datenschutzerklärung steht, dass Bewerberdaten verarbeitet werden, um deine **Eignung, Expertise und dein Profil bezogen auf die konkrete Vakanz** zu bewerten; Zugriff haben dabei unter anderem **Talent Acquisition**, **Linienverantwortliche** und **Mitglieder des Selection Boards**. Das spricht dafür, dass solche Assessment-Ergebnisse in die Vorauswahl und Auswahlentscheidung einfließen können, aber typischerweise **nicht isoliert**, sondern als ein Baustein unter mehreren genutzt werden. ([EPO – Privacy Statement](https://jobs.epo.org/content/PrivacyStatement/?locale=en_GB))
+
+          Eine gute Kurzformulierung für deine Notizen wäre:
+
+          > **OPQ32 = berufsbezogener Persönlichkeitsfragebogen von SHL.**  
+          > Misst nicht Wissen oder Intelligenz, sondern meinen typischen Arbeitsstil in 32 Verhaltensdimensionen.  
+          > Wird wahrscheinlich genutzt, um meinen Fit zur Rolle, mögliche Stärken/Risiken und passende Interviewschwerpunkte abzuleiten.  
+          > Die Ergebnisse sind eher ein Profil als ein Pass/Fail-Ergebnis und werden vermutlich zusammen mit CV, Interviews und weiteren Assessments betrachtet.
+    - status: "einladung"
+      date: 2026-03-18
+      info: |
+          Einladung zum Vorstellungsgespräch über MS-Teams zwischen 13.–24.04.2026. Termin folgt.
+
+          **Selection board interview**
+          During the selection board interview, you will meet one of our Talent Acquisition Managers as well as one or more of your potential future colleagues. Your Selection Board interview will take place between 13 and 24 April 2026. A concrete date and timeslot will be communicated in due course - thank you for your understanding. If you are unavailable on the proposed period, please let me know as soon as possible by responding to this message.
+
+          To further prepare for the interview, you might want to inform yourself further by visiting our https://www.epo.org/en or have a look on our page on EPO Jobs and Careers website.
 ---
 
 mit großem Interesse bewerbe ich mich auf die Position als Technische/r Sachverständige/r im Präsidialbüro des Europäischen Patentamts. Die Verbindung von operativer Unterstützung auf höchster Ebene, Dokumentenmanagement und technischer Koordination entspricht genau meinem beruflichen Profil – und München ist seit über 20 Jahren mein Lebensmittelpunkt.
