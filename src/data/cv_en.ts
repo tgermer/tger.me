@@ -84,7 +84,7 @@ export const work: Work[] = [
         typeOfEmployment: "Employee",
         position: ["Trainee Branch Manager / Deputy"],
         startDate: "2003-05-01",
-        endDate: "2004-06-30",
+        endDate: "2004-07-14",
     },
 ];
 
@@ -151,15 +151,15 @@ export const certificates: Certificate[] = [
     {
         issuer: "B-SCT",
         location: "",
-        startDate: "2015-07-01",
-        endDate: "2015-07-31",
+        startDate: "2015-07-14",
+        endDate: "2015-07-15",
         name: "Leading Projects",
     },
     {
         issuer: "B-SCT",
         location: "",
-        startDate: "2015-06-01",
-        endDate: "2015-06-30",
+        startDate: "2015-06-23",
+        endDate: "2015-06-24",
         name: "Managing Projects",
     },
 ];

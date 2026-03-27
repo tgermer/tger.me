@@ -84,7 +84,7 @@ export const work: Work[] = [
         typeOfEmployment: "Angestellter",
         position: ["Filialleiter-Anwärter/Stellvertreter"],
         startDate: "2003-05-01",
-        endDate: "2004-06-30",
+        endDate: "2004-07-17",
     },
 ];
 
@@ -151,15 +151,15 @@ export const certificates: Certificate[] = [
     {
         issuer: "B-SCT",
         location: "",
-        startDate: "2015-07-01",
-        endDate: "2015-07-31",
+        startDate: "2015-07-14",
+        endDate: "2015-07-15",
         name: "Projekte leiten",
     },
     {
         issuer: "B-SCT",
         location: "",
-        startDate: "2015-06-01",
-        endDate: "2015-06-30",
+        startDate: "2015-06-23",
+        endDate: "2015-06-24",
         name: "Projekte managen",
     },
 ];
