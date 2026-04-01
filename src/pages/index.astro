@@ -11,7 +11,7 @@ const allProjects = await getCollection("portfolio");
 const featured = allProjects.filter((p) => p.data.featured).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 4);
 
 const allPosts = await getCollection("blog");
-const latestPosts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2);
+const latestPosts = allPosts.filter((p) => !p.data.unlisted).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 2);
 ---
 
 <BaseLayout title="Tristan Germer" description={pages.index.description} ogImage="/og/index.jpg">
