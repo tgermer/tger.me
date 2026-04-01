@@ -1,12 +1,14 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
 // Treats empty strings as undefined so optional fields can use "" as placeholder in frontmatter
 const optionalString = z.preprocess((v) => (v === '' ? undefined : v), z.string().optional());
-const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.string().url().optional());
-const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.string().email().optional());
+const optionalUrl = z.preprocess((v) => (v === '' ? undefined : v), z.url().optional());
+const optionalEmail = z.preprocess((v) => (v === '' ? undefined : v), z.email().optional());
 
 const portfolio = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/portfolio' }),
   schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
@@ -20,8 +22,8 @@ const portfolio = defineCollection({
     icon: z.string().optional(),
     iconBackgroundColor: z.string().optional(),
     type: z.string(),
-    linkGithub: z.string().url().optional(),
-    linkWebsite: z.string().url().optional(),
+    linkGithub: z.string().optional(),
+    linkWebsite: z.string().optional(),
     screenshotsAvailable: z.boolean().default(false),
     screenshotsPath: z.string().optional(),
     screenshotsFiles: z.array(z.string()).optional(),
@@ -30,7 +32,7 @@ const portfolio = defineCollection({
 });
 
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: ({ image }) => z.object({
     title: z.string(),
     date: z.date(),
@@ -64,7 +66,7 @@ const statusEntry = z.object({
 });
 
 const apply = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.md', base: './src/content/apply' }),
   schema: z.object({
     // Speculative/unsolicited application (Initiativbewerbung).
     // true + position empty → "Initiativbewerbung" / "Speculative Application"

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -11,24 +11,24 @@ export async function getStaticPaths() {
   return sorted.map((post) => {
     // Unlisted posts have no prev/next navigation; listed posts navigate only between listed posts
     const navList = post.data.unlisted ? [] : listed;
-    const idx = navList.findIndex(p => p.slug === post.slug);
+    const idx = navList.findIndex(p => p.id === post.id);
     return {
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: {
         post,
-        olderPost: idx >= 0 && navList[idx + 1] ? { slug: navList[idx + 1].slug, title: navList[idx + 1].data.title } : null,
-        newerPost: idx >= 0 && navList[idx - 1] ? { slug: navList[idx - 1].slug, title: navList[idx - 1].data.title } : null,
+        olderPost: idx >= 0 && navList[idx + 1] ? { slug: navList[idx + 1].id, title: navList[idx + 1].data.title } : null,
+        newerPost: idx >= 0 && navList[idx - 1] ? { slug: navList[idx - 1].id, title: navList[idx - 1].data.title } : null,
       },
     };
   });
 }
 
 const { post, olderPost, newerPost } = Astro.props;
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 const showToc = tocHeadings.length >= 4;
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-const ogImage = `/og/blog/${post.slug}.jpg`;
+const ogImage = `/og/blog/${post.id}.jpg`;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} ogImage={ogImage} ogType="article" noindex={post.data.unlisted}>

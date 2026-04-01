@@ -19,7 +19,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
 
       return isHero ? (
         /* Hero card – first post, full-width image */
-        <a href={`/blog/${post.slug}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <a href={`/blog/${post.id}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           {post.data.image ? (
             <div class="relative h-64 sm:h-72 overflow-hidden">
               <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[800, 1200]} sizes="(min-width: 1024px) 960px, 100vw" />
@@ -42,7 +42,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
         </a>
       ) : (
         /* Regular card – horizontal with side image on sm+ */
-        <a href={`/blog/${post.slug}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <a href={`/blog/${post.id}`} class="reveal group block bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
           <div class="sm:flex">
             {post.data.image ? (
               <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
@@ -77,7 +77,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
           const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
           return (
             <div class="reveal group relative bg-gray-50 dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800 overflow-hidden hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
-              <a href={`/blog/${post.slug}`} class="absolute inset-0 z-0" aria-label={post.data.title} />
+              <a href={`/blog/${post.id}`} class="absolute inset-0 z-0" aria-label={post.data.title} />
               <div class="sm:flex">
                 {post.data.image ? (
                   <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
@@ -93,7 +93,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
                       <Icon name="tabler:calendar" class="h-3.5 w-3.5" aria-hidden="true" />
                       {dateStr}
                     </time>
-                    <button type="button" data-copy-url={`${site.url}/blog/${post.slug}`} class="relative z-10 ml-auto inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950 transition-colors cursor-pointer">
+                    <button type="button" data-copy-url={`${site.url}/blog/${post.id}`} class="relative z-10 ml-auto inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:text-blue-400 dark:hover:bg-blue-950 transition-colors cursor-pointer">
                       <Icon name="tabler:link" class="h-3.5 w-3.5 copy-icon" aria-hidden="true" />
                       <Icon name="tabler:check" class="h-3.5 w-3.5 check-icon hidden" aria-hidden="true" />
                       <span class="copy-label">URL kopieren</span>

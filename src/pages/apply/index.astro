@@ -17,11 +17,11 @@ const resumes = await getCollection("apply");
 const jobPdfExists = new Set<string>();
 const attachmentsPdfExists = new Set<string>();
 for (const r of resumes) {
-    if (existsSync(resolve("public/apply", `${r.slug}-job.pdf`))) {
-        jobPdfExists.add(r.slug);
+    if (existsSync(resolve("public/apply", `${r.id}-job.pdf`))) {
+        jobPdfExists.add(r.id);
     }
-    if (existsSync(resolve("public/apply", `${r.slug}-attachments.pdf`))) {
-        attachmentsPdfExists.add(r.slug);
+    if (existsSync(resolve("public/apply", `${r.id}-attachments.pdf`))) {
+        attachmentsPdfExists.add(r.id);
     }
 }
 
@@ -330,7 +330,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                             <div data-expandable-card data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-status-key={statusKey || ""} data-company={r.data.company.toLowerCase()} data-search={searchText} class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-pointer hover:border-gray-300 hover:shadow-md active:bg-gray-50 transition-all">
                                 <div class="flex items-start justify-between gap-2 mb-2">
                                     <div class="min-w-0">
-                                        <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                        <a href={`/apply/${r.id}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
                                             {dispPos}
                                         </a>
                                         <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
@@ -373,7 +373,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <span class="text-gray-400">
                                                 {" "}
                                                 ·{" "}
-                                                <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.slug, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
+                                                <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.id, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
                                                     {r.data.contactEmail}
                                                 </a>
                                             </span>
@@ -408,31 +408,31 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                             <span>Aktionen</span>
                                         </button>
                                         <div class="row-menu hidden absolute left-0 bottom-full mb-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                                            <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={`/apply/${r.id}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />
                                                 Lebenslauf öffnen
                                             </a>
-                                            <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                            <button data-copy-link={`${site.url}/apply/${r.id}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                 <Icon name="tabler:link" class="h-4 w-4 shrink-0" />
                                                 Link kopieren
                                             </button>
-                                            <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={`/apply/${r.id}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:download" class="h-4 w-4 shrink-0" />
                                                 CV PDF
                                             </a>
                                             {r.body && r.body.trim().length > 0 && (
-                                                <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <a href={`/apply/${r.id}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />
                                                     Anschreiben PDF
                                                 </a>
                                             )}
-                                            {attachmentsPdfExists.has(r.slug) && (
-                                                <a href={`/apply/${r.slug}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            {attachmentsPdfExists.has(r.id) && (
+                                                <a href={`/apply/${r.id}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:paperclip" class="h-4 w-4 shrink-0" />
                                                     Attachments PDF
                                                 </a>
                                             )}
-                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
+                                            {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.id) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
                                             {r.data.jobUrl && (
                                                 <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />
@@ -445,8 +445,8 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                     Stellenanzeige (Archiv)
                                                 </a>
                                             )}
-                                            {jobPdfExists.has(r.slug) && (
-                                                <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            {jobPdfExists.has(r.id) && (
+                                                <a href={`/apply/${r.id}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                     <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />
                                                     Stellenanzeige (PDF)
                                                 </a>
@@ -458,15 +458,15 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 </a>
                                             )}
                                             <div class="border-t border-gray-100 my-1" />
-                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={buildMailtoUrl(dispPos, r.data.company, r.id, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
                                                 {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                             </a>
-                                            <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                            <button data-json-resume={getJsonResume(r.id)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                 <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />
                                                 JSON Resume kopieren
                                             </button>
-                                            <a href={`https://analytics.thebunnyhill.de/share/tger.me?auth=ceBxaC1gMb2E3vb7R5XhL&f=is,page,/apply/${r.slug}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <a href={`https://analytics.thebunnyhill.de/share/tger.me?auth=ceBxaC1gMb2E3vb7R5XhL&f=is,page,/apply/${r.id}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                 <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />
                                                 Analytics
                                             </a>
@@ -524,10 +524,10 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                         <tr data-expandable data-date={new Date(r.data.date).toISOString()} data-update={lastUpdate} data-status-order={String(statusOrder[statusKey || ""] ?? 99)} data-status-key={statusKey || ""} data-company={r.data.company.toLowerCase()} data-search={searchText} class="hover:bg-gray-50 transition-colors cursor-pointer">
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <p class="text-gray-900">{formatDate(r.data.date)}</p>
-                                                <p class="text-xs text-gray-400 font-mono">{r.slug}</p>
+                                                <p class="text-xs text-gray-400 font-mono">{r.id}</p>
                                             </td>
                                             <td class="px-4 py-3">
-                                                <a href={`/apply/${r.slug}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                                <a href={`/apply/${r.id}/`} class="font-medium text-gray-900 hover:text-blue-600 transition-colors">
                                                     {dispPos}
                                                 </a>
                                                 <span class="ml-1.5 inline-block text-[10px] font-medium px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 uppercase align-middle">{r.data.lang}</span>
@@ -545,7 +545,7 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                 {r.data.contact || <span class="text-gray-300">–</span>}
                                                 {r.data.contactEmail && (
                                                     <p class="text-xs text-gray-400 truncate max-w-40" title={r.data.contactEmail}>
-                                                        <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.slug, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
+                                                        <a href={buildContactMailto(r.data.contactEmail, dispPos, r.data.lang, r.data.contact, r.data.salutation, r.id, r.data.token, r.body, r.data.documents.length > 0)} class="hover:text-blue-600 transition-colors">
                                                             {r.data.contactEmail}
                                                         </a>
                                                     </p>
@@ -560,31 +560,31 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                         <Icon name="tabler:dots" class="h-4 w-4" />
                                                     </button>
                                                     <div class="row-menu hidden absolute right-0 mt-1 w-max max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-                                                        <a href={`/apply/${r.slug}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={`/apply/${r.id}/`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:file-text" class="h-4 w-4 text-blue-600 shrink-0" />
                                                             Lebenslauf öffnen
                                                         </a>
-                                                        <button data-copy-link={`${site.url}/apply/${r.slug}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                        <button data-copy-link={`${site.url}/apply/${r.id}/${r.data.token ? `?t=${r.data.token}` : ""}`} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                             <Icon name="tabler:link" class="h-4 w-4 shrink-0" />
                                                             Link kopieren
                                                         </button>
-                                                        <a href={`/apply/${r.slug}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={`/apply/${r.id}.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:download" class="h-4 w-4 shrink-0" />
                                                             CV PDF
                                                         </a>
                                                         {r.body && r.body.trim().length > 0 && (
-                                                            <a href={`/apply/${r.slug}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                            <a href={`/apply/${r.id}-letter.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:file-type-doc" class="h-4 w-4 shrink-0" />
                                                                 Anschreiben PDF
                                                             </a>
                                                         )}
-                                                        {attachmentsPdfExists.has(r.slug) && (
-                                                            <a href={`/apply/${r.slug}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        {attachmentsPdfExists.has(r.id) && (
+                                                            <a href={`/apply/${r.id}-attachments.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:paperclip" class="h-4 w-4 shrink-0" />
                                                                 Attachments PDF
                                                             </a>
                                                         )}
-                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.slug) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
+                                                        {(r.data.jobUrl || r.data.jobUrlArchived || jobPdfExists.has(r.id) || r.data.portalUrl) && <div class="border-t border-gray-100 my-1" />}
                                                         {r.data.jobUrl && (
                                                             <a href={r.data.jobUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:external-link" class="h-4 w-4 shrink-0" />
@@ -597,8 +597,8 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                                 Stellenanzeige (Archiv)
                                                             </a>
                                                         )}
-                                                        {jobPdfExists.has(r.slug) && (
-                                                            <a href={`/apply/${r.slug}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        {jobPdfExists.has(r.id) && (
+                                                            <a href={`/apply/${r.id}-job.pdf`} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                                 <Icon name="tabler:briefcase" class="h-4 w-4 shrink-0" />
                                                                 Stellenanzeige (PDF)
                                                             </a>
@@ -610,15 +610,15 @@ function buildMailtoUrl(displayPos: string, company: string, slug: string, lang:
                                                             </a>
                                                         )}
                                                         <div class="border-t border-gray-100 my-1" />
-                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.slug, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={buildMailtoUrl(dispPos, r.data.company, r.id, r.data.lang, r.data.initiative, r.data.position, r.data.contactEmail, r.data.contact, r.body, r.data.source, r.data.salutation, r.data.token, r.data.documents.length > 0)} class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:mail" class="h-4 w-4 shrink-0" />
                                                             {r.data.contactEmail ? `E-Mail an ${r.data.contactEmail}` : "E-Mail verfassen"}
                                                         </a>
-                                                        <button data-json-resume={getJsonResume(r.slug)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
+                                                        <button data-json-resume={getJsonResume(r.id)} class="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer text-left">
                                                             <Icon name="tabler:braces" class="h-4 w-4 shrink-0" />
                                                             JSON Resume kopieren
                                                         </button>
-                                                        <a href={`https://analytics.thebunnyhill.de/share/tger.me?auth=ceBxaC1gMb2E3vb7R5XhL&f=is,page,/apply/${r.slug}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                        <a href={`https://analytics.thebunnyhill.de/share/tger.me?auth=ceBxaC1gMb2E3vb7R5XhL&f=is,page,/apply/${r.id}/`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                                                             <Icon name="tabler:chart-bar" class="h-4 w-4 shrink-0" />
                                                             Analytics
                                                         </a>

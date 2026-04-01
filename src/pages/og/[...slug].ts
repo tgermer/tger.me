@@ -36,7 +36,7 @@ const ogPages: Record<string, OGPage> = {
     "en/cv": { title: t("en").cvPageTitle, description: t("en").cvPageDescription },
 
     // Blog posts – from content collection
-    ...Object.fromEntries(blogPosts.map((post) => [`blog/${post.slug}`, { title: post.data.title, description: post.data.description }])),
+    ...Object.fromEntries(blogPosts.map((post) => [`blog/${post.id}`, { title: post.data.title, description: post.data.description }])),
 
     // Portfolio projects – from content collection
     ...Object.fromEntries(
@@ -50,7 +50,7 @@ const ogPages: Record<string, OGPage> = {
                     entry.icon = `data:image/svg+xml;base64,${svgContent.toString("base64")}`;
                 }
             }
-            return [`portfolio/${project.slug}`, entry];
+            return [`portfolio/${project.id}`, entry];
         }),
     ),
 
@@ -69,7 +69,7 @@ const ogPages: Record<string, OGPage> = {
                 title = position ? `${label} ${position}` : company;
             }
 
-            return [`apply/${app.slug}`, { title, description: company }];
+            return [`apply/${app.id}`, { title, description: company }];
         }),
     ),
 };
