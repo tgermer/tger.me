@@ -7,9 +7,9 @@ Deployed on Netlify at https://tger.me.
 
 ## Tech Stack
 
-- **Framework:** Astro 5 (static site generation)
+- **Framework:** Astro 6 (static site generation)
 - **Styling:** Tailwind CSS 4 (via Vite plugin)
-- **Fonts:** IBM Plex Sans (@fontsource)
+- **Fonts:** IBM Plex Sans + IBM Plex Mono (Astro Fonts API, Fontsource provider)
 - **Icons:** astro-icon + @iconify-json/tabler
 - **PDF:** Playwright (headless Chromium, dev only)
 - **Deploy:** Netlify (free tier)
@@ -149,7 +149,7 @@ Can also be triggered manually via `gh workflow run generate-pdfs.yml` or the Gi
 
 ## Content Collections
 
-Schemas defined in `src/content/config.ts`.
+Schemas defined in `src/content.config.ts`.
 
 ### Portfolio (`src/content/portfolio/`)
 
