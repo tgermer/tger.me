@@ -51,7 +51,7 @@ const latestPosts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.
                     <div class="relative">
                         <div class="absolute inset-0 bg-white/20 blur-2xl rounded-full lg:rounded-3xl scale-110"></div>
                         <!-- Mobile: compact circle / Desktop: large portrait -->
-                        <Image src={portrait} alt="Tristan Germer" class="relative h-56 w-56 lg:h-[26rem] lg:w-72 object-cover object-top rounded-full lg:rounded-3xl ring-4 ring-white/30 shadow-2xl hover:scale-[1.02] transition-transform duration-300" widths={[224, 288, 576]} sizes="(min-width: 1024px) 288px, 224px" />
+                        <Image src={portrait} alt="Tristan Germer" layout="constrained" width={288} class="relative h-56 w-56 lg:h-[26rem] lg:w-72 object-cover object-top rounded-full lg:rounded-3xl ring-4 ring-white/30 shadow-2xl hover:scale-[1.02] transition-transform duration-300" />
                     </div>
                 </div>
             </div>

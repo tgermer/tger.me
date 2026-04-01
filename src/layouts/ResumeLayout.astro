@@ -1,10 +1,6 @@
 ---
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
-import "@fontsource/ibm-plex-sans/700.css";
-import "@fontsource/ibm-plex-mono/400.css";
 import "../styles/global.css";
+import { Font } from "astro:assets";
 
 interface Props {
     title?: string;
@@ -30,6 +26,10 @@ const ogImageUrl = ogImage ? (ogImage.startsWith("http") ? ogImage : new URL(ogI
         {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
         {ogImageUrl && <meta name="twitter:card" content="summary_large_image" />}
         {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+        <!-- Fonts -->
+        <Font cssVariable="--font-ibm-plex-sans" />
+        <Font cssVariable="--font-ibm-plex-mono" />
+
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Plausible Analytics (production only) -->

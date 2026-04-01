@@ -208,10 +208,9 @@ const screenshotUrls = screenshots.map((s) => s.src);
             <Image
               src={image}
               alt={title}
+              layout="full-width"
               class={`w-full object-${imageFit} max-h-96 ${imageBackgroundColor ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
               style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
-              widths={[600, 1200]}
-              sizes="(min-width: 1024px) 960px, 100vw"
             />
           )}
         </div>

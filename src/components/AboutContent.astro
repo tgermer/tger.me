@@ -24,7 +24,7 @@ const mottoText = lang === "de" ? site.sloganDe : site.slogan;
 <PageLayout title={l.aboutPageTitle} subtitle={l.aboutPageSubtitle} description={l.aboutPageDescription} ogImage={`/og/${lang}/about.jpg`} lang={lang} alternates={alternates} revealContent={false}>
     <!-- Intro card -->
     <div class="reveal flex flex-col sm:flex-row items-center gap-6 p-6 sm:p-8 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 mb-12">
-        <Image src={portrait} alt="Tristan Germer" class="w-32 h-32 sm:w-40 sm:h-40 object-cover object-top rounded-full ring-4 ring-blue-100 dark:ring-blue-900 shrink-0" widths={[128, 160, 320]} sizes="(min-width: 640px) 160px, 128px" />
+        <Image src={portrait} alt="Tristan Germer" layout="constrained" width={160} class="w-32 h-32 sm:w-40 sm:h-40 object-cover object-top rounded-full ring-4 ring-blue-100 dark:ring-blue-900 shrink-0" />
         <div class="text-center sm:text-left flex-1">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">Tristan Germer</h2>
             <p class="text-gray-600 dark:text-gray-400 mt-1 whitespace-pre-line">{l.aboutDegreeLabel}</p>

@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import { readFileSync, readdirSync } from "node:fs";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -22,6 +22,21 @@ const unlistedSlugs = new Set(
 // https://astro.build/config
 export default defineConfig({
   site: "https://tger.me",
+
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "IBM Plex Sans",
+      cssVariable: "--font-ibm-plex-sans",
+      weights: [400, 500, 600, 700],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "IBM Plex Mono",
+      cssVariable: "--font-ibm-plex-mono",
+      weights: [400],
+    },
+  ],
 
   vite: {
       plugins: [tailwindcss()],
