@@ -18,7 +18,7 @@ const hasTranslation = alternates && alternates.length > 0;
 const langLinks = hasTranslation ? Object.fromEntries(alternates.map((a) => [a.hreflang, new URL(a.href).pathname])) : null;
 ---
 
-<header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-800/60 transition-shadow duration-300">
+<header data-site-header class="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-800/60 transition-shadow duration-300">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav class="flex items-center justify-between h-16">
             <!-- Logo / Brand -->

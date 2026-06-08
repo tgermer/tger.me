@@ -9,3 +9,7 @@
 
 # Redirect old about URL to new i18n structure
 /about       /de/about     301
+
+# Short private connect pages
+/connect    /c            301
+/connect/*  /c/:splat     301

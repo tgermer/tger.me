@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Germer;Tristan;;;
+FN:Tristan Germer
+EMAIL;TYPE=INTERNET,WORK:hello@tger.me
+TEL;TYPE=CELL,VOICE:+4915122651857
+URL:https://tger.me
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/tgermer
+NOTE:Connect-Seite: https://tger.me/c
+END:VCARD

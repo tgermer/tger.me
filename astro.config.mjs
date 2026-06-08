@@ -5,6 +5,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import tailwindcss from "@tailwindcss/vite";
 
 import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
 import icon from "astro-icon";
 
 // Read unlisted blog slugs from frontmatter (astro:content not available in config)
@@ -43,10 +44,18 @@ export default defineConfig({
   },
 
   integrations: [
+    mdx(),
     sitemap({
       filter: (page) => {
-        if (page.includes("/apply/") || page.includes("/cv-print/")) return false;
         const path = new URL(page).pathname;
+        if (
+          path === "/c/" ||
+          path.startsWith("/c/") ||
+          path === "/connect/" ||
+          path.startsWith("/connect/") ||
+          path.includes("/apply/") ||
+          path.includes("/cv-print/")
+        ) return false;
         return !unlistedSlugs.has(path);
       },
     }),

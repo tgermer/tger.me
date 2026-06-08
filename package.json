@@ -17,6 +17,7 @@
     "json-resume": "node scripts/export-json-resume.mjs"
   },
   "dependencies": {
+    "@astrojs/mdx": "^6.0.2",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",

@@ -1,0 +1,24 @@
+---
+import ConnectPage from "../../components/ConnectPage.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+    const entries = await getCollection("connect");
+
+    return entries.map((entry) => ({
+        params: { slug: entry.id === "index" ? undefined : entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry: page } = Astro.props;
+const { Content } = await render(page);
+const pageBody = page.body ?? "";
+const hasContent = pageBody
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .trim().length > 0;
+---
+
+<ConnectPage {...page.data} hasContent={hasContent}>
+    <Content />
+</ConnectPage>
