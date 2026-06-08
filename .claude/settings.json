@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/tgermer/git/tgermer-astro/src/pages/[lang]/)"
+    ]
+  }
+}

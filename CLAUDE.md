@@ -27,7 +27,13 @@ npm run delete-apply     # Delete application (interactive selection)
 npm run pdf              # Generate all PDFs (skips finalized)
 npm run pdf <slug>       # Generate specific PDF (skips if finalized)
 npm run pdf --force      # Generate all PDFs (including finalized)
+npm run pdf:attachments  # Generate attachments-only PDFs (skips finalized)
 npm run pdf:install      # Install Playwright Chromium (one-time setup)
+
+npm run archive <slug>   # Archive job URL via Wayback Machine (opens browser)
+npm run archive:pdf <slug> # Save job posting as local PDF via Playwright
+
+npm run json-resume      # Export CV as JSON Resume schema (copies to clipboard)
 ```
 
 ## Application System Architecture
@@ -107,11 +113,49 @@ Key field names:
 - `projects[].name`, `.urls[]` (Profile[]), `.highlights[]`, `.startDate`
 - `references[].name`, `.company` [Custom], `.department` [Custom], `.position` [Custom], `.email` [Custom]
 
-### Frontmatter overrides
+### Apply frontmatter fields
 
-The `<slug>.md` frontmatter supports per-application overrides:
-- `signature: true/false` – show/hide handwritten signature (default: false)
-- `photo: true/false` – show/hide photo on cover page (default: true)
+The `<slug>.md` frontmatter contains all metadata for an application:
+
+**Core fields:**
+- `company` – Company name (required)
+- `position` – Job title (optional for speculative applications)
+- `initiative: true/false` – Speculative application / Initiativbewerbung (default: false)
+- `refNumber` – Optional job reference number; shown on cover page and letter subject
+- `lang: 'de' | 'en'` – Application language (default: `'de'`)
+- `date` – Application date
+
+**Display overrides:**
+- `signature: true/false` – Show/hide handwritten signature in PDF (default: false)
+- `photo: true/false` – Show/hide photo on cover page (default: true)
+- `cvData` – Override CV data file (e.g. `"cv_ey_de"` → loads `src/data/cv_ey_de.ts`)
+
+**Cover letter:**
+- `salutation` – Letter salutation (e.g. `"Sehr geehrter Herr Eger,"`)
+- `contact` – Recipient name on letter header
+
+**Tracking fields** (empty strings treated as unset):
+- `jobUrl` – URL of the job posting
+- `jobUrlArchived` – Archived version of the job posting URL
+- `portalUrl` – Application portal URL
+- `companyAddress` – Company address for letter header
+- `contactEmail` – Recruiter/contact email
+- `salary` – Salary expectation or offer
+- `source` – Where the job was found
+- `location` – Job location
+- `notes` – Free-text notes
+
+**Auth:**
+- `token` – Token for direct access via `?t=<token>` without password
+
+**Attachments & status:**
+- `documents: [id1, id2]` – Document IDs from `src/data/documents.ts`
+- `statusHistory` – Array of `{ status, date, info? }` entries
+
+**Application statuses** (in `statusHistory`):
+`gespeichert` | `beworben` | `eingangsbestätigung` | `einladung` | `vorstellungsgespräch` | `zweitgespräch` | `assessment` | `angebot` | `zusage` | `absage` | `zurückgezogen` | `talentpool`
+
+Terminal statuses (PDF generation skipped): `zusage`, `absage`, `zurückgezogen`
 
 ### Creating a new application
 
@@ -183,7 +227,9 @@ Blog posts. Frontmatter fields:
 - `date` – Publication date
 - `description` – Optional summary (used for OG meta)
 - `image` – Optional hero image (Astro image reference, displayed in post only — OG uses generated image)
+- `imagePosition` – CSS position value for hero image (default: `'center'`)
 - `showContact` – Show contact email at bottom (default: true)
+- `unlisted` – Hide from blog listing (default: false)
 
 ### Apply (`src/content/apply/`)
 
@@ -206,29 +252,44 @@ NBSPs are invisible in most editors — if in doubt, verify with `grep -n $'\xc2
 
 ```
 src/
+├── content.config.ts          ← Zod schemas for content collections
 ├── content/
-│   ├── config.ts              ← Zod schemas for content collections
 │   └── apply/
 │       └── <slug>.md          ← Application metadata + cover letter body
 ├── data/
 │   ├── site.ts                ← Website-level config
 │   ├── documents.ts           ← Document attachment registry
+│   ├── i18n.ts                ← Translations / i18n strings
+│   ├── navigation.ts          ← Site navigation config
+│   ├── pages.ts               ← Page metadata config
+│   ├── json-resume.ts         ← JSON Resume export helpers
 │   ├── cv_de.ts               ← German CV base template
 │   ├── cv_en.ts               ← English CV base template
 │   └── cv_<slug>.ts           ← Frozen application snapshots
 ├── layouts/
 │   └── ResumeLayout.astro     ← HTML shell for resume pages
 ├── pages/
+│   ├── [lang]/                ← Internationalised pages (de/en)
+│   │   ├── about.astro        ← About page
+│   │   ├── cv.astro           ← Interactive CV page
+│   │   └── cv-print.astro     ← Print-optimised CV page
+│   ├── og/                    ← OG image generation endpoints
+│   ├── api/                   ← API routes
+│   ├── apply/
+│   │   ├── index.astro        ← Application overview (password-protected)
+│   │   ├── [slug].astro       ← Dynamic application page (cover + letter + CV)
+│   │   ├── [...slug].ts       ← Auth / token handling
+│   │   └── apply-tokens.json.ts ← Token registry endpoint
 │   ├── resume-de.astro        ← General German resume
-│   ├── resume-en.astro        ← General English resume
-│   └── apply/
-│       ├── index.astro        ← Application overview (password-protected)
-│       └── [slug].astro       ← Dynamic application page (cover + letter + CV)
+│   └── resume-en.astro        ← General English resume
 ├── styles/
 │   └── global.css             ← All styles incl. print CSS (@media print)
 scripts/
 ├── new-apply.sh               ← Creates new application (MD + TS snapshot)
 ├── delete-apply.sh            ← Deletes application and all associated files
+├── archive-job.sh             ← Archives job URL (Wayback Machine or local PDF)
+├── archive-job-pdf.mjs        ← Saves job posting as PDF via Playwright
+├── export-json-resume.mjs     ← Exports CV as JSON Resume schema
 └── generate-pdf.mjs           ← Generates PDFs via Playwright
 public/
 └── apply/
@@ -249,7 +310,7 @@ Supporting documents (Arbeitszeugnisse, Ausbildungszeugnisse, Zertifikate, etc.)
 ### How it works
 
 - **Source PDFs** go in `public/apply/docs/` — protected by the Edge Function (session required)
-- **Registry** in `src/data/documents.ts` — each document has `id`, `filename`, `category`, `date`, optional `issuer`
+- **Registry** in `src/data/documents.ts` — each document has `id`, `filename`, `category`, `date`, optional `issuer`; optional English variants via `filenameEn`, `nameEn`, `issuerEn`
 - **Per-application selection** via `documents: [id1, id2]` array in the frontmatter of `<slug>.md`
 - **Attachments PDF** (`<slug>-attachments.pdf`) — merged PDF of all selected documents, generated by `npm run pdf`
 - **UI**: Attachments section on `[slug].astro` (screen only) with individual PDF links + toolbar download button
