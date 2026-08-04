@@ -5,6 +5,7 @@ description: "33 Rückmeldungen aus meinem Umfeld haben mir gezeigt, welche Must
 categories: [Reflexion, Coaching, Persönlichkeitsentwicklung]
 tags: [Fremdwahrnehmung, Stärken, Coaching, Selbstreflexion]
 image: ../../assets/Gemini_Generated_Image_o7etbeo7etbeo7et.png
+imageAiGenerated: true
 ---
 
 Manchmal sieht man die eigenen Muster erst, wenn andere sie einem spiegeln.

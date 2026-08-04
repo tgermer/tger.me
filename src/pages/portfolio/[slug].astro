@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 const { project, olderProject, newerProject } = Astro.props;
 const { Content } = await render(project);
-const { title, description, type, technologies, date, updatedDate, image, imageBackgroundColor, imageFit, icon, iconBackgroundColor, linkGithub, linkWebsite, screenshotsAvailable, screenshotsPath, screenshotsFiles, aiBuilt, relatedPosts } = project.data;
+const { title, description, type, technologies, date, updatedDate, image, imageAiGenerated, imageBackgroundColor, imageFit, icon, iconBackgroundColor, linkGithub, linkWebsite, screenshotsAvailable, screenshotsPath, screenshotsFiles, aiBuilt, relatedPosts } = project.data;
 const ogImage = `/og/portfolio/${project.id}.jpg`;
 ---
 
@@ -29,6 +29,7 @@ const ogImage = `/og/portfolio/${project.id}.jpg`;
   date={date}
   updatedDate={updatedDate}
   image={image}
+  imageAiGenerated={imageAiGenerated}
   imageBackgroundColor={imageBackgroundColor}
   imageFit={imageFit}
   icon={icon}

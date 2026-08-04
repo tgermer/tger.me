@@ -12,12 +12,13 @@ interface Props {
   date: Date;
   updatedDate?: Date;
   image: ImageMetadata;
+  imageAiGenerated?: boolean;
   imageBackgroundColor?: string;
   featured?: boolean;
   aiBuilt?: boolean;
 }
 
-const { slug, title, description, type, technologies, date, updatedDate, image, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
+const { slug, title, description, type, technologies, date, updatedDate, image, imageAiGenerated = false, imageBackgroundColor, featured = false, aiBuilt = false } = Astro.props;
 const techList = technologies.split(',').map((t) => t.trim());
 const isSvg = image.format === 'svg';
 
@@ -51,6 +52,12 @@ const dateLabel = updatedDate
       />
     )}
     <div class="absolute top-3 right-3 flex gap-1.5">
+      {imageAiGenerated && (
+        <span class="inline-flex items-center gap-1 bg-gray-950/80 text-white text-xs font-medium px-2 py-1 rounded-full shadow-sm backdrop-blur">
+          <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
+          KI-Bild
+        </span>
+      )}
       {aiBuilt && (
         <span class="inline-flex items-center gap-1 bg-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full">
           <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />

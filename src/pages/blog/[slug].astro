@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import { site } from '../../data/site';
 
@@ -48,6 +49,24 @@ const hasMermaid = post.body.includes('```mermaid');
           </time>
           <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mt-2">{post.data.title}</h1>
         </header>
+
+        {post.data.image && (
+          <div class="reveal relative mb-10 max-h-[32rem] overflow-hidden rounded-2xl shadow-lg">
+            <Image
+              src={post.data.image}
+              alt={post.data.title}
+              layout="full-width"
+              class="w-full object-cover"
+              style={`object-position: ${post.data.imagePosition};`}
+            />
+            {post.data.imageAiGenerated && (
+              <span class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-gray-950/80 px-2.5 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
+                <Icon name="tabler:sparkles" class="h-3.5 w-3.5" aria-hidden="true" />
+                KI-generiertes Bild
+              </span>
+            )}
+          </div>
+        )}
 
         <div class:list={['blog-layout', { 'has-toc': showToc }]}>
           {showToc && (

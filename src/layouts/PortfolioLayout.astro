@@ -12,6 +12,7 @@ interface Props {
   date: Date;
   updatedDate?: Date;
   image: ImageMetadata;
+  imageAiGenerated?: boolean;
   imageBackgroundColor?: string;
   imageFit?: 'contain' | 'cover';
   icon?: string;
@@ -36,6 +37,7 @@ const {
   date,
   updatedDate,
   image,
+  imageAiGenerated = false,
   imageBackgroundColor,
   imageFit = 'contain',
   icon,
@@ -198,7 +200,7 @@ const screenshotUrls = screenshots.map((s) => s.src);
 
       <!-- Single project image (no screenshots) -->
       {!screenshotsAvailable && (
-        <div class="reveal mb-10 rounded-2xl overflow-hidden shadow-lg">
+        <div class="reveal relative mb-10 rounded-2xl overflow-hidden shadow-lg">
           {isSvg ? (
             <img
               src={image.src}
@@ -214,6 +216,12 @@ const screenshotUrls = screenshots.map((s) => s.src);
               class={`w-full object-${imageFit} max-h-96 ${imageBackgroundColor ? '' : 'bg-gray-50 dark:bg-gray-900'}`}
               style={imageBackgroundColor ? `background-color: ${imageBackgroundColor};` : undefined}
             />
+          )}
+          {imageAiGenerated && (
+            <span class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-gray-950/80 px-2.5 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
+              <Icon name="tabler:sparkles" class="h-3.5 w-3.5" aria-hidden="true" />
+              KI-generiertes Bild
+            </span>
           )}
         </div>
       )}

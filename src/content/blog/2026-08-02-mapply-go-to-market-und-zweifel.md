@@ -4,6 +4,8 @@ date: 2026-08-02
 description: "Ein persönlicher Zwischenstand: Warum der schwierigste Teil an Mapply gerade nicht das Bauen ist, sondern Go-to-Market, Positionierung und die Frage, wie aus einer eigenen Lösung ein tragfähiges Produkt wird."
 categories: [Mapply, Gründung, Berufliche Neuorientierung]
 tags: [Mapply, Go-to-Market, Founderblocks, SCE, Gründung, Zweifel]
+image: ../../assets/mapply-persona.jpg
+imageAiGenerated: true
 ---
 
 Es gibt diesen Punkt, an dem ein Projekt nicht mehr nur ein Projekt ist.
@@ -28,7 +30,7 @@ Das klingt selbstverständlich. Aber es fühlt sich anders an, wenn man selbst d
 
 Eine der schwierigsten Fragen ist gerade: Für wen baue ich Mapply zuerst?
 
-![Hauptpersona](../../assets/mapply-persona.jpg) Für Menschen in beruflicher Neuorientierung? Für Berufstätige, die wechselwillig sind, aber Bewerbungen immer wieder aufschieben? Für Bewerbungscoaches? Für Menschen, die mit KI arbeiten wollen, aber keinen unkontrollierten Bewerbungsgenerator suchen?
+Für Menschen in beruflicher Neuorientierung? Für Berufstätige, die wechselwillig sind, aber Bewerbungen immer wieder aufschieben? Für Bewerbungscoaches? Für Menschen, die mit KI arbeiten wollen, aber keinen unkontrollierten Bewerbungsgenerator suchen?
 
 Jede Antwort verändert das Produkt.
 

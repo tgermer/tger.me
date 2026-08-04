@@ -6,6 +6,7 @@ technologies: Next.js, Astro, TypeScript, Markdown, JSON Resume, PDF-Generierung
 date: 2026-07-01
 updatedDate: 2026-08-02
 image: ../../assets/mapply-hero.png
+imageAiGenerated: true
 imageFit: cover
 linkWebsite: https://www.mapply.me
 type: SaaS, WebApp, Produktidee

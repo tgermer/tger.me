@@ -5,6 +5,7 @@ description: "Aus vielen Erfahrungen, Projekten und Rückmeldungen entstand im W
 categories: [Berufliche Neuorientierung, Selbstverständnis, Coaching]
 tags: [TCOM, Berufliche Identität, Positionierung, Stärken, Selbstreflexion]
 image: ../../assets/codex_generated_image_tcom.png
+imageAiGenerated: true
 ---
 
 Manchmal hat man viele richtige Teile vor sich liegen und erkennt trotzdem noch kein klares Bild.
