@@ -16,6 +16,6 @@ export const site = {
     // Resume personal data
     birthdate: "19.10.1981",
     address: "Petrarcastraße 32, 80933 München",
-    taglineDe: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
-    taglineEn: "Digitalization & Automation | System & Process Control",
+    taglineDe: "Digitale Systeme, Automatisierung & KI-gestützte Prototypen",
+    taglineEn: "Digital Systems, Automation & AI-Assisted Prototypes",
 };

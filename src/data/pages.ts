@@ -7,7 +7,7 @@ export const pages: Record<string, PageMeta> = {
   index: {
     title: "Tristan Germer",
     description:
-      "Digitalisierung, KI-gestützte Entwicklung und moderne Technologien. Projekte, Blog und Lebenslauf.",
+      "Digitale Systeme, Automatisierung und KI-gestützte Prototypen von Tristan Germer – aus echten Problemen gebaut.",
   },
   portfolio: {
     title: "Portfolio",
@@ -17,7 +17,7 @@ export const pages: Record<string, PageMeta> = {
   blog: {
     title: "Blog",
     description:
-      "Artikel über Vibe Coding, Digitalisierung und Automatisierung – Einblicke und Erfahrungen von Tristan Germer.",
+      "Notizen über KI-gestütztes Bauen, Digitalisierung, berufliche Neuorientierung und Systeme, die echte Probleme lösen.",
   },
   references: {
     title: "Referenzen",

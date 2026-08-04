@@ -38,9 +38,9 @@ const translations = {
   de: {
     // ── CV web page ──
     cvPageTitle: "Lebenslauf",
-    cvPageSubtitle: "Berufserfahrung, Ausbildung und Kenntnisse",
+    cvPageSubtitle: "Digitale Systeme, Automatisierung und KI-gestützte Prototypen",
     cvPageDescription:
-      "Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse.",
+      "Lebenslauf von Tristan Germer – digitale Systeme, Automatisierung, Prozessgestaltung und KI-gestützte Prototypen.",
     cvPdfHref: "/apply/cv-de.pdf",
     cvExperienceHeading: "Beruflicher Werdegang",
     cvSince: "Seit",
@@ -57,7 +57,7 @@ const translations = {
     // ── CV print page ──
     cvPrintPageTitle: "Lebenslauf – Tristan Germer",
     cvPrintPageDescription:
-      "Lebenslauf von Tristan Germer – Berufserfahrung, Ausbildung und Kenntnisse.",
+      "Lebenslauf von Tristan Germer – digitale Systeme, Automatisierung, Prozessgestaltung und KI-gestützte Prototypen.",
     cvPrintBackLabel: "Zurück zum Lebenslauf",
     cvPrintLangSwitchLabel: "English",
     cvPrintPdfHref: "/apply/cv-de.pdf",
@@ -82,49 +82,49 @@ const translations = {
 
     // ── About page ──
     aboutPageTitle: "Über mich",
-    aboutPageSubtitle: "Digitalisierung, KI-gestützte Entwicklung und Technik",
+    aboutPageSubtitle: "Digitale Systeme, Automatisierung und KI-gestützte Prototypen",
     aboutPageDescription:
-      "Erfahre mehr über Tristan Germer – Digitalisierung, KI-gestützte Entwicklung und Technik-Enthusiast aus München.",
+      "Erfahre mehr über Tristan Germer – digitale Systeme, Automatisierung, Prozessgestaltung und KI-gestützte Prototypen.",
     aboutDegreeLabel: "M.Sc. Technische Kommunikation\nB.A. Betriebswirtschaftslehre",
     aboutLocationLabel: "München, Deutschland",
     aboutWhoAmITitle: "Wer bin ich?",
     aboutWhoAmITexts: [
-      "Technik hat mich schon immer fasziniert – von den ersten Gehversuchen am Computer bis heute. Was als kindliche Neugier begann, ist über die Jahre zu einer beruflichen Leidenschaft geworden: Ich begleite seit über zehn Jahren Digitalisierungs-, Organisations- und Automatisierungsvorhaben in Verwaltung und Bildung.",
-      "Mein Schwerpunkt liegt auf Querschnitts- und Stabsfunktionen, in denen Gestaltung, Analyse und Umsetzung zusammenkommen. Mit einem Master of Science in Technischer Kommunikation und einem Background in Betriebswirtschaft bringe ich eine Kombination aus technischem Verständnis, analytischem Denken und strategischer Perspektive mit.",
-      "Ich bin ein leidenschaftlicher Problemlöser: Komplexe Herausforderungen systematisch zu durchdringen und pragmatische Lösungen zu finden, treibt mich an. Dabei denke ich immer von der Schnittstelle Produkt und Mensch her – Technik muss für Menschen funktionieren, nicht umgekehrt.",
-      "Abseits des Berufs experimentiere ich gerne mit neuen Technologien – ob eigene Web-Apps, Automatisierungen oder Smart-Home-Projekte. Dabei nutze ich KI-gestützte Entwicklung mit Tools wie Claude Code oder ChatGPT Codex, um Ideen schnell greifbar zu machen und durch Prototypen zu validieren – nicht als Ersatz für Fachwissen, sondern als Werkzeug, das mir als Nicht-Programmierer ermöglicht, eigene Konzepte eigenständig umzusetzen.",
+      "Ich übersetze unklare Prozesse, Ideen und technische Möglichkeiten in funktionierende digitale Systeme. Was als frühe Technikbegeisterung begann, ist über die Jahre zu einer Arbeitsweise geworden: verstehen, strukturieren, greifbar machen und so lange verbessern, bis eine Lösung im Alltag funktioniert.",
+      "Seit über zehn Jahren begleite ich Digitalisierungs-, Organisations- und Automatisierungsvorhaben in Verwaltung und Bildung. Mein Schwerpunkt liegt auf Querschnitts- und Stabsfunktionen, in denen Analyse, Kommunikation, Daten, Prozesse und Umsetzung zusammenkommen.",
+      "Mit einem Master of Science in Technischer Kommunikation und einem Background in Betriebswirtschaft bringe ich eine Kombination aus technischem Verständnis, analytischem Denken und strategischer Perspektive mit. Ich denke gern von der Schnittstelle Produkt und Mensch her: Technik muss verständlich, nützlich und anschlussfähig sein.",
+      "Aktuell nutze ich KI-gestützte Entwicklung mit Tools wie ChatGPT Codex und Claude Code, um Ideen schnell in Prototypen zu verwandeln. Für mich ersetzt KI kein Fachwissen. Sie senkt die Schwelle, aus echten Problemen eigene Werkzeuge zu bauen – vom Bewerbungs-OS über ClearControl bis zu LIFE-EQ.",
     ],
     aboutFocusAreasTitle: "Schwerpunkte",
     aboutFocusAreas: [
       {
-        title: "Prozessgestaltung & Automatisierung",
-        desc: "Analyse, Einführung und Weiterentwicklung von Workflows und Steuerungslogiken.",
+        title: "Prozess- & Systemgestaltung",
+        desc: "Unklare Abläufe analysieren, strukturieren und in nutzbare digitale Systeme übersetzen.",
       },
       {
-        title: "Querschnitts- & Stabsarbeit",
-        desc: "Projektleitung, Koordination, Berechtigungskonzepte, Stakeholder-Management.",
+        title: "Automatisierung & Workflows",
+        desc: "Wiederkehrende Aufgaben, Dokumente und Steuerungslogiken pragmatisch vereinfachen.",
       },
       {
-        title: "Transparenz & Steuerung",
-        desc: "KPI-Dashboards, Reporting, Datenaufbereitung für Entscheider.",
+        title: "Daten & Transparenz",
+        desc: "Kennzahlen, Reporting und Dashboards so aufbereiten, dass Entscheidungen leichter werden.",
       },
       {
-        title: "Compliance & Qualität",
-        desc: "Revisionssichere Archivierung, Qualitätsmanagement.",
+        title: "Qualität & Anschlussfähigkeit",
+        desc: "Lösungen so gestalten, dass sie dokumentiert, nachvollziehbar und im Alltag tragfähig sind.",
       },
       {
-        title: "Digitale Systeme etablieren",
-        desc: "Release- & Update-Management, Schulungen, Tool-Einführungen.",
+        title: "KI-gestützte Prototypen",
+        desc: "Ideen schnell greifbar machen, testen und aus Rückmeldungen weiterentwickeln.",
       },
     ],
     aboutDrivesTitle: "Mein Antrieb",
     aboutDrivesText:
-      "Mich motivieren Gestaltungsfreiheit, systemisches Denken und der Impuls, Ideen schnell greifbar zu machen – durch Prototypen validieren statt endlos planen. Ich bin ein Impulsgeber, der andere gerne mit einbezieht und begeistert. Aktuell fasziniert mich, wie KI-gestützte Entwicklungstools wie Claude Code oder ChatGPT Codex die Art verändern, wie Software entsteht – und mir als Nicht-Programmierer ermöglichen, eigene Ideen eigenständig umzusetzen.",
+      "Mich motivieren Gestaltungsfreiheit, systemisches Denken und der Impuls, Ideen schnell greifbar zu machen. Ich arbeite gern dort, wo ein Problem noch unscharf ist, aber genug Reibung erzeugt, dass sich eine bessere Lösung lohnt. Prototypen helfen mir, Annahmen sichtbar zu machen und Gespräche konkreter zu führen.",
     aboutDrivesQuote:
       "Die beste Idee nützt nichts, wenn sie im Kopf bleibt – also baue ich sie.",
     aboutWorkStyleTitle: "Arbeitsweise",
     aboutWorkStyleText:
-      "Analytisch, strukturiert und nutzerorientiert. Ich brauche den bewussten Wechsel zwischen kreativer Konzeptarbeit und strukturierter Umsetzung – beides braucht seinen Raum, damit gute Ergebnisse entstehen. Veränderungen begleite ich aktiv durch klare Kommunikation, Schulung und praxisnahe Umsetzung.",
+      "Analytisch, strukturiert und nutzerorientiert. Ich brauche den bewussten Wechsel zwischen kreativer Konzeptarbeit und konzentrierter Umsetzung. Veränderungen begleite ich durch klare Kommunikation, verständliche Dokumentation, Schulung und praxisnahe Einführung.",
     aboutToolsTitle: "Tools & Zertifizierungen",
     aboutCertificationsLabel: "Zertifizierungen",
     aboutToolsLabel: "Berufliche Tools",
@@ -136,9 +136,9 @@ const translations = {
   en: {
     // ── CV web page ──
     cvPageTitle: "Curriculum Vitae",
-    cvPageSubtitle: "Work experience, education and skills",
+    cvPageSubtitle: "Digital systems, automation and AI-assisted prototypes",
     cvPageDescription:
-      "CV of Tristan Germer – Work experience, education and skills.",
+      "CV of Tristan Germer – digital systems, automation, process design and AI-assisted prototypes.",
     cvPdfHref: "/apply/cv-en.pdf",
     cvExperienceHeading: "Work Experience",
     cvSince: "Since",
@@ -155,7 +155,7 @@ const translations = {
     // ── CV print page ──
     cvPrintPageTitle: "CV – Tristan Germer",
     cvPrintPageDescription:
-      "Curriculum Vitae of Tristan Germer – Experience, Education, and Skills.",
+      "Curriculum Vitae of Tristan Germer – digital systems, automation, process design and AI-assisted prototypes.",
     cvPrintBackLabel: "Back to CV",
     cvPrintLangSwitchLabel: "Deutsch",
     cvPrintPdfHref: "/apply/cv-en.pdf",
@@ -180,49 +180,49 @@ const translations = {
 
     // ── About page ──
     aboutPageTitle: "About me",
-    aboutPageSubtitle: "Digitalization, AI-assisted development and technology",
+    aboutPageSubtitle: "Digital systems, automation and AI-assisted prototypes",
     aboutPageDescription:
-      "Learn more about Tristan Germer – digitalization, AI-assisted development and tech enthusiast from Munich.",
+      "Learn more about Tristan Germer – digital systems, automation, process design and AI-assisted prototypes.",
     aboutDegreeLabel: "M.Sc. Technical Communication\nB.A. Business Administration",
     aboutLocationLabel: "Munich, Germany",
     aboutWhoAmITitle: "Who am I?",
     aboutWhoAmITexts: [
-      "Technology has always fascinated me — from my very first steps on a computer to this day. What began as childhood curiosity has grown into a professional passion over the years: for more than a decade, I have been driving digitalization, organizational development and automation initiatives in public administration and higher education.",
-      "My focus is on cross-functional and staff roles where design, analysis and implementation come together. With a Master of Science in Technical Communication and a background in Business Administration, I bring a combination of technical understanding, analytical thinking and strategic perspective.",
-      "I'm a passionate problem solver: I thrive on systematically breaking down complex challenges and finding pragmatic solutions. I always think from the product–human interface — technology should work for people, not the other way around.",
-      "Outside of work, I enjoy experimenting with new technologies — whether my own web apps, automations or smart home projects. I use AI-assisted development with tools like Claude Code or ChatGPT Codex to quickly make ideas tangible and validate them through prototypes — not as a substitute for expertise, but as a tool that enables me as a non-programmer to independently bring my own concepts to life.",
+      "I translate unclear processes, ideas and technical possibilities into working digital systems. What started as an early fascination with technology has become a way of working: understand, structure, make tangible and keep improving until a solution works in practice.",
+      "For more than ten years, I have worked on digitalization, organizational development and automation initiatives in administration and higher education. My focus is on cross-functional and staff roles where analysis, communication, data, processes and implementation come together.",
+      "With a Master of Science in Technical Communication and a background in Business Administration, I bring a combination of technical understanding, analytical thinking and strategic perspective. I like to think from the product-human interface: technology needs to be understandable, useful and easy to adopt.",
+      "Today I use AI-assisted development with tools such as ChatGPT Codex and Claude Code to turn ideas into prototypes quickly. For me, AI does not replace expertise. It lowers the threshold for building practical tools from real problems, from my application OS to ClearControl and LIFE-EQ.",
     ],
     aboutFocusAreasTitle: "Focus areas",
     aboutFocusAreas: [
       {
-        title: "Process design & automation",
-        desc: "Analysis, implementation and continuous improvement of workflows and control logic.",
+        title: "Process & system design",
+        desc: "Analyzing unclear workflows, structuring them and translating them into usable digital systems.",
       },
       {
-        title: "Cross-functional & staff roles",
-        desc: "Project management, coordination, authorization concepts, stakeholder management.",
+        title: "Automation & workflows",
+        desc: "Simplifying recurring tasks, documents and control logic in a pragmatic way.",
       },
       {
-        title: "Transparency & governance",
-        desc: "KPI dashboards, reporting, data preparation for decision-makers.",
+        title: "Data & transparency",
+        desc: "Preparing metrics, reporting and dashboards so decisions become easier.",
       },
       {
-        title: "Compliance & quality",
-        desc: "Audit-proof archiving, quality management.",
+        title: "Quality & adoption",
+        desc: "Designing solutions that are documented, traceable and sustainable in everyday use.",
       },
       {
-        title: "Establishing digital systems",
-        desc: "Release & update management, training, tool rollouts.",
+        title: "AI-assisted prototypes",
+        desc: "Making ideas tangible quickly, testing them and improving them from feedback.",
       },
     ],
     aboutDrivesTitle: "What drives me",
     aboutDrivesText:
-      "I'm motivated by creative freedom, systems thinking and the urge to make ideas tangible quickly — validate through prototypes rather than plan endlessly. I enjoy inspiring others and bringing them along on the journey. What fascinates me right now is how AI-powered development tools like Claude Code or ChatGPT Codex are changing the way software is built — and how they enable me as a non-programmer to independently turn my own ideas into reality.",
+      "I'm motivated by creative freedom, systems thinking and the urge to make ideas tangible quickly. I enjoy working where a problem is still unclear but creates enough friction to make a better solution worthwhile. Prototypes help me make assumptions visible and conversations more concrete.",
     aboutDrivesQuote:
       "The best idea is worthless if it stays in your head — so I build it.",
     aboutWorkStyleTitle: "Work style",
     aboutWorkStyleText:
-      "Analytical, structured and user-oriented. I need the deliberate balance between creative conceptual work and structured execution — both need their space for great results to emerge. I actively support change through clear communication, training and hands-on implementation.",
+      "Analytical, structured and user-oriented. I need the deliberate balance between creative conceptual work and focused implementation. I support change through clear communication, understandable documentation, training and hands-on rollout.",
     aboutToolsTitle: "Tools & certifications",
     aboutCertificationsLabel: "Certifications",
     aboutToolsLabel: "Professional tools",

@@ -13,7 +13,7 @@ interface Props {
 const { lang } = Astro.props;
 const l = t(lang);
 const cv = lang === "de" ? cvDe : cvEn;
-const { work, education, certificates, skills } = cv;
+const { work, education, certificates, skills, projects } = cv;
 
 function formatDate(dateStr: string): string {
     if (!dateStr) return "";
@@ -180,6 +180,44 @@ const alternates = [
             }
         </div>
     </section>
+
+    <!-- Projekte -->
+    {
+        projects?.length > 0 && (
+            <section class="reveal mb-12">
+                <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white mb-6 pb-2 border-b border-gray-200 dark:border-gray-800"><Icon name="tabler:rocket" class="h-6 w-6 text-blue-600 dark:text-blue-400" /> {l.cvProjectsHeading}</h2>
+                <div class="divide-y divide-gray-200 dark:divide-gray-800">
+                    {projects.map((project) => (
+                        <div class="py-4 first:pt-0">
+                            <div class="flex flex-col md:flex-row md:gap-8">
+                                <div class="text-gray-900 dark:text-white md:w-25 md:shrink-0 mb-1 md:mb-0">{formatDate(project.startDate)}</div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-gray-900 dark:text-white">{project.name}</p>
+                                    {project.urls && project.urls.length > 0 && (
+                                        <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+                                            {project.urls.map((link) => (
+                                                <a href={`https://${link.url}`} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                                                    <Icon name="tabler:external-link" class="h-3.5 w-3.5" />
+                                                    {link.network}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {project.highlights && project.highlights.length > 0 && (
+                                        <ul class="mt-2 list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
+                                            {project.highlights.map((item) => (
+                                                <li>{item}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        )
+    }
 
     <!-- Kenntnisse -->
     <section class="reveal mb-12">

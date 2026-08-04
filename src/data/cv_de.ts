@@ -6,7 +6,7 @@ import type { Work, Education, Certificate, Skill, Reference, Project, Basics, L
 
 export const basics: Basics = {
     name: "Tristan Germer",
-    label: "Digitalisierung & Automatisierung | System- & Prozesssteuerung",
+    label: "Digitale Systeme, Automatisierung & KI-gestützte Prototypen",
     image: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     location: {
@@ -25,10 +25,12 @@ export const basics: Basics = {
 
 export const work: Work[] = [
     {
-        name: "Karriereübergang – Digitalisierung & Systemsteuerung",
+        name: "Mapply",
         location: "",
-        typeOfEmployment: "Berufliche Neuorientierung",
-        highlights: ["Bewusste berufliche Übergangsphase zur fachlichen Vertiefung und strategischen Neupositionierung.", "Schwerpunkt auf Digitalisierung, Automatisierung und Systemsteuerung in Querschnitts- und Stabsfunktionen.", "Übertragung technischer Automatisierungs- und Steuerungslogiken auf organisatorische Kontexte."],
+        url: "www.mapply.me",
+        typeOfEmployment: "Eigenes Produkt / berufliche Neuorientierung",
+        position: ["Founder & Builder"],
+        highlights: ["Aufbau von Mapply als SaaS-Produktidee zur Organisation von Lebenslaufdaten, Bewerbungen, Dokumenten und Bewerbungsständen.", "Konzeption eines datenbasierten Bewerbungs-OS mit kuratierten CV-Versionen, Dokumentenverwaltung, Status-Tracking und Bewerbungslinks.", "KI-gestützte Stellenanalyse sowie Vorschläge für Anschreiben, Motivation und passgenaue Argumentation; finale Inhalte bleiben bewusst händisch geprüft und redaktionell gesteuert.", "Strategische Neupositionierung an der Schnittstelle von Prozessgestaltung, Produktdenken, KI-gestützter Umsetzung und beruflicher Neuorientierung."],
         startDate: "2025-10-01",
         endDate: "",
     },
@@ -165,11 +167,11 @@ export const certificates: Certificate[] = [
 ];
 
 export const skills: Skill[] = [
-    { name: "Office", keywords: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
-    { name: "Programmierung", keywords: ["Swift", "JavaScript", "TypeScript"] },
-    { name: "Datenanalyse", keywords: ["SQL", "Excel (Fortgeschritten)", "MS Power BI"] },
+    { name: "Prozess- & Systemgestaltung", keywords: ["Workflow-Analyse", "Automatisierung", "DMS d.velop d3", "komXwork", "Berechtigungskonzepte", "Schulung & Rollout"] },
+    { name: "Prototyping & Web", keywords: ["Astro", "React", "TypeScript", "JavaScript", "Vite", "SwiftUI"] },
+    { name: "Daten & Transparenz", keywords: ["SQL", "Excel (Fortgeschritten)", "MS Power BI", "KPI-Dashboards", "Reporting"] },
     { name: "Design", keywords: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { name: "AI & Tools", keywords: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
+    { name: "KI-gestützte Projektarbeit", keywords: ["ChatGPT Codex", "Claude Code", "GitHub Copilot", "Prompt Engineering", "Agentic Engineering"] },
 ];
 
 export const languages: Language[] = [
@@ -178,7 +180,7 @@ export const languages: Language[] = [
 ];
 
 export const interests: Interest[] = [
-    { name: "Coding", keywords: ["Analytisch", "Detailorientiert"] },
+    { name: "Prototyping", keywords: ["Analytisch", "Detailorientiert"] },
     { name: "Technologie", keywords: ["Innovativ", "Lernbereit"] },
     { name: "Fitness", keywords: ["Teamfähigkeit", "Ehrgeiz"] },
     { name: "Reisen", keywords: ["Flexibilität", "Neugier"] },
@@ -186,12 +188,18 @@ export const interests: Interest[] = [
 
 export const projects: Project[] = [
     {
+        name: "Mapply – Bewerbungsorganisation als digitales System",
+        urls: [{ network: "Website", url: "www.mapply.me" }],
+        highlights: ["SaaS-Produktkonzept für ein Bewerbungs-OS, das Lebenslaufdaten, Bewerbungen, Dokumente und Statusverläufe an einem Ort bündelt.", "Manuell kuratierte, passgenaue Bewerbungsunterlagen mit KI-Unterstützung für Stellenanalyse, Anschreiben, Motivation und Argumentationslinien.", "Entstanden aus einem eigenen realen Prozessproblem und als Produktidee für Menschen in beruflicher Neuorientierung weiterentwickelt."],
+        startDate: "2025-10-01",
+    },
+    {
         name: "ClearControl.de – Klarheit für Smart-Home-Steuerungen",
         urls: [
             { network: "Website", url: "clearcontrol.de" },
             { network: "GitHub", url: "github.com/tgermer/ha-remote-designer" },
         ],
-        highlights: ["Web-App zum Erstellen professioneller Beschriftungen für Schalter und Fernbedienungen von Smart-Home-Systemen.", "Eigenständige Konzeption und Umsetzung eines produktiven Web-Tools zur Lösung eines konkreten Anwenderproblems.", "Fokus auf UX, Systemlogik, Automatisierung und funktionierende End-to-End-Lösung."],
+        highlights: ["Web-App zum Erstellen professioneller Beschriftungen für Schalter und Fernbedienungen von Smart-Home-Systemen.", "Entstanden aus dem eigenen Bedürfnis, komplex belegte Smart-Home-Remotes verständlich, konsistent und druckfertig zu beschriften.", "Eigenständige Konzeption und Umsetzung eines produktiven Web-Tools mit Fokus auf UX, Systemlogik und funktionierende End-to-End-Lösung."],
         startDate: "2026-01-01",
     },
 ];

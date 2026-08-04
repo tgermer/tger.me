@@ -6,7 +6,7 @@ import type { Work, Education, Certificate, Skill, Reference, Project, Basics, L
 
 export const basics: Basics = {
     name: "Tristan Germer",
-    label: "Digitalization & Automation | System & Process Control",
+    label: "Digital Systems, Automation & AI-Assisted Prototypes",
     image: "2025-09-02-landscape.jpg",
     birthdate: "19.10.1981",
     location: {
@@ -25,10 +25,12 @@ export const basics: Basics = {
 
 export const work: Work[] = [
     {
-        name: "Career Transition – Digitalization & System Control",
+        name: "Mapply",
         location: "",
-        typeOfEmployment: "Career Reorientation",
-        highlights: ["Deliberate professional transition phase for deepening expertise and strategic repositioning.", "Focus on digitalization, automation, and system control in cross-functional and staff roles.", "Transfer of technical automation and control logic to organizational contexts."],
+        url: "www.mapply.me",
+        typeOfEmployment: "Own product / career reorientation",
+        position: ["Founder & Builder"],
+        highlights: ["Building Mapply as a SaaS product idea for organizing resume data, applications, documents and application statuses.", "Conception of a data-driven application OS with curated CV versions, document management, status tracking and shareable application links.", "AI-assisted job analysis and suggestions for cover letters, motivation and tailored argumentation; final content remains deliberately reviewed and editorially controlled by hand.", "Strategic repositioning at the intersection of process design, product thinking, AI-assisted implementation and career transition."],
         startDate: "2025-10-01",
         endDate: "",
     },
@@ -165,11 +167,11 @@ export const certificates: Certificate[] = [
 ];
 
 export const skills: Skill[] = [
-    { name: "Office", keywords: ["Word", "Excel", "PowerPoint", "Visio", "DMS d.velop d3", "komXwork"] },
-    { name: "Programming", keywords: ["Swift", "JavaScript", "TypeScript"] },
-    { name: "Data Analysis", keywords: ["SQL", "Excel (Advanced)", "MS Power BI"] },
+    { name: "Process & System Design", keywords: ["Workflow analysis", "Automation", "DMS d.velop d3", "komXwork", "Authorization concepts", "Training & rollout"] },
+    { name: "Prototyping & Web", keywords: ["Astro", "React", "TypeScript", "JavaScript", "Vite", "SwiftUI"] },
+    { name: "Data & Transparency", keywords: ["SQL", "Excel (Advanced)", "MS Power BI", "KPI dashboards", "Reporting"] },
     { name: "Design", keywords: ["Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "Affinity Suite (Designer, Photo, Publisher)", "Final Cut Pro X", "Motion"] },
-    { name: "AI & Tools", keywords: ["Claude Code", "GitHub Copilot", "Prompt Engineering"] },
+    { name: "AI-Assisted Project Work", keywords: ["ChatGPT Codex", "Claude Code", "GitHub Copilot", "Prompt Engineering", "Agentic Engineering"] },
 ];
 
 export const languages: Language[] = [
@@ -178,7 +180,7 @@ export const languages: Language[] = [
 ];
 
 export const interests: Interest[] = [
-    { name: "Coding", keywords: ["Analytical", "Detail-Oriented"] },
+    { name: "Prototyping", keywords: ["Analytical", "Detail-Oriented"] },
     { name: "Technology", keywords: ["Innovative", "Eager to Learn"] },
     { name: "Fitness", keywords: ["Team Player", "Ambitious"] },
     { name: "Travel", keywords: ["Flexible", "Curious"] },
@@ -186,12 +188,18 @@ export const interests: Interest[] = [
 
 export const projects: Project[] = [
     {
+        name: "Mapply – Application organization as a digital system",
+        urls: [{ network: "Website", url: "www.mapply.me" }],
+        highlights: ["SaaS product concept for an application OS that brings resume data, applications, documents and status history into one place.", "Manually curated, tailored application documents with AI support for job analysis, cover letters, motivation and argumentation.", "Developed from a real personal process problem and evolved into a product idea for people in career transition."],
+        startDate: "2025-10-01",
+    },
+    {
         name: "ClearControl.de – Clarity for Smart Home Controls",
         urls: [
             { network: "Website", url: "clearcontrol.de" },
             { network: "GitHub", url: "github.com/tgermer/ha-remote-designer" },
         ],
-        highlights: ["Web app for creating professional labels for switches and remote controls of smart home systems.", "Independent conception and implementation of a productive web tool to solve a concrete user problem.", "Focus on UX, system logic, automation, and a functioning end-to-end solution."],
+        highlights: ["Web app for creating professional labels for switches and remote controls of smart home systems.", "Developed from my own need to make complex smart home remotes understandable, consistent and print-ready.", "Independent conception and implementation of a productive web tool with a focus on UX, system logic and a functioning end-to-end solution."],
         startDate: "2026-01-01",
     },
 ];

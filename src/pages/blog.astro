@@ -11,7 +11,7 @@ const sorted = posts.filter(p => !p.data.unlisted).sort((a, b) => b.data.date.ge
 const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()) : [];
 ---
 
-<PageLayout title="Blog" description={pages.blog.description} subtitle="Artikel und Neuigkeiten" ogImage="/og/blog.jpg" revealContent={false}>
+<PageLayout title="Blog" description={pages.blog.description} subtitle="Notizen über KI, Systeme, Prozesse und berufliche Neuorientierung" ogImage="/og/blog.jpg" revealContent={false}>
   <div class="space-y-6">
     {sorted.map((post, index) => {
       const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
