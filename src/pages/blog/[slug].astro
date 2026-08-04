@@ -29,6 +29,7 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 const showToc = tocHeadings.length >= 4;
 const dateStr = post.data.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const ogImage = `/og/blog/${post.id}.jpg`;
+const hasMermaid = post.body.includes('```mermaid');
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} ogImage={ogImage} ogType="article" noindex={post.data.unlisted}>
@@ -212,4 +213,37 @@ const ogImage = `/og/blog/${post.id}.jpg`;
     initTocDetails();
     document.addEventListener('astro:after-swap', initTocDetails);
   </script>
+  {hasMermaid && (
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+      function initMermaid() {
+        const blocks = document.querySelectorAll('pre[data-language="mermaid"] > code, pre > code.language-mermaid');
+        if (!blocks.length) return;
+
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+          securityLevel: 'strict',
+        });
+
+        blocks.forEach((block, index) => {
+          const pre = block.parentElement;
+          if (!pre || pre.dataset.mermaidRendered === 'true') return;
+          pre.dataset.mermaidRendered = 'true';
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'mermaid blog-mermaid';
+          wrapper.id = `mermaid-${index}`;
+          wrapper.textContent = block.textContent || '';
+          pre.replaceWith(wrapper);
+        });
+
+        mermaid.run({ querySelector: '.blog-mermaid' });
+      }
+
+      initMermaid();
+      document.addEventListener('astro:after-swap', initMermaid);
+    </script>
+  )}
 </BaseLayout>
