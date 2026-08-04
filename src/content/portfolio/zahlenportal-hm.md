@@ -8,6 +8,13 @@ image: ../../assets/portfolio/zahlenportal-hm-desktop-01.png
 type: Website
 screenshotsAvailable: true
 screenshotsPath: zahlenportal-hm
+relatedPosts:
+  - title: "Vom Verwaltungsproblem zum Prototyp"
+    href: "/blog/2026-07-24-vom-verwaltungsproblem-zum-prototyp"
+    description: "Warum gerade unscheinbare Verwaltungsprobleme oft gute digitale Werkzeuge hervorbringen."
+  - title: "Tristans TCOM: Mein Cognitive Operating Model"
+    href: "/blog/2026-07-21-tristans-tcom"
+    description: "Wie der Workshop meinen roten Faden zwischen Analyse, Struktur, Verständlichkeit und Bauen sichtbar gemacht hat."
 ---
 
 Das **Zahlenportal** der Hochschule München ist eine zentrale Plattform zur Verwaltung und Visualisierung von Studierendenkennzahlen. Es ersetzt dezentrale, manuelle Prozesse durch einen einheitlichen, datenbasierten Zugriff für alle Stakeholder.

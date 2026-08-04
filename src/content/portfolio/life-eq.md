@@ -9,6 +9,10 @@ imageFit: cover
 linkWebsite: https://life-eq.tger.me
 type: WebApp
 aiBuilt: true
+relatedPosts:
+  - title: "Was andere in mir sehen – und was ich daraus für meine Arbeit lerne"
+    href: "/blog/2026-07-18-was-andere-in-mir-sehen"
+    description: "Der persönliche Kontext hinter Stärken, Selbstklärung und beruflicher Neuorientierung."
 ---
 
 **LIFE-EQ** verwandelt eine klassische Coaching-Übung in ein interaktives Mischpult fürs Leben. Statt auf einem ausgedruckten PDF mit Stiften herumzumalen, wählt man seine fünf wichtigsten Lebensbereiche aus und stellt über Fader den IST- und SOLL-Zustand ein – wie an einem echten Equalizer.

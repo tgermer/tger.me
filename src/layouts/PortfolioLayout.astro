@@ -23,6 +23,7 @@ interface Props {
   screenshotsPath?: string;
   screenshotsFiles?: string[];
   aiBuilt?: boolean;
+  relatedPosts?: { title: string; href: string; description?: string }[];
   olderProject?: { slug: string; title: string } | null;
   newerProject?: { slug: string; title: string } | null;
 }
@@ -46,6 +47,7 @@ const {
   screenshotsPath,
   screenshotsFiles,
   aiBuilt = false,
+  relatedPosts = [],
   olderProject = null,
   newerProject = null,
 } = Astro.props;
@@ -220,6 +222,23 @@ const screenshotUrls = screenshots.map((s) => s.src);
       <div class="reveal prose max-w-none dark:prose-invert">
         <slot />
       </div>
+
+      {relatedPosts.length > 0 && (
+        <section class="reveal mt-12 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+          <h2 class="flex items-center gap-2 text-xl font-bold text-gray-900 dark:text-white mb-4">
+            <Icon name="tabler:article" class="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+            Passende Artikel
+          </h2>
+          <div class="space-y-3">
+            {relatedPosts.map((post) => (
+              <a href={post.href} class="block group">
+                <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{post.title}</h3>
+                {post.description && <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{post.description}</p>}
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <!-- Navigation -->
       <nav class="mt-12 pt-6 border-t border-gray-200 dark:border-gray-800">

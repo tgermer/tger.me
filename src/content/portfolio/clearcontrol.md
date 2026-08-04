@@ -9,6 +9,16 @@ linkGithub: https://github.com/tgermer/ha-remote-designer
 linkWebsite: https://clearcontrol.de
 type: Website, WebApp
 aiBuilt: true
+relatedPosts:
+  - title: "ClearControl: Aus eigenem Bedarf wird ein digitales Werkzeug"
+    href: "/blog/2026-06-12-clearcontrol-aus-eigenem-bedarf"
+    description: "Warum das Projekt nicht nur Smart Home betrifft, sondern verständliche Interfaces in Gebäuden allgemein."
+  - title: "Vom Verwaltungsproblem zum Prototyp"
+    href: "/blog/2026-07-24-vom-verwaltungsproblem-zum-prototyp"
+    description: "Über das Muster, aus konkreter Reibung schnell greifbare digitale Werkzeuge zu bauen."
+  - title: "Tristans TCOM: Mein Cognitive Operating Model"
+    href: "/blog/2026-07-21-tristans-tcom"
+    description: "Wie mein Denk- und Arbeitsmodell aus Reibung, Struktur, Übersetzung und Bauen entstanden ist."
 ---
 
 **ClearControl** ist ein webbasiertes Design-Tool zur Erstellung einfacher, konsistenter Beschriftungen für physische Smart-Home-Fernbedienungen. Wer mit erweiterten Automatisierungen arbeitet – Single Press, Double Press, Long Press – verliert schnell den Überblick, welche Taste was auslöst. ClearControl löst genau dieses Problem.

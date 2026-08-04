@@ -10,6 +10,10 @@ imageBackgroundColor: "#6d5cc6"
 linkWebsite: https://signature.tger.me
 type: Website, WebApp
 aiBuilt: true
+relatedPosts:
+  - title: "Vom Verwaltungsproblem zum Prototyp"
+    href: "/blog/2026-07-24-vom-verwaltungsproblem-zum-prototyp"
+    description: "Wie aus einem mühsamen Verwaltungsprozess ein testbarer digitaler Workflow werden kann."
 ---
 
 Der **HS-Signature-Assistant** digitalisiert den gesamten Unterschriften-Prozess für Hochschulen. Statt Hauspost, Scanner, Photoshop, InDesign und Kommandozeile erledigen Dozierende ihre Unterschrift in wenigen Klicks direkt im Browser – inklusive automatischem Export in alle benötigten Formate.
