@@ -4,8 +4,9 @@ date: 2026-08-02
 description: "Ein persönlicher Zwischenstand: Warum der schwierigste Teil an Mapply gerade nicht das Bauen ist, sondern Go-to-Market, Positionierung und die Frage, wie aus einer eigenen Lösung ein tragfähiges Produkt wird."
 categories: [Mapply, Gründung, Berufliche Neuorientierung]
 tags: [Mapply, Go-to-Market, Founderblocks, SCE, Gründung, Zweifel]
-image: ../../assets/mapply-persona.jpg
-imageAiGenerated: true
+image: ../../assets/mapply-hero.png
+imageAiGenerated: false
+imagePosition: center 25%
 ---
 
 Es gibt diesen Punkt, an dem ein Projekt nicht mehr nur ein Projekt ist.

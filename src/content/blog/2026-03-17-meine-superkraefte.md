@@ -6,6 +6,7 @@ description: "Eine persönliche Fremdwahrnehmung aus psychologischer, psychother
 categories: [Reflexion, Coaching, Persönlichkeitsentwicklung]
 tags: [Fremdwahrnehmung, Stärken, Coaching, Psychologie, Selbstreflexion]
 image: ../../assets/Gemini_Generated_Image_o7etbeo7etbeo7et.png
+imageAiGenerated: true
 ---
 
 # Was andere in mir sehen – eine Auswertung aus 33 Rückmeldungen

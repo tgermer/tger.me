@@ -24,7 +24,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
             <div class="relative h-64 sm:h-72 overflow-hidden">
               <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[800, 1200]} sizes="(min-width: 1024px) 960px, 100vw" />
               {post.data.imageAiGenerated && (
-                <span class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-gray-950/80 px-2.5 py-1 text-xs font-medium text-white shadow-sm backdrop-blur">
+                <span class="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/50 bg-white/75 px-2.5 py-1 text-xs font-medium text-gray-700 shadow-sm backdrop-blur dark:border-gray-700/60 dark:bg-gray-950/55 dark:text-gray-200">
                   <Icon name="tabler:sparkles" class="h-3.5 w-3.5" aria-hidden="true" />
                   KI-generiertes Bild
                 </span>
@@ -54,7 +54,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
               <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
                 <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[400, 800]} sizes="(min-width: 640px) 224px, 100vw" />
                 {post.data.imageAiGenerated && (
-                  <span class="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-gray-950/80 px-2 py-1 text-[0.65rem] font-medium text-white shadow-sm backdrop-blur">
+                  <span class="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full border border-white/50 bg-white/75 px-2 py-1 text-[0.65rem] font-medium text-gray-700 shadow-sm backdrop-blur dark:border-gray-700/60 dark:bg-gray-950/55 dark:text-gray-200">
                     <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
                     KI-Bild
                   </span>
@@ -95,7 +95,7 @@ const unlisted = import.meta.env.DEV ? posts.filter(p => p.data.unlisted).sort((
                   <div class="relative h-48 sm:h-auto sm:w-56 shrink-0 overflow-hidden">
                     <Image src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" style={`object-position: ${post.data.imagePosition};`} widths={[400, 800]} sizes="(min-width: 640px) 224px, 100vw" />
                     {post.data.imageAiGenerated && (
-                      <span class="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-gray-950/80 px-2 py-1 text-[0.65rem] font-medium text-white shadow-sm backdrop-blur">
+                      <span class="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full border border-white/50 bg-white/75 px-2 py-1 text-[0.65rem] font-medium text-gray-700 shadow-sm backdrop-blur dark:border-gray-700/60 dark:bg-gray-950/55 dark:text-gray-200">
                         <Icon name="tabler:sparkles" class="h-3 w-3" aria-hidden="true" />
                         KI-Bild
                       </span>
