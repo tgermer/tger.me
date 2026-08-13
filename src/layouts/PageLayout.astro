@@ -9,9 +9,11 @@ interface Props {
   lang?: string;
   alternates?: { hreflang: string; href: string }[];
   revealContent?: boolean;
+  contentClass?: string;
 }
 
-const { title, description, subtitle, ogImage, lang, alternates, revealContent = true } = Astro.props;
+const props = { ...(Astro.props.frontmatter ?? {}), ...Astro.props };
+const { title, description, subtitle, ogImage, lang, alternates, revealContent = true, contentClass } = props;
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage} lang={lang} alternates={alternates}>
@@ -22,11 +24,13 @@ const { title, description, subtitle, ogImage, lang, alternates, revealContent =
         {subtitle && <p class="mt-2 text-lg text-gray-600 dark:text-gray-400">{subtitle}</p>}
       </div>
       {revealContent ? (
-        <div class="reveal">
+        <div class:list={["reveal", contentClass]}>
           <slot />
         </div>
       ) : (
-        <slot />
+        <div class={contentClass}>
+          <slot />
+        </div>
       )}
     </div>
   </div>
